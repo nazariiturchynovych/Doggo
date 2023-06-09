@@ -1,7 +1,8 @@
-namespace Doggo.Domain.Entities.Base.JobRequest;
+#pragma warning disable CS8618
+namespace Doggo.Domain.Entities.Base.JobRequestEntity;
 
-using Doggo.Domain.Entities.Base;
 using Entities.JobRequest;
+using JobRequest;
 
 public abstract class JobRequestOwnedEntity : Entity, IJobRequestOwnedEntity
 {

@@ -12,14 +12,12 @@ public class JobRequest : AuditableDateEntity
 
     public bool IsPersonalIdentifierRequired { get; set; }
 
-    public RequiredSchedule Schedule { get; set; }
+    public RequiredSchedule RequiredSchedule { get; set; }
 
-    public int DogFamilyId { get; set; }
+    public int DogOwnerId { get; set; }
 
     public DogOwner DogOwner { get; set; }
-
     public int JobId { get; set; }
-
     public Job Job { get; set; }
 
     public int DogId { get; set; }

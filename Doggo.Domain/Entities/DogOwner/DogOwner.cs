@@ -1,3 +1,5 @@
+// ReSharper disable CollectionNeverUpdated.Global
+
 #pragma warning disable CS8618
 namespace Doggo.Domain.Entities.DogOwner;
 
@@ -12,7 +14,8 @@ public class DogOwner : Entity
 
     public User User { get; set; }
 
-    public int Address { get; set; }
+    public string Address { get; set; }
+    public int District { get; set; }
 
     public ICollection<Dog> Dogs { get; set; }
 
