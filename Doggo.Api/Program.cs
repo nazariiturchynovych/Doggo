@@ -1,5 +1,8 @@
 using Doggo.Domain.Constants;
+using Doggo.Domain.Entities.User;
+using Doggo.Extensions;
 using Doggo.Infrastructure.Persistance;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,17 @@ builder.Services.AddDbContext<DoggoDbContext>( options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionConstants.Postgres));
 });
+
+builder.Services
+    .AddIdentity<User, Role>()
+    .AddUserManager<UserManager<User>>()
+    .AddEntityFrameworkStores<DoggoDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.ConfigureIdentity();
+builder.RegisterAuthentication();
+builder.RegisterOptions();
+builder.RegisterServices();
 
 var app = builder.Build();
 
