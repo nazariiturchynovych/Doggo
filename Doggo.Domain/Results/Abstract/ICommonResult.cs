@@ -1,6 +1,6 @@
 namespace Doggo.Domain.Results.Abstract;
 
-public interface IResult
+public interface ICommonResult
 {
     bool IsSuccess { get; }
 
@@ -8,5 +8,5 @@ public interface IResult
 
     Exception? Exception { get; }
 
-    ErrorCode ErrorCode { get; }
+    string ErrorMessage { get; }
 }

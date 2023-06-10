@@ -1,5 +1,8 @@
 namespace Doggo.Extensions;
 
+using System.Reflection;
+using Domain.Options;
+using Infrastructure.EmailService;
 using Infrastructure.JWTTokenGeneratorService;
 using Microsoft.AspNetCore.Identity;
 
@@ -17,8 +20,19 @@ public static class ServicesExtensions
         });
     }
 
+    public static void RegisterOptions(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<JwtSettingsOptions>(builder.Configuration.GetSection(nameof(JwtSettingsOptions)));
+        builder.Services.Configure<SMTPOptions>(builder.Configuration.GetSection(nameof(SMTPOptions)));
+    }
+
     public static void RegisterServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
+        builder.Services.AddScoped<IEmailService, EmailService>();
+
+        builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
     }
+
+
 }

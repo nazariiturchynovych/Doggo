@@ -2,19 +2,19 @@ namespace Doggo.Domain.Results;
 
 using Abstract;
 
-public record Result : IResult
+public record CommonResult : ICommonResult
 {
-    public Result()
+    public CommonResult()
     {
         IsSuccess = true;
-        ErrorCode = default!;
+        ErrorMessage = default!;
         Exception = null;
     }
 
-    public Result(ErrorCode errorCode, Exception? exception = null)
+    public CommonResult(string errorMessage, Exception? exception = null)
     {
         IsSuccess = false;
-        ErrorCode = errorCode;
+        ErrorMessage = errorMessage;
         Exception = exception;
     }
 
@@ -22,7 +22,7 @@ public record Result : IResult
 
     public bool IsFailure => !IsSuccess;
 
-    public ErrorCode ErrorCode { get; }
+    public string ErrorMessage { get; }
 
     public Exception? Exception { get; }
     

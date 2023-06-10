@@ -2,17 +2,17 @@ namespace Doggo.Domain.Results;
 
 using Abstract;
 
-public record Result<TData> : Result, IResult<TData>
+public record CommonResult<TData> : CommonResult, ICommonResult<TData>
 {
-    public Result(TData data)
+    public CommonResult(TData data)
     {
         Data = data;
     }
 
-    public Result(
-        ErrorCode errorCode,
+    public CommonResult(
+        string errorMessage,
         Exception? exception = null)
-        : base(errorCode, exception)
+        : base(errorMessage, exception)
     {
         Data = default!;
     }

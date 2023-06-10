@@ -1,6 +1,6 @@
 namespace Doggo.Domain.Results.Abstract;
 
-public interface IResult<out TData> : IResult
+public interface ICommonResult<out TData> : ICommonResult
 {
     public TData Data { get; }
 }
