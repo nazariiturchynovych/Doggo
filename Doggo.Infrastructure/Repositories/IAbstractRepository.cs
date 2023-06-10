@@ -1,4 +1,4 @@
-namespace Doggo.Domain.Repositories;
+namespace Doggo.Infrastructure.Repositories;
 
 public interface IAbstractRepository<TEntity>
 {

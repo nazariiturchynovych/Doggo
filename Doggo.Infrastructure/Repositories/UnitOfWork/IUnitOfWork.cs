@@ -1,4 +1,4 @@
-namespace Doggo.Domain.Repositories.UnitOfWork;
+namespace Doggo.Infrastructure.Repositories.UnitOfWork;
 
 public interface IUnitOfWork
 {

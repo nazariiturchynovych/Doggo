@@ -1,6 +1,6 @@
-namespace Doggo.Domain.Repositories;
+namespace Doggo.Infrastructure.Repositories;
 
-using Entities.User;
+using Doggo.Domain.Entities.User;
 
 public interface IUserRepository
 {

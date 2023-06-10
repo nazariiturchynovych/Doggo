@@ -1,9 +1,8 @@
-namespace Doggo.Infrastructure.AbstractRepository;
+namespace Doggo.Infrastructure.Repositories;
 
-using Doggo.Domain.Repositories;
-using Domain.Entities.Base;
+using Doggo.Domain.Entities.Base;
+using Doggo.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
-using Persistance;
 
 public class AbstractRepository<TEntity> : IAbstractRepository<TEntity>
 where TEntity : class, IEntity

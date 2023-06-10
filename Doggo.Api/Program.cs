@@ -27,6 +27,7 @@ builder.ConfigureIdentity();
 builder.RegisterAuthentication();
 builder.RegisterOptions();
 builder.RegisterServices();
+builder.RegisterRepositories();
 
 var app = builder.Build();
 
