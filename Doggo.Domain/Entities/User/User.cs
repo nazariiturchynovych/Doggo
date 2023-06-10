@@ -1,12 +1,13 @@
 #pragma warning disable CS8618
 namespace Doggo.Domain.Entities.User;
 
+using Base;
 using DogOwner;
 using JobRequest.Documents;
 using Microsoft.AspNetCore.Identity;
 using Walker;
 
-public class User : IdentityUser<int>
+public class User : IdentityUser<int>, IEntity
 {
     public string FirstName { get; set; }
 
