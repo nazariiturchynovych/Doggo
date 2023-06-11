@@ -1,7 +1,7 @@
 using Doggo.Domain.Constants;
 using Doggo.Domain.Entities.User;
 using Doggo.Extensions;
-using Doggo.Infrastructure.Persistance;
+using Doggo.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +23,18 @@ builder.Services
     .AddEntityFrameworkStores<DoggoDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "MyAllowSpecificOrigins",
+        policy  =>
+        {
+            policy.AllowAnyMethod();
+            policy.AllowAnyHeader();
+            policy.AllowAnyOrigin();
+        });
+});
+
+
 builder.ConfigureIdentity();
 builder.RegisterAuthentication();
 builder.RegisterOptions();
@@ -36,6 +48,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("MyAllowSpecificOrigins");
 
 app.UseHttpsRedirection();
 

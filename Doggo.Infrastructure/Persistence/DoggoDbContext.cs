@@ -1,4 +1,4 @@
-namespace Doggo.Infrastructure.Persistance;
+namespace Doggo.Infrastructure.Persistence;
 
 using System.Reflection;
 using Domain.Entities.DogOwner;

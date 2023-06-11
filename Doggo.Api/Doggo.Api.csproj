@@ -30,8 +30,4 @@
       <ProjectReference Include="..\Doggo.Infrastructure\Doggo.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Application\Requests\Queries" />
-    </ItemGroup>
-
 </Project>

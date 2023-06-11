@@ -1,6 +1,6 @@
 namespace Doggo.Infrastructure.Repositories.UnitOfWork;
 
-using Doggo.Infrastructure.Persistance;
+using Persistence;
 
 public class UnitOfWork : IUnitOfWork
 {

@@ -10,20 +10,27 @@ using Domain.Results.Abstract;
 using Infrastructure.EmailService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-public record SendResetPasswordTokenCommand(string UserEmail, string Link) : IRequest<ICommonResult>
+public record SendResetPasswordTokenCommand(string UserEmail, string NewPassword, string ConfirmPassword)
+    : IRequest<ICommonResult>
 {
     public class Handler : IRequestHandler<SendResetPasswordTokenCommand, ICommonResult>
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailService _emailService;
+        private readonly IUrlHelper _urlHelper;
         private readonly SMTPOptions _options;
 
-        public Handler(UserManager<User> userManager, IEmailService emailService, IOptions<SMTPOptions> options)
+        public Handler(
+            UserManager<User> userManager,
+            IEmailService emailService,
+            IOptions<SMTPOptions> options, IUrlHelper urlHelper)
         {
             _userManager = userManager;
             _emailService = emailService;
+            _urlHelper = urlHelper;
             _options = options.Value;
         }
 
@@ -38,8 +45,18 @@ public record SendResetPasswordTokenCommand(string UserEmail, string Link) : IRe
 
             var userId = user.Id;
 
+            var actionUrl = _urlHelper.Action(
+                "ConfirmResetPasswordCommand",
+                "Authentication",
+                values: new
+                {
+                    token = WebUtility.UrlEncode(token),
+                    userId,
+                    request.NewPassword
+                });
+
             var link =
-                $"{request.Link}" + $"?{nameof(userId)}={userId}" + $"&{nameof(token)}={WebUtility.UrlEncode(token)}";
+                $"{actionUrl}" + $"?{nameof(userId)}={userId}" + $"&{nameof(token)}={WebUtility.UrlEncode(token)}";
 
             var message = new MailMessage(_options.UserName, request.UserEmail)
             {

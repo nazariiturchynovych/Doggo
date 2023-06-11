@@ -35,6 +35,8 @@ public record SignUpCommand
             {
                 Email = request.Email,
                 UserName = request.Email,
+                FirstName = "",
+                LastName = ""
             };
 
             var result = await _userManager.CreateAsync(userToAdd, request.Password);

@@ -37,7 +37,7 @@ public record GoogleSignUpCommand(string Email) : IRequest<ICommonResult>
 
             var result = await _userManager.CreateAsync(userToAdd);
 
-            if (result.Succeeded!)
+            if (!result.Succeeded)
                 return ResultFactory.Failure(UserErrors.UserCreateFailed);
 
             return ResultFactory.Success();

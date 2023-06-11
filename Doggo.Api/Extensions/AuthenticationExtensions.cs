@@ -3,7 +3,6 @@ namespace Doggo.Extensions;
 using System.Text;
 using Domain.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 public static class AuthenticationExtensions
@@ -21,10 +20,8 @@ public static class AuthenticationExtensions
             .AddJwtBearer(
                 options =>
                 {
-                    var configurationSettingsOptions
-                        = builder.Services.OfType<IOptions<JwtSettingsOptions>>().FirstOrDefault().Value;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
+                   var configurationSettingsOptions = builder.Configuration.GetSection("JwtSettingsOptions").Get<JwtSettingsOptions>();
+                   options.TokenValidationParameters = new TokenValidationParameters() {
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
