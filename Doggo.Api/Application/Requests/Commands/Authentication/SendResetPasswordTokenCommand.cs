@@ -21,16 +21,20 @@ public record SendResetPasswordTokenCommand(string UserEmail, string NewPassword
         private readonly UserManager<User> _userManager;
         private readonly IEmailService _emailService;
         private readonly IUrlHelper _urlHelper;
+        private readonly IHttpContextAccessor _httpContext;
         private readonly SMTPOptions _options;
 
         public Handler(
             UserManager<User> userManager,
             IEmailService emailService,
-            IOptions<SMTPOptions> options, IUrlHelper urlHelper)
+            IOptions<SMTPOptions> options,
+            IUrlHelper urlHelper,
+            IHttpContextAccessor httpContext)
         {
             _userManager = userManager;
             _emailService = emailService;
             _urlHelper = urlHelper;
+            _httpContext = httpContext;
             _options = options.Value;
         }
 
@@ -52,16 +56,17 @@ public record SendResetPasswordTokenCommand(string UserEmail, string NewPassword
                 {
                     token = WebUtility.UrlEncode(token),
                     userId,
-                    request.NewPassword
-                });
+                    newPassword = request.NewPassword
+                },
+                _httpContext.HttpContext!.Request.Scheme);
 
-            var link =
-                $"{actionUrl}" + $"?{nameof(userId)}={userId}" + $"&{nameof(token)}={WebUtility.UrlEncode(token)}";
+            // var link =
+            //     $"{actionUrl}" + $"?{nameof(userId)}={userId}" + $"&{nameof(token)}={WebUtility.UrlEncode(token)}";
 
             var message = new MailMessage(_options.UserName, request.UserEmail)
             {
                 IsBodyHtml = true,
-                Body = $"Reset password: <a href = '{link}'> link </a>",
+                Body = $"Reset password: <a href = '{actionUrl}'> link </a>",
             };
 
             await _emailService.SendAsync(message);

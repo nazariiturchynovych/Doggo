@@ -26,7 +26,7 @@ public static class AuthenticationExtensions
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = configurationSettingsOptions.Issuer,
+                        ValidIssuer = configurationSettingsOptions!.Issuer,
                         ValidAudience = configurationSettingsOptions.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configurationSettingsOptions.Secret)),
                     };

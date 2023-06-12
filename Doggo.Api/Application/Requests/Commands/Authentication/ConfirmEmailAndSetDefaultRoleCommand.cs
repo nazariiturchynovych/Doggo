@@ -1,13 +1,13 @@
-namespace Doggo.Application.Requests.Commands.User;
+namespace Doggo.Application.Requests.Commands.Authentication;
 
-using ResultFactory;
-using Doggo.Domain.Entities.User;
-using Doggo.Domain.Results.Abstract;
-using Doggo.Domain.Results.Errors;
+using Domain.Entities.User;
+using Domain.Enums;
+using Domain.Results.Abstract;
+using Domain.Results.Errors;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using RoleType = Domain.Enums.RoleType;
+using ResultFactory;
 
 public record ConfirmEmailAndSetDefaultRoleCommand
     (int UserId, string Token) : IRequest<ICommonResult>

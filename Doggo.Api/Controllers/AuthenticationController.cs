@@ -1,7 +1,8 @@
 namespace Doggo.Controllers;
 
+using Application.Requests.Commands.Authentication;
 using Application.Requests.Commands.User;
-using Application.Requests.Queries.User;
+using Application.Requests.Queries.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -84,10 +85,11 @@ public class AuthenticationController : ControllerBase
 
     [HttpPost("ConfirmResetPasswordCommand")]
     public async Task<IActionResult> ConfirmResetPasswordCommand(
-        ConfirmResetPasswordCommand confirmResetPasswordCommand,
+        string userId,
+        string newPassword,
+        string token,
         CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(confirmResetPasswordCommand, cancellationToken));
+        return Ok(await _mediator.Send(new ConfirmResetPasswordCommand(token, userId, newPassword), cancellationToken));
     }
-
 }

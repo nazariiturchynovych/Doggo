@@ -1,4 +1,4 @@
-namespace Doggo.Application.Requests.Commands.User;
+namespace Doggo.Application.Requests.Commands.Authentication;
 
 using ResultFactory;
 using Doggo.Domain.Entities.User;
@@ -47,7 +47,7 @@ public record ChangePasswordCommand
                 request.CurrentPassword,
                 request.NewPassword);
 
-            if (passwordChangingResult.Succeeded!)
+            if (!passwordChangingResult.Succeeded)
                 return ResultFactory.Failure(UserErrors.PasswordChangeFailed);
 
             return ResultFactory.Success();

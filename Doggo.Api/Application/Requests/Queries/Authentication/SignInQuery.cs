@@ -1,4 +1,4 @@
-namespace Doggo.Application.Requests.Queries.User;
+namespace Doggo.Application.Requests.Queries.Authentication;
 
 using Domain.DTO;
 using Domain.Entities.User;

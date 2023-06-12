@@ -1,11 +1,12 @@
-namespace Doggo.Application.Requests.Commands.User;
+namespace Doggo.Application.Requests.Commands.Authentication;
 
-using ResultFactory;
-using Doggo.Domain.Entities.User;
-using Doggo.Domain.Results.Abstract;
-using Doggo.Domain.Results.Errors;
+using System.Net;
+using Domain.Entities.User;
+using Domain.Results.Abstract;
+using Domain.Results.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ResultFactory;
 
 public record ConfirmResetPasswordCommand(string Token, string UserId, string NewPassword) : IRequest<ICommonResult>
 {
@@ -25,9 +26,11 @@ public record ConfirmResetPasswordCommand(string Token, string UserId, string Ne
             if (user is null)
                 return ResultFactory.Failure(UserErrors.UserDoesNotExist);
 
-            var result = await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+            var token = WebUtility.UrlDecode(request.Token);
 
-            if (result.Succeeded!)
+            var result = await _userManager.ResetPasswordAsync(user, token, request.NewPassword);
+
+            if (!result.Succeeded)
                 return ResultFactory.Failure(UserErrors.ResetPasswordFailed);
 
             return ResultFactory.Success();

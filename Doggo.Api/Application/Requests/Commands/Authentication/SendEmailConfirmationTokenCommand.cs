@@ -1,16 +1,16 @@
-namespace Doggo.Application.Requests.Commands.User;
+namespace Doggo.Application.Requests.Commands.Authentication;
 
 using System.Net;
 using System.Net.Mail;
-using ResultFactory;
-using Doggo.Domain.Entities.User;
-using Doggo.Domain.Results.Abstract;
-using Doggo.Domain.Results.Errors;
+using Domain.Entities.User;
 using Domain.Options;
+using Domain.Results.Abstract;
+using Domain.Results.Errors;
 using Infrastructure.EmailService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using ResultFactory;
 
 public record SendEmailConfirmationTokenCommand(string UserEmail, string Link) : IRequest<ICommonResult>
 {

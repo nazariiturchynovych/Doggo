@@ -1,11 +1,11 @@
-namespace Doggo.Application.Requests.Commands.User;
+namespace Doggo.Application.Requests.Commands.Authentication;
 
-using ResultFactory;
-using Doggo.Domain.Entities.User;
+using Domain.Entities.User;
 using Domain.Results.Abstract;
 using Domain.Results.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ResultFactory;
 
 public record SignUpCommand
 (
@@ -31,7 +31,7 @@ public record SignUpCommand
                 return ResultFactory.Failure(UserErrors.UserAlreadyExist);
             }
 
-            var userToAdd = new User()
+            var userToAdd = new User
             {
                 Email = request.Email,
                 UserName = request.Email,

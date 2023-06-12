@@ -1,11 +1,11 @@
-namespace Doggo.Application.Requests.Commands.User;
+namespace Doggo.Application.Requests.Commands.Authentication;
 
-using ResultFactory;
-using Doggo.Domain.Entities.User;
-using Doggo.Domain.Results.Abstract;
-using Doggo.Domain.Results.Errors;
+using Domain.Entities.User;
+using Domain.Results.Abstract;
+using Domain.Results.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ResultFactory;
 
 public record GoogleSignUpCommand(string Email) : IRequest<ICommonResult>
 {
@@ -27,7 +27,7 @@ public record GoogleSignUpCommand(string Email) : IRequest<ICommonResult>
                 return ResultFactory.Failure(UserErrors.UserAlreadyExist);
             }
 
-            var userToAdd = new User()
+            var userToAdd = new User
             {
                 Email = request.Email,
                 UserName = request.Email,
