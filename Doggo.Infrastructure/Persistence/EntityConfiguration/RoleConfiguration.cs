@@ -10,7 +10,6 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
     {
         builder.ToTable("Roles");
 
-        builder.Property(r => r.RoleType).IsRequired();
 
         builder.HasMany(r => r.UserRoles)
             .WithOne(ur => ur.Role)

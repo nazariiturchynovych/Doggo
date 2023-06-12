@@ -1,4 +1,4 @@
-namespace Doggo.Infrastructure.EmailService;
+namespace Doggo.Infrastructure.Services.EmailService;
 
 using System.Net;
 using System.Net.Mail;

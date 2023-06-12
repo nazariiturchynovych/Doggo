@@ -5,7 +5,15 @@ using Microsoft.AspNetCore.Identity;
 
 public class Role : IdentityRole<int>
 {
-    public RoleType RoleType { get; set; }
+
+    public Role()
+    {
+
+    }
+    public Role(string roleName) : this()
+    {
+        Name = roleName;
+    }
 
     public ICollection<UserRole> UserRoles { get; set; }
         = new List<UserRole>();

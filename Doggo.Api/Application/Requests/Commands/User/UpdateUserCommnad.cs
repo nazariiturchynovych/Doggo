@@ -3,7 +3,7 @@ namespace Doggo.Application.Requests.Commands.User;
 using Domain.Entities.User;
 using Domain.Results.Abstract;
 using Domain.Results.Errors;
-using Infrastructure.CurrentUserService;
+using Infrastructure.Services.CurrentUserService;
 using Mappers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

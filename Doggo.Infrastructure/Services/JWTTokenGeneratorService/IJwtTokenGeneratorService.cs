@@ -1,4 +1,4 @@
-namespace Doggo.Infrastructure.JWTTokenGeneratorService;
+namespace Doggo.Infrastructure.Services.JWTTokenGeneratorService;
 
 using Domain.Entities.User;
 

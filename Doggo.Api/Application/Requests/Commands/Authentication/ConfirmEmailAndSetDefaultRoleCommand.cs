@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Commands.Authentication;
 
+using Domain.Constants;
 using Domain.Entities.User;
-using Domain.Enums;
 using Domain.Results.Abstract;
 using Domain.Results.Errors;
 using Infrastructure.Repositories.UnitOfWork;
@@ -39,7 +39,7 @@ public record ConfirmEmailAndSetDefaultRoleCommand
             if (!result.Succeeded)
                 return Failure(UserErrors.UserEmailConfirmFailed);
 
-            var addToRoleResult = await _userManager.AddToRoleAsync(user, RoleType.User.ToString().ToUpperInvariant());
+            var addToRoleResult = await _userManager.AddToRoleAsync(user, RoleConstants.User);
 
             if (!addToRoleResult.Succeeded)
             {

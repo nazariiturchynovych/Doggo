@@ -1,4 +1,4 @@
-namespace Doggo.Infrastructure.CurrentUserService;
+namespace Doggo.Infrastructure.Services.CurrentUserService;
 
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;

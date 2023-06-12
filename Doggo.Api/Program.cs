@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGenWithJwt();
 
 builder.Services.AddDbContext<DoggoDbContext>( options =>
 {
@@ -41,6 +41,7 @@ builder.RegisterOptions();
 builder.RegisterServices();
 builder.RegisterRepositories();
 
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -51,11 +52,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("MyAllowSpecificOrigins");
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+// app.SeedUsersAndRolesAsync().Wait();
 
 app.Run();

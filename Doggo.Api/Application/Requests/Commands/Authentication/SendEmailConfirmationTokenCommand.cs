@@ -6,7 +6,7 @@ using Domain.Entities.User;
 using Domain.Options;
 using Domain.Results.Abstract;
 using Domain.Results.Errors;
-using Infrastructure.EmailService;
+using Infrastructure.Services.EmailService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;

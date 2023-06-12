@@ -11,5 +11,7 @@ public interface IUserRepository
         int page,
         CancellationToken cancellationToken = default);
 
-    public Task<User?> GetUserWithRoles(int id, CancellationToken cancellationToken = default);
+    public Task<User?> GetUserWithRoles(string userEmail, CancellationToken cancellationToken = default);
+
+    public Task<User?> GetUserWithRoles(int userId, CancellationToken cancellationToken = default);
 }

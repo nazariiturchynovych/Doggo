@@ -1,4 +1,4 @@
-namespace Doggo.Infrastructure.JWTTokenGeneratorService;
+namespace Doggo.Infrastructure.Services.JWTTokenGeneratorService;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -31,7 +31,7 @@ public class JwtTokenGeneratorService : IJwtTokenGeneratorService
 
         foreach (var userRole in user.UserRoles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, userRole.Role.RoleType.ToString()));
+            claims.Add(new Claim(ClaimTypes.Role, userRole.Role.Name!));
         }
 
         var securityToken = new JwtSecurityToken(

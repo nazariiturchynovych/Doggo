@@ -2,15 +2,16 @@ namespace Doggo.Extensions;
 
 using System.Reflection;
 using Domain.Options;
-using Infrastructure.CurrentUserService;
-using Infrastructure.EmailService;
-using Infrastructure.JWTTokenGeneratorService;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.UnitOfWork;
+using Infrastructure.Services.CurrentUserService;
+using Infrastructure.Services.EmailService;
+using Infrastructure.Services.JWTTokenGeneratorService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.OpenApi.Models;
 
 public static class ServicesExtensions
 {
@@ -44,7 +45,6 @@ public static class ServicesExtensions
                 var factory = x.GetRequiredService<IUrlHelperFactory>();
                 return factory.GetUrlHelper(actionContext!);
             });
-
         builder.Services.AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ICurrentUserService, CurrenUserService>();
@@ -57,5 +57,35 @@ public static class ServicesExtensions
     {
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+    }
+
+
+    public static IServiceCollection AddSwaggerGenWithJwt(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(c => {
+            c.SwaggerDoc("v1", new OpenApiInfo {
+                Title = "JWTToken_Auth_API", Version = "v1"
+            });
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() {
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+            });
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                    new OpenApiSecurityScheme {
+                        Reference = new OpenApiReference {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
+        });
+        return services;
     }
 }
