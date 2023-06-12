@@ -1,9 +1,8 @@
 namespace Doggo.Application.Requests.Commands.Authentication;
 
-using ResultFactory;
-using Doggo.Domain.Entities.User;
-using Doggo.Domain.Results.Abstract;
-using Doggo.Domain.Results.Errors;
+using Domain.Entities.User;
+using Domain.Results.Abstract;
+using Domain.Results.Errors;
 using Infrastructure.CurrentUserService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -30,17 +29,17 @@ public record ChangePasswordCommand
             var currentUserEmail = _currentUserService.GetUserEmail();
 
             if (currentUserEmail is null)
-                return ResultFactory.Failure(CommonErrors.InnerError);
+                return Failure(CommonErrors.InnerError);
 
             var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
 
             if (currentUser is null)
-                return ResultFactory.Failure(UserErrors.UserDoesNotExist);
+                return Failure(UserErrors.UserDoesNotExist);
 
             var passwordCheckingResult = await _userManager.CheckPasswordAsync(currentUser, request.CurrentPassword);
 
             if (passwordCheckingResult!)
-                return ResultFactory.Failure(UserErrors.PasswordDoesNotMatch);
+                return Failure(UserErrors.PasswordDoesNotMatch);
 
             var passwordChangingResult = await _userManager.ChangePasswordAsync(
                 currentUser,
@@ -48,9 +47,9 @@ public record ChangePasswordCommand
                 request.NewPassword);
 
             if (!passwordChangingResult.Succeeded)
-                return ResultFactory.Failure(UserErrors.PasswordChangeFailed);
+                return Failure(UserErrors.PasswordChangeFailed);
 
-            return ResultFactory.Success();
+            return Success();
         }
     }
 }

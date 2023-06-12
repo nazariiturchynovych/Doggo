@@ -5,7 +5,6 @@ using Domain.Results.Abstract;
 using Domain.Results.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using ResultFactory;
 
 public record SignUpCommand
 (
@@ -28,7 +27,7 @@ public record SignUpCommand
 
             if (user is not null)
             {
-                return ResultFactory.Failure(UserErrors.UserAlreadyExist);
+                return Failure(UserErrors.UserAlreadyExist);
             }
 
             var userToAdd = new User
@@ -42,9 +41,9 @@ public record SignUpCommand
             var result = await _userManager.CreateAsync(userToAdd, request.Password);
 
             if (!result.Succeeded)
-                return ResultFactory.Failure(UserErrors.UserCreateFailed);
+                return Failure(UserErrors.UserCreateFailed);
 
-            return ResultFactory.Success();
+            return Success();
         }
     }
 }

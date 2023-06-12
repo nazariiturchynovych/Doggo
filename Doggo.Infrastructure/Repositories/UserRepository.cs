@@ -19,6 +19,12 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 
+    public async Task<IReadOnlyCollection<User>> GetPageOfUsersAsync(int count, int page, CancellationToken cancellationToken = default)
+        => await _context.Users
+            .OrderBy(ps => ps.Id)
+            .Skip(count * page - 1)
+            .Take(count)
+            .ToListAsync(cancellationToken: cancellationToken);
 
     public async Task<User?> GetUserWithRoles(int id, CancellationToken cancellationToken = default)
     {

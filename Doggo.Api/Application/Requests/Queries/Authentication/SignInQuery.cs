@@ -7,7 +7,6 @@ using Domain.Results.Errors;
 using Infrastructure.JWTTokenGeneratorService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using ResultFactory;
 
 public record SignInQuery
 (
@@ -30,14 +29,14 @@ public record SignInQuery
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user is null)
-                return ResultFactory.Failure<SignInDto>(UserErrors.UserDoesNotExist);
+                return Failure<SignInDto>(UserErrors.UserDoesNotExist);
 
             var logInResult = await _userManager.CheckPasswordAsync(user, request.Password);
 
             if (!logInResult)
-                return ResultFactory.Failure<SignInDto>(UserErrors.PasswordDoesNotMatch);
+                return Failure<SignInDto>(UserErrors.PasswordDoesNotMatch);
 
-            return ResultFactory.Success(
+            return Success(
                 new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
         }
     }

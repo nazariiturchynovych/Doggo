@@ -8,6 +8,10 @@ public static class UserErrors
 
     public const string UserCreateFailed = "USER_CREATE_FAILED";
 
+    public const string UserUpdateFailed = "USER_UPDATE_FAILED";
+
+    public const string UserDeleteFailed = "USER_DELETE_FAILED";
+
     public const string UserEmailConfirmFailed = "USER_EMAIL_CONFIRM_FAILED";
 
     public const string EmailAlreadyConfirmed = "EMAIL_ALREADY_CONFIRMED";

@@ -10,7 +10,6 @@ using Infrastructure.EmailService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using ResultFactory;
 
 public record SendEmailConfirmationTokenCommand(string UserEmail, string Link) : IRequest<ICommonResult>
 {
@@ -32,7 +31,7 @@ public record SendEmailConfirmationTokenCommand(string UserEmail, string Link) :
             var user = await _userManager.FindByEmailAsync(request.UserEmail);
 
             if (user is null)
-                return ResultFactory.Failure(UserErrors.UserDoesNotExist);
+                return Failure(UserErrors.UserDoesNotExist);
 
             var userId = user.Id;
 
@@ -49,7 +48,7 @@ public record SendEmailConfirmationTokenCommand(string UserEmail, string Link) :
 
             await _emailService.SendAsync(message);
 
-            return ResultFactory.Success();
+            return Success();
         }
     }
 }

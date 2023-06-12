@@ -2,11 +2,10 @@ namespace Doggo.Application.Requests.Commands.User;
 
 using System.Net;
 using System.Net.Mail;
-using ResultFactory;
-using Doggo.Domain.Entities.User;
-using Doggo.Domain.Results.Errors;
+using Domain.Entities.User;
 using Domain.Options;
 using Domain.Results.Abstract;
+using Domain.Results.Errors;
 using Infrastructure.EmailService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -43,7 +42,7 @@ public record SendResetPasswordTokenCommand(string UserEmail, string NewPassword
             var user = await _userManager.FindByEmailAsync(request.UserEmail);
 
             if (user is null)
-                return ResultFactory.Failure(UserErrors.UserDoesNotExist);
+                return Failure(UserErrors.UserDoesNotExist);
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -71,7 +70,7 @@ public record SendResetPasswordTokenCommand(string UserEmail, string NewPassword
 
             await _emailService.SendAsync(message);
 
-            return ResultFactory.Success();
+            return Success();
         }
     }
 }

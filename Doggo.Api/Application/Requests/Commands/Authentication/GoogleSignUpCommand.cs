@@ -5,7 +5,6 @@ using Domain.Results.Abstract;
 using Domain.Results.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using ResultFactory;
 
 public record GoogleSignUpCommand(string Email) : IRequest<ICommonResult>
 {
@@ -24,7 +23,7 @@ public record GoogleSignUpCommand(string Email) : IRequest<ICommonResult>
 
             if (user is not null)
             {
-                return ResultFactory.Failure(UserErrors.UserAlreadyExist);
+                return Failure(UserErrors.UserAlreadyExist);
             }
 
             var userToAdd = new User
@@ -38,9 +37,9 @@ public record GoogleSignUpCommand(string Email) : IRequest<ICommonResult>
             var result = await _userManager.CreateAsync(userToAdd);
 
             if (!result.Succeeded)
-                return ResultFactory.Failure(UserErrors.UserCreateFailed);
+                return Failure(UserErrors.UserCreateFailed);
 
-            return ResultFactory.Success();
+            return Success();
         }
     }
 }

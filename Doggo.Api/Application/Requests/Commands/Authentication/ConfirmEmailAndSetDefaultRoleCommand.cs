@@ -7,7 +7,6 @@ using Domain.Results.Errors;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using ResultFactory;
 
 public record ConfirmEmailAndSetDefaultRoleCommand
     (int UserId, string Token) : IRequest<ICommonResult>
@@ -30,24 +29,24 @@ public record ConfirmEmailAndSetDefaultRoleCommand
             var user = await userRepository.GetUserWithRoles(request.UserId, cancellationToken);
 
             if (user is null)
-                return ResultFactory.Failure(UserErrors.UserDoesNotExist);
+                return Failure(UserErrors.UserDoesNotExist);
 
             if (user.EmailConfirmed)
-                return ResultFactory.Failure(UserErrors.EmailAlreadyConfirmed);
+                return Failure(UserErrors.EmailAlreadyConfirmed);
 
             var result = await _userManager.ConfirmEmailAsync(user, request.Token);
 
             if (!result.Succeeded)
-                return ResultFactory.Failure(UserErrors.UserEmailConfirmFailed);
+                return Failure(UserErrors.UserEmailConfirmFailed);
 
             var addToRoleResult = await _userManager.AddToRoleAsync(user, RoleType.User.ToString().ToUpperInvariant());
 
             if (!addToRoleResult.Succeeded)
             {
-                return ResultFactory.Failure(UserErrors.UserCreateFailed);
+                return Failure(UserErrors.UserCreateFailed);
             }
 
-            return ResultFactory.Success();
+            return Success();
         }
     }
 }
