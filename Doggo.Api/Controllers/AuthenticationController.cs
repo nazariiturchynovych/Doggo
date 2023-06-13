@@ -4,6 +4,7 @@ using Application.Requests.Commands.Authentication;
 using Application.Requests.Commands.User;
 using Application.Requests.Queries.Authentication;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -64,6 +65,7 @@ public class AuthenticationController : ControllerBase
         return Ok(await _mediator.Send(signInQuery, cancellationToken));
     }
 
+    [Authorize(Roles = "User, Admin")]
     [HttpPost("ChangePassword")]
     public async Task<IActionResult> ChangePassword(
         ChangePasswordCommand changePasswordCommand,
