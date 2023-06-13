@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Commands.Authentication;
 
+using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Results.Abstract;
-using Domain.Results.Errors;
 using Infrastructure.Services.CurrentUserService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Queries.User;
 
+using Domain.Constants.ErrorConstants;
 using Domain.DTO;
 using Domain.Entities.User;
 using Domain.Results.Abstract;
-using Domain.Results.Errors;
 using Mappers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

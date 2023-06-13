@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Commands.User;
 
+using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Results.Abstract;
-using Domain.Results.Errors;
 using Infrastructure.Services.CurrentUserService;
 using Mappers;
 using MediatR;

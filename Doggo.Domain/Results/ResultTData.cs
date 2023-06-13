@@ -4,6 +4,7 @@ using Abstract;
 
 public record CommonResult<TData> : CommonResult, ICommonResult<TData>
 {
+
     public CommonResult(TData data)
     {
         Data = data;
@@ -18,5 +19,4 @@ public record CommonResult<TData> : CommonResult, ICommonResult<TData>
     }
 
     public TData Data { get; }
-
 }

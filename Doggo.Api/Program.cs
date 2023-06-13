@@ -1,3 +1,5 @@
+using System.Reflection;
+using Doggo.Application.Middlewares;
 using Doggo.Domain.Constants;
 using Doggo.Domain.Entities.User;
 using Doggo.Extensions;
@@ -6,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
-
+using FluentValidation;
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File(
         path: "/Users/turchynovychnazarii/Desktop/LogPath/log-.txt",
@@ -53,6 +55,7 @@ try
     builder.RegisterOptions();
     builder.RegisterServices();
     builder.RegisterRepositories();
+    builder.RegisterBehaviours();
 
     var app = builder.Build();
 
@@ -61,6 +64,8 @@ try
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+
+    app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
     app.UseCors("MyAllowSpecificOrigins");
 

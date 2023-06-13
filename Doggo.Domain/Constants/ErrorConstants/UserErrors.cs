@@ -1,4 +1,4 @@
-namespace Doggo.Domain.Results.Errors;
+namespace Doggo.Domain.Constants.ErrorConstants;
 
 public static class UserErrors
 {
