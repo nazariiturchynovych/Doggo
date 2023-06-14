@@ -1,12 +1,12 @@
-namespace Doggo.Application.Requests.Commands.User;
+namespace Doggo.Application.Requests.Commands.Authentication;
 
 using System.Net;
 using System.Net.Mail;
-using Domain.Constants.ErrorConstants;
-using Domain.Entities.User;
-using Domain.Options;
-using Domain.Results.Abstract;
-using Infrastructure.Services.EmailService;
+using Doggo.Domain.Constants.ErrorConstants;
+using Doggo.Domain.Entities.User;
+using Doggo.Domain.Options;
+using Doggo.Domain.Results.Abstract;
+using Doggo.Infrastructure.Services.EmailService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -32,8 +32,6 @@ public class ValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior
             .Distinct()
             .ToArray();
 
-
-
         if (errors.Any())
         {
            return CreateValidationResult<TResponse>(errors);
