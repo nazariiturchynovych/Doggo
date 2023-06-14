@@ -3,15 +3,15 @@ namespace Doggo.Application.Requests.Commands.Authentication;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
-using Domain.Results.Abstract;
+using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 public record ConfirmEmailAndSetDefaultRoleCommand
-    (int UserId, string Token) : IRequest<ICommonResult>
+    (int UserId, string Token) : IRequest<CommonResult>
 {
-    public class Handler : IRequestHandler<ConfirmEmailAndSetDefaultRoleCommand, ICommonResult>
+    public class Handler : IRequestHandler<ConfirmEmailAndSetDefaultRoleCommand, CommonResult>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<User> _userManager;
@@ -22,7 +22,7 @@ public record ConfirmEmailAndSetDefaultRoleCommand
             _userManager = userManager;
         }
 
-        public async Task<ICommonResult> Handle(ConfirmEmailAndSetDefaultRoleCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult> Handle(ConfirmEmailAndSetDefaultRoleCommand request, CancellationToken cancellationToken)
         {
             var userRepository = _unitOfWork.GetUserRepository();
 

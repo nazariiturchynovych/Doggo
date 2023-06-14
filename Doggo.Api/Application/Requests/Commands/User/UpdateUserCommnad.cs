@@ -2,7 +2,7 @@ namespace Doggo.Application.Requests.Commands.User;
 
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
-using Domain.Results.Abstract;
+using Domain.Results;
 using Infrastructure.Services.CurrentUserService;
 using Mappers;
 using MediatR;
@@ -13,9 +13,9 @@ public record UpdateUserCommand
     string? FirstName,
     string? LastName,
     int? Age
-) : IRequest<ICommonResult>
+) : IRequest<CommonResult>
 {
-    public class Handler : IRequestHandler<UpdateUserCommand, ICommonResult>
+    public class Handler : IRequestHandler<UpdateUserCommand, CommonResult>
     {
         private readonly UserManager<User> _userManager;
         private readonly ICurrentUserService _currentUserService;
@@ -26,7 +26,7 @@ public record UpdateUserCommand
             _currentUserService = currentUserService;
         }
 
-        public async Task<ICommonResult> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             var currentUser = await _userManager.FindByIdAsync(_currentUserService.GetUserId());
 

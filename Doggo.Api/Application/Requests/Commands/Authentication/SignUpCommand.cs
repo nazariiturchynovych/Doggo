@@ -2,7 +2,7 @@ namespace Doggo.Application.Requests.Commands.Authentication;
 
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
-using Domain.Results.Abstract;
+using Domain.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -10,9 +10,9 @@ public record SignUpCommand
 (
     string Email,
     string Password
-) : IRequest<ICommonResult>
+) : IRequest<CommonResult>
 {
-    public class Handler : IRequestHandler<SignUpCommand, ICommonResult>
+    public class Handler : IRequestHandler<SignUpCommand, CommonResult>
     {
         private readonly UserManager<User> _userManager;
 
@@ -21,7 +21,7 @@ public record SignUpCommand
             _userManager = userManager;
         }
 
-        public async Task<ICommonResult> Handle(SignUpCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 

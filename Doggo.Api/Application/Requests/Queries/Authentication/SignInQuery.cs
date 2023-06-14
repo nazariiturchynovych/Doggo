@@ -3,7 +3,7 @@ namespace Doggo.Application.Requests.Queries.Authentication;
 using Domain.Constants.ErrorConstants;
 using Domain.DTO;
 using Domain.Entities.User;
-using Domain.Results.Abstract;
+using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
@@ -13,9 +13,9 @@ public record SignInQuery
 (
     string Email,
     string Password
-) : IRequest<ICommonResult<SignInDto>>
+) : IRequest<CommonResult<SignInDto>>
 {
-    public class Handler : IRequestHandler<SignInQuery, ICommonResult<SignInDto>>
+    public class Handler : IRequestHandler<SignInQuery, CommonResult<SignInDto>>
     {
         private readonly UserManager<User> _userManager;
         private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
@@ -28,7 +28,7 @@ public record SignInQuery
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ICommonResult<SignInDto>> Handle(SignInQuery request, CancellationToken cancellationToken)
+        public async Task<CommonResult<SignInDto>> Handle(SignInQuery request, CancellationToken cancellationToken)
         {
             var userRepository = _unitOfWork.GetUserRepository();
 

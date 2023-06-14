@@ -2,13 +2,13 @@ namespace Doggo.Application.Requests.Commands.User;
 
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
-using Domain.Results.Abstract;
+using Domain.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-public record DeleteUserCommand(int UserId) : IRequest<ICommonResult>
+public record DeleteUserCommand(int UserId) : IRequest<CommonResult>
 {
-    public class Handler : IRequestHandler<DeleteUserCommand, ICommonResult>
+    public class Handler : IRequestHandler<DeleteUserCommand, CommonResult>
     {
         private readonly UserManager<User> _userManager;
 
@@ -17,7 +17,7 @@ public record DeleteUserCommand(int UserId) : IRequest<ICommonResult>
             _userManager = userManager;
         }
 
-        public async Task<ICommonResult> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 

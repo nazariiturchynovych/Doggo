@@ -2,6 +2,7 @@ namespace Doggo.Extensions;
 
 using System.Reflection;
 using Application.Behaviours;
+using Application.Middlewares;
 using Domain.Options;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.UnitOfWork;
@@ -67,7 +68,12 @@ public static class ServicesExtensions
     public static void RegisterBehaviours(this WebApplicationBuilder builder)
     {
 
-        builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+    }
+
+    public static void RegisterMiddlewares(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
     }
 
     public static IServiceCollection AddSwaggerGenWithJwt(this IServiceCollection services)

@@ -34,25 +34,25 @@ public class ValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior
 
         if (errors.Any())
         {
-           return CreateValidationResult<TResponse>(errors);
+            return CreateValidationResult<TResponse>(errors);
         }
 
         return await next();
     }
 
 
-
     private static TResult CreateValidationResult<TResult>(string[] errors)
         where TResult : CommonResult
     {
         if (typeof(TResult) == typeof(CommonResult))
+            return (new CommonValidationResult(CommonErrors.ValidationProblemAreNotOccured, errors) as TResult)!;
 
-            return (new CommonValidationResult(CommonErrors.ValidationProblemAreNotOccured,errors) as TResult)!;
         object validationResult = typeof(CommonValidationResultTData<>)
             .GetGenericTypeDefinition()
             .MakeGenericType(typeof(TResult).GenericTypeArguments[0])
-            .GetConstructor(new[] {typeof(string), typeof(string), typeof(Exception)})!
-            .Invoke(new object[] {CommonErrors.ValidationProblemAreNotOccured, errors});
+            .GetConstructor(new[] {typeof(string), typeof(string[]), typeof(Exception)})!
+            .Invoke(new object[] {CommonErrors.ValidationProblemAreNotOccured, errors, null!});
+
         return (TResult) validationResult;
     }
 }

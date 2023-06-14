@@ -2,13 +2,13 @@ namespace Doggo.Application.Requests.Commands.Authentication;
 
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
-using Domain.Results.Abstract;
+using Domain.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-public record GoogleSignUpCommand(string Email) : IRequest<ICommonResult>
+public record GoogleSignUpCommand(string Email) : IRequest<CommonResult>
 {
-    public class Handler : IRequestHandler<GoogleSignUpCommand, ICommonResult>
+    public class Handler : IRequestHandler<GoogleSignUpCommand, CommonResult>
     {
         private readonly UserManager<User> _userManager;
 
@@ -17,7 +17,7 @@ public record GoogleSignUpCommand(string Email) : IRequest<ICommonResult>
             _userManager = userManager;
         }
 
-        public async Task<ICommonResult> Handle(GoogleSignUpCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult> Handle(GoogleSignUpCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 

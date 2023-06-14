@@ -1,4 +1,3 @@
-using System.Reflection;
 using Doggo.Application.Middlewares;
 using Doggo.Domain.Constants;
 using Doggo.Domain.Entities.User;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
-using FluentValidation;
+
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File(
         path: "/Users/turchynovychnazarii/Desktop/LogPath/log-.txt",
@@ -56,6 +55,7 @@ try
     builder.RegisterServices();
     builder.RegisterRepositories();
     builder.RegisterBehaviours();
+    builder.RegisterMiddlewares();
 
     var app = builder.Build();
 

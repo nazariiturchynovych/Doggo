@@ -5,15 +5,15 @@ using System.Net.Mail;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Options;
-using Domain.Results.Abstract;
+using Domain.Results;
 using Infrastructure.Services.EmailService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-public record SendEmailConfirmationTokenCommand(string UserEmail, string Link) : IRequest<ICommonResult>
+public record SendEmailConfirmationTokenCommand(string UserEmail, string Link) : IRequest<CommonResult>
 {
-    public class Handler : IRequestHandler<SendEmailConfirmationTokenCommand, ICommonResult>
+    public class Handler : IRequestHandler<SendEmailConfirmationTokenCommand, CommonResult>
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailService _emailService;
@@ -26,7 +26,7 @@ public record SendEmailConfirmationTokenCommand(string UserEmail, string Link) :
             _options = options.Value;
         }
 
-        public async Task<ICommonResult> Handle(SendEmailConfirmationTokenCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult> Handle(SendEmailConfirmationTokenCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.UserEmail);
 

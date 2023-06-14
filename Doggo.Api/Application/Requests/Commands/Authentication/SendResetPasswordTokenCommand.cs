@@ -2,20 +2,20 @@ namespace Doggo.Application.Requests.Commands.Authentication;
 
 using System.Net;
 using System.Net.Mail;
-using Doggo.Domain.Constants.ErrorConstants;
-using Doggo.Domain.Entities.User;
-using Doggo.Domain.Options;
-using Doggo.Domain.Results.Abstract;
-using Doggo.Infrastructure.Services.EmailService;
+using Domain.Constants.ErrorConstants;
+using Domain.Entities.User;
+using Domain.Options;
+using Domain.Results;
+using Infrastructure.Services.EmailService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 public record SendResetPasswordTokenCommand(string UserEmail, string NewPassword, string ConfirmPassword)
-    : IRequest<ICommonResult>
+    : IRequest<CommonResult>
 {
-    public class Handler : IRequestHandler<SendResetPasswordTokenCommand, ICommonResult>
+    public class Handler : IRequestHandler<SendResetPasswordTokenCommand, CommonResult>
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailService _emailService;
@@ -37,7 +37,7 @@ public record SendResetPasswordTokenCommand(string UserEmail, string NewPassword
             _options = options.Value;
         }
 
-        public async Task<ICommonResult> Handle(SendResetPasswordTokenCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult> Handle(SendResetPasswordTokenCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.UserEmail);
 

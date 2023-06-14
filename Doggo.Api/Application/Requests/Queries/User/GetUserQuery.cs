@@ -3,14 +3,14 @@ namespace Doggo.Application.Requests.Queries.User;
 using Domain.Constants.ErrorConstants;
 using Domain.DTO;
 using Domain.Entities.User;
-using Domain.Results.Abstract;
+using Domain.Results;
 using Mappers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-public record GetUserQuery(int UserId) : IRequest<ICommonResult<GetUserDto>>
+public record GetUserQuery(int UserId) : IRequest<CommonResult<GetUserDto>>
 {
-    public class Handler : IRequestHandler<GetUserQuery, ICommonResult<GetUserDto>>
+    public class Handler : IRequestHandler<GetUserQuery, CommonResult<GetUserDto>>
     {
         private readonly UserManager<User> _userManager;
 
@@ -19,7 +19,7 @@ public record GetUserQuery(int UserId) : IRequest<ICommonResult<GetUserDto>>
             _userManager = userManager;
         }
 
-        public async Task<ICommonResult<GetUserDto>> Handle(GetUserQuery request, CancellationToken cancellationToken)
+        public async Task<CommonResult<GetUserDto>> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 

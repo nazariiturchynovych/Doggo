@@ -1,14 +1,14 @@
 namespace Doggo.Application.Requests.Queries.User;
 
 using Domain.DTO;
-using Domain.Results.Abstract;
+using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record GetPageOfUsersQuery(int Count, int Page) : IRequest<ICommonResult<PageOfTDataDto<GetUserDto>>>
+public record GetPageOfUsersQuery(int Count, int Page) : IRequest<CommonResult<PageOfTDataDto<GetUserDto>>>
 {
-    public class Handler : IRequestHandler<GetPageOfUsersQuery, ICommonResult<PageOfTDataDto<GetUserDto>>>
+    public class Handler : IRequestHandler<GetPageOfUsersQuery, CommonResult<PageOfTDataDto<GetUserDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -17,7 +17,7 @@ public record GetPageOfUsersQuery(int Count, int Page) : IRequest<ICommonResult<
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ICommonResult<PageOfTDataDto<GetUserDto>>> Handle(
+        public async Task<CommonResult<PageOfTDataDto<GetUserDto>>> Handle(
             GetPageOfUsersQuery request,
             CancellationToken cancellationToken)
         {

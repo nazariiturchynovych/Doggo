@@ -2,7 +2,7 @@ namespace Doggo.Application.Requests.Commands.Authentication;
 
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
-using Domain.Results.Abstract;
+using Domain.Results;
 using Infrastructure.Services.CurrentUserService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -11,9 +11,9 @@ public record ChangePasswordCommand
 (
     string CurrentPassword,
     string NewPassword
-) : IRequest<ICommonResult>
+) : IRequest<CommonResult>
 {
-    public class Handler : IRequestHandler<ChangePasswordCommand, ICommonResult>
+    public class Handler : IRequestHandler<ChangePasswordCommand, CommonResult>
     {
         private readonly UserManager<User> _userManager;
         private readonly ICurrentUserService _currentUserService;
@@ -24,7 +24,7 @@ public record ChangePasswordCommand
             _currentUserService = currentUserService;
         }
 
-        public async Task<ICommonResult> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
             var currentUserEmail = _currentUserService.GetUserEmail();
 

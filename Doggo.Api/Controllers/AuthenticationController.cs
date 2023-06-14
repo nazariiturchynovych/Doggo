@@ -1,7 +1,6 @@
 namespace Doggo.Controllers;
 
 using Application.Requests.Commands.Authentication;
-using Application.Requests.Commands.User;
 using Application.Requests.Queries.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +26,7 @@ public class AuthenticationController : ControllerBase
 
         if (signUpResult.IsFailure)
         {
-            return Ok();
+            return Ok(signUpResult);
         }
 
         return Ok(
@@ -62,7 +61,7 @@ public class AuthenticationController : ControllerBase
     [HttpPost("SignIn")]
     public async Task<IActionResult> SignIn(SignInQuery signInQuery, CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(signInQuery, cancellationToken));
+       return Ok( await _mediator.Send(signInQuery, cancellationToken));
     }
 
     [Authorize(Roles = "User, Admin")]

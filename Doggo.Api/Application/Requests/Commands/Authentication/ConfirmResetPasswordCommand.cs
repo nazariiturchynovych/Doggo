@@ -3,13 +3,13 @@ namespace Doggo.Application.Requests.Commands.Authentication;
 using System.Net;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
-using Domain.Results.Abstract;
+using Domain.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-public record ConfirmResetPasswordCommand(string Token, string UserId, string NewPassword) : IRequest<ICommonResult>
+public record ConfirmResetPasswordCommand(string Token, string UserId, string NewPassword) : IRequest<CommonResult>
 {
-    public class Handler : IRequestHandler<ConfirmResetPasswordCommand, ICommonResult>
+    public class Handler : IRequestHandler<ConfirmResetPasswordCommand, CommonResult>
     {
         private readonly UserManager<User> _userManager;
 
@@ -18,7 +18,7 @@ public record ConfirmResetPasswordCommand(string Token, string UserId, string Ne
             _userManager = userManager;
         }
 
-        public async Task<ICommonResult> Handle(ConfirmResetPasswordCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult> Handle(ConfirmResetPasswordCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
 
