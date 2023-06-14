@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.OpenApi.Models;
 using FluentValidation;
+using Infrastructure.Services.CacheService;
 
 public static class ServicesExtensions
 {
@@ -53,10 +54,15 @@ public static class ServicesExtensions
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ICurrentUserService, CurrenUserService>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+        builder.Services.AddScoped<ICacheService, CacheService>();
 
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
         builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        builder.Services.AddStackExchangeRedisCache(
+            options =>
+            {
+                options.Configuration = builder.Configuration.GetSection("Redis").Value;
+            });
     }
 
     public static void RegisterRepositories(this WebApplicationBuilder builder)
@@ -67,7 +73,6 @@ public static class ServicesExtensions
 
     public static void RegisterBehaviours(this WebApplicationBuilder builder)
     {
-
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
     }
 
