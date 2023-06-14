@@ -8,6 +8,6 @@ public class SignInQueryValidator : AbstractValidator<SignInQuery>
     public SignInQueryValidator()
     {
         RuleFor(x => x.Email).EmailAddress();
-        RuleFor(x => x.Password).MinimumLength(7);
+        RuleFor(x => x.Password).MinimumLength(3);
     }
 }

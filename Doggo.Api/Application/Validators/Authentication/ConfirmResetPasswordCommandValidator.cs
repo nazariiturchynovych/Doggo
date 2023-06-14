@@ -8,6 +8,6 @@ public class ConfirmResetPasswordCommandValidator : AbstractValidator<ConfirmRes
     public ConfirmResetPasswordCommandValidator()
     {
         RuleFor(x => x.UserId).NotEmpty();
-        RuleFor(x => x.NewPassword).MinimumLength(7);
+        RuleFor(x => x.NewPassword).MinimumLength(3);
     }
 }
