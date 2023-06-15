@@ -2,32 +2,28 @@ namespace Doggo.Application.Requests.Queries.Authentication;
 
 using Domain.Constants.ErrorConstants;
 using Domain.DTO;
-using Domain.Entities.User;
 using Domain.Results;
 using Helpers;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
-public record GoogleSignInQuery(string token) : IRequest<CommonResult>
+public record GoogleSignInQuery(string Token) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<GoogleSignInQuery, CommonResult>
     {
-        private readonly UserManager<User> _userManager;
-        private readonly UnitOfWork _unitOfWork;
-        private readonly JwtTokenGeneratorService _jwtTokenGeneratorService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
 
-        public Handler(UserManager<User> userManager, UnitOfWork unitOfWork, JwtTokenGeneratorService jwtTokenGeneratorService)
+        public Handler(IUnitOfWork unitOfWork, IJwtTokenGeneratorService jwtTokenGeneratorService)
         {
-            _userManager = userManager;
             _unitOfWork = unitOfWork;
             _jwtTokenGeneratorService = jwtTokenGeneratorService;
         }
 
         public async Task<CommonResult> Handle(GoogleSignInQuery request, CancellationToken cancellationToken)
         {
-            var payload = await GoogleAuthHelper.AuthenticateTokenAsync(request.token);
+            var payload = await GoogleAuthHelper.AuthenticateTokenAsync(request.Token);
 
             if (payload is null)
             {

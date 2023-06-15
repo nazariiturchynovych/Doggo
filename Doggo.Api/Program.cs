@@ -9,10 +9,8 @@ using Serilog;
 using Serilog.Events;
 
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.File(
-        path: "/Users/turchynovychnazarii/Desktop/LogPath/log-.txt",
+    .WriteTo.Console(
         outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{level:u3}] {Message:lj}{NewLine}{Exception}",
-        rollingInterval: RollingInterval.Day,
         restrictedToMinimumLevel: LogEventLevel.Information)
     .CreateBootstrapLogger();
 
@@ -76,7 +74,6 @@ try
     app.MapControllers();
 
 // app.SeedUsersAndRolesAsync().Wait();
-
     app.Run();
 }
 catch (Exception ex)

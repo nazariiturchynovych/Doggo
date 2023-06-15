@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.OpenApi.Models;
 using FluentValidation;
 using Infrastructure.Services.CacheService;
+using Infrastructure.Services.FacebookAuthService;
 
 public static class ServicesExtensions
 {
@@ -37,6 +38,7 @@ public static class ServicesExtensions
     {
         builder.Services.Configure<JwtSettingsOptions>(builder.Configuration.GetSection(nameof(JwtSettingsOptions)));
         builder.Services.Configure<SMTPOptions>(builder.Configuration.GetSection(nameof(SMTPOptions)));
+        builder.Services.Configure<FacebookAuthOptions>(builder.Configuration.GetSection(nameof(FacebookAuthOptions)));
     }
 
     public static void RegisterServices(this WebApplicationBuilder builder)
@@ -50,11 +52,14 @@ public static class ServicesExtensions
                 var factory = x.GetRequiredService<IUrlHelperFactory>();
                 return factory.GetUrlHelper(actionContext!);
             });
+        builder.Services.AddHttpClient(); //TODO add facebook httpclient?
+
         builder.Services.AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ICurrentUserService, CurrenUserService>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<ICacheService, CacheService>();
+        builder.Services.AddScoped<IFacebookAuthService, FacebookAuthService>();
 
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
         builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));

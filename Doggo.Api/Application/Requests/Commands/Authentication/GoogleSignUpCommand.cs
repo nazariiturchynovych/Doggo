@@ -8,7 +8,7 @@ using Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-public record GoogleSignUpCommand(string Token) : IRequest<CommonResult>
+public record GoogleSignUpCommand(string Credential) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<GoogleSignUpCommand, CommonResult>
     {
@@ -21,7 +21,7 @@ public record GoogleSignUpCommand(string Token) : IRequest<CommonResult>
 
         public async Task<CommonResult> Handle(GoogleSignUpCommand request, CancellationToken cancellationToken)
         {
-            var payload = await GoogleAuthHelper.AuthenticateTokenAsync(request.Token);
+            var payload = await GoogleAuthHelper.AuthenticateTokenAsync(request.Credential);
 
             if (payload is null)
             {
@@ -37,8 +37,8 @@ public record GoogleSignUpCommand(string Token) : IRequest<CommonResult>
 
             var userToAdd = new User
             {
-                FirstName = payload.Name,
-                LastName = payload.GivenName,
+                FirstName = "",
+                LastName = "",
                 Email = payload.Email,
                 UserName = payload.Email,
                 GoogleAuth = true,

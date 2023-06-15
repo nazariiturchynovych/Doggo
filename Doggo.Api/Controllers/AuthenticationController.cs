@@ -94,16 +94,28 @@ public class AuthenticationController : ControllerBase
         return Ok(await _mediator.Send(new ConfirmResetPasswordCommand(token, userId, newPassword), cancellationToken));
     }
 
-    // [HttpPost("SingUp/Google")]
-    // public async Task<IActionResult> SignUpGoogle(GoogleSignUpCommand command, CancellationToken cancellationToken)
-    // {
-    //     return Ok(await _mediator.Send(command, cancellationToken));
-    // }
-    //
-    // [HttpGet("SingIn/Google")]
-    // public async Task<IActionResult> SignInGoogle(string token, CancellationToken cancellationToken)
-    // {
-    //     return Ok(await _mediator.Send(new GoogleSignInQuery(token), cancellationToken));
-    // }
+    [HttpPost("SingUp/Google")]
+    public async Task<IActionResult> SignUpGoogle(GoogleSignUpCommand command, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(command, cancellationToken));
+    }
+
+    [HttpGet("SingIn/Google")]
+    public async Task<IActionResult> SignInGoogle(string credential, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new GoogleSignInQuery(credential), cancellationToken));
+    }
+
+    [HttpPost("SingUp/Facebook")]
+    public async Task<IActionResult> SignUpFacebook(FacebookSignUpCommand command, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(command, cancellationToken));
+    }
+
+    [HttpGet("SingIn/Facebook")]
+    public async Task<IActionResult> SignInFacebook(string accessToken, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new FacebookSignInQuery(accessToken), cancellationToken));
+    }
 
 }
