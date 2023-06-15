@@ -3,6 +3,8 @@ namespace Doggo.Controllers;
 using Application.Requests.Commands.Authentication;
 using Application.Requests.Queries.Authentication;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -59,9 +61,9 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("SignIn")]
-    public async Task<IActionResult> SignIn(SignInQuery signInQuery, CancellationToken cancellationToken)
+    public async Task<IActionResult> SignIn([FromBody] SignInQuery signInQuery)
     {
-       return Ok( await _mediator.Send(signInQuery, cancellationToken));
+        return Ok(await _mediator.Send(signInQuery));
     }
 
     [Authorize(Roles = "User, Admin")]
@@ -92,5 +94,22 @@ public class AuthenticationController : ControllerBase
         CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new ConfirmResetPasswordCommand(token, userId, newPassword), cancellationToken));
+    }
+
+    [HttpPost("SingIn/Google")]
+    public async Task<IActionResult> SignInGoogle()
+    {
+        var a = await HttpContext.AuthenticateAsync("Google");
+
+        var b = "12312312";
+
+        return Ok();
+    }
+
+
+    [HttpPost("JSTry")]
+    public IActionResult JsTry()
+    {
+        return Ok("good try");
     }
 }

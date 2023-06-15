@@ -30,6 +30,13 @@ public static class AuthenticationExtensions
                         ValidAudience = configurationSettingsOptions.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configurationSettingsOptions.Secret)),
                     };
+                })
+            .AddGoogle(
+                options =>
+                {
+                    var googleAuthOptions = builder.Configuration.GetSection("Authentication:GoogleAuthOptions").Get<GoogleAuthOptions>();
+                    options.ClientId = googleAuthOptions!.ClientId;
+                    options.ClientSecret = googleAuthOptions.ClientSecret;
                 });
 
     }

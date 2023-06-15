@@ -30,7 +30,7 @@ public class CacheService : ICacheService
             JsonSerializer.Serialize(value),
             new DistributedCacheEntryOptions()
             {
-                AbsoluteExpiration = new DateTimeOffset().AddMinutes(30),
+                AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(30),
                 SlidingExpiration = TimeSpan.FromMinutes(10)
 
             });
