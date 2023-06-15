@@ -94,22 +94,16 @@ public class AuthenticationController : ControllerBase
         return Ok(await _mediator.Send(new ConfirmResetPasswordCommand(token, userId, newPassword), cancellationToken));
     }
 
-    [HttpPost("SingUp/Google")]
-    public async Task<IActionResult> SignUpGoogle(GoogleSignUpCommand command, CancellationToken cancellationToken)
-    {
-        return Ok(await _mediator.Send(command, cancellationToken));
-    }
+    // [HttpPost("SingUp/Google")]
+    // public async Task<IActionResult> SignUpGoogle(GoogleSignUpCommand command, CancellationToken cancellationToken)
+    // {
+    //     return Ok(await _mediator.Send(command, cancellationToken));
+    // }
+    //
+    // [HttpGet("SingIn/Google")]
+    // public async Task<IActionResult> SignInGoogle(string token, CancellationToken cancellationToken)
+    // {
+    //     return Ok(await _mediator.Send(new GoogleSignInQuery(token), cancellationToken));
+    // }
 
-    [HttpGet("SingIn/Google")]
-    public async Task<IActionResult> SignInGoogle(string token, CancellationToken cancellationToken)
-    {
-        return Ok(await _mediator.Send(new GoogleSignInQuery(token), cancellationToken));
-    }
-
-
-    [HttpPost("JSTry")]
-    public IActionResult JsTry()
-    {
-        return Ok("good try");
-    }
 }
