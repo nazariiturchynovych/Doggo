@@ -1,0 +1,35 @@
+<html>
+<body>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<div id="g_id_onload"
+     data-client_id="21451806702-4072m1adnb8gnmqda33tmqp69f1nlj1n.apps.googleusercontent.com"
+     data-callback="onSignIn">
+</div>
+<div class="g_id_signin" data-type="standard"></div>
+</body>
+</html>
+
+<script>
+    function onSignIn(googleUser) {
+        console.log(googleUser)
+        const url = "http://localhost:5246/api/Authentication/SingUn/Google";
+        const auth = googleUser['credential']
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": auth
+            },
+
+
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Обробка отриманих даних
+                console.log(data);
+            })
+            .catch(error => {
+                // Обробка помилок
+                console.error("Помилка:", error);
+            });
+    }</script>

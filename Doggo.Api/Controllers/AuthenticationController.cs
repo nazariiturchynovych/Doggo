@@ -95,12 +95,12 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("SingUp/Google")]
-    public async Task<IActionResult> SignUpGoogle(string token, CancellationToken cancellationToken)
+    public async Task<IActionResult> SignUpGoogle(GoogleSignUpCommand command, CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GoogleSignUpCommand(token), cancellationToken));
+        return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    [HttpPost("SingIn/Google")]
+    [HttpGet("SingIn/Google")]
     public async Task<IActionResult> SignInGoogle(string token, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GoogleSignInQuery(token), cancellationToken));
