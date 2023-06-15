@@ -43,7 +43,7 @@ public record ConfirmEmailAndSetDefaultRoleCommand
 
             if (!addToRoleResult.Succeeded)
             {
-                return Failure(UserErrors.UserCreateFailed);
+                return Failure(UserErrors.AddToRoleFailed);
             }
 
             return Success();

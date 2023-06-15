@@ -23,4 +23,6 @@ public static class UserErrors
     public const string PasswordChangeFailed = "PASSWORD_CHANGE_FAILED";
 
     public const string UserGoogleAuthorizationFailed = "USER_GOOGLE_AUTHORIZATION_FAILED";
+
+    public const string AddToRoleFailed = "USER_ADD_TO_ROLE_FAILED";
 }

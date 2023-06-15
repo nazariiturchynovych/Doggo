@@ -3,8 +3,6 @@ namespace Doggo.Controllers;
 using Application.Requests.Commands.Authentication;
 using Application.Requests.Queries.Authentication;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -96,14 +94,16 @@ public class AuthenticationController : ControllerBase
         return Ok(await _mediator.Send(new ConfirmResetPasswordCommand(token, userId, newPassword), cancellationToken));
     }
 
-    [HttpPost("SingIn/Google")]
-    public async Task<IActionResult> SignInGoogle()
+    [HttpPost("SingUp/Google")]
+    public async Task<IActionResult> SignUpGoogle(string token, CancellationToken cancellationToken)
     {
-        var a = await HttpContext.AuthenticateAsync("Google");
+        return Ok(await _mediator.Send(new GoogleSignUpCommand(token), cancellationToken));
+    }
 
-        var b = "12312312";
-
-        return Ok();
+    [HttpPost("SingIn/Google")]
+    public async Task<IActionResult> SignInGoogle(string token, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new GoogleSignInQuery(token), cancellationToken));
     }
 
 

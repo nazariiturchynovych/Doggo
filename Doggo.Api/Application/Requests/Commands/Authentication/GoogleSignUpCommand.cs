@@ -1,12 +1,14 @@
 namespace Doggo.Application.Requests.Commands.Authentication;
 
+using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Results;
+using Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-public record GoogleSignUpCommand(string Email) : IRequest<CommonResult>
+public record GoogleSignUpCommand(string Token) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<GoogleSignUpCommand, CommonResult>
     {
@@ -19,7 +21,14 @@ public record GoogleSignUpCommand(string Email) : IRequest<CommonResult>
 
         public async Task<CommonResult> Handle(GoogleSignUpCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var payload = await GoogleAuthHelper.AuthenticateTokenAsync(request.Token);
+
+            if (payload is null)
+            {
+                return Failure(UserErrors.UserGoogleAuthorizationFailed);
+            }
+
+            var user = await _userManager.FindByEmailAsync(payload.Email);
 
             if (user is not null)
             {
@@ -28,8 +37,10 @@ public record GoogleSignUpCommand(string Email) : IRequest<CommonResult>
 
             var userToAdd = new User
             {
-                Email = request.Email,
-                UserName = request.Email,
+                FirstName = payload.Name,
+                LastName = payload.GivenName,
+                Email = payload.Email,
+                UserName = payload.Email,
                 GoogleAuth = true,
                 EmailConfirmed = true
             };
@@ -38,6 +49,13 @@ public record GoogleSignUpCommand(string Email) : IRequest<CommonResult>
 
             if (!result.Succeeded)
                 return Failure(UserErrors.UserCreateFailed);
+
+            var addToRoleResult = await _userManager.AddToRoleAsync(userToAdd, RoleConstants.User);
+
+            if (!addToRoleResult.Succeeded)
+            {
+                return Failure(UserErrors.AddToRoleFailed);
+            }
 
             return Success();
         }
