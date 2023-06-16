@@ -118,4 +118,5 @@ public class AuthenticationController : ControllerBase
         return Ok(await _mediator.Send(new FacebookSignInQuery(accessToken), cancellationToken));
     }
 
+
 }

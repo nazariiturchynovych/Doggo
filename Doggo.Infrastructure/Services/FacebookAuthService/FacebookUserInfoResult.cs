@@ -41,9 +41,3 @@ public class FacebookPictureData
     [JsonProperty("width")]
     public long Width { get; set; }
 }
-
-public class FacebookTokenValidationResult
-{
-    [JsonProperty("data")]
-    public Data Data { get; set; }
-}

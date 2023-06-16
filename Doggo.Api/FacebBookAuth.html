@@ -37,6 +37,20 @@
     function checkLoginState() {
         FB.getLoginStatus(function (response) {
             console.log(response)
+            const url = "http://localhost:5246/api/Authentication/SingUp/Facebook";
+            const auth = response["authResponse"];
+            const token = auth["accessToken"];
+            console.log(auth)
+            console.log(token)
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify( {"accessToken": token})
+
+
+            })
         });
     }
 </script>

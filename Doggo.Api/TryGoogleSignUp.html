@@ -9,17 +9,19 @@
 </body>
 </html>
 
+
 <script>
     function onSignIn(googleUser) {
         console.log(googleUser)
-        const url = "http://localhost:5246/api/Authentication/SingUn/Google";
+        const url = "http://localhost:5246/api/Authentication/SingUp/Google";
         const auth = googleUser['credential']
+        console.log(auth)
         fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": auth
             },
+            body: JSON.stringify( {"credential": auth})
 
 
         })

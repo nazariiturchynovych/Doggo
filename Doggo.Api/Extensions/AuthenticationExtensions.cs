@@ -20,8 +20,10 @@ public static class AuthenticationExtensions
             .AddJwtBearer(
                 options =>
                 {
-                   var configurationSettingsOptions = builder.Configuration.GetSection("JwtSettingsOptions").Get<JwtSettingsOptions>();
-                   options.TokenValidationParameters = new TokenValidationParameters() {
+                    var configurationSettingsOptions
+                        = builder.Configuration.GetSection("JwtSettingsOptions").Get<JwtSettingsOptions>();
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
@@ -30,13 +32,6 @@ public static class AuthenticationExtensions
                         ValidAudience = configurationSettingsOptions.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configurationSettingsOptions.Secret)),
                     };
-                })
-            .AddGoogle(
-                options =>
-                {
-                    var googleAuthOptions = builder.Configuration.GetSection("Authentication:GoogleAuthOptions").Get<GoogleAuthOptions>();
-                    options.ClientId = googleAuthOptions!.ClientId;
-                    options.ClientSecret = googleAuthOptions.ClientSecret;
                 });
 
     }

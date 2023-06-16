@@ -1,7 +1,13 @@
-#pragma warning disable CS8618
 namespace Doggo.Infrastructure.Services.FacebookAuthService;
 
 using Newtonsoft.Json;
+
+#pragma warning disable CS8618
+public class FacebookTokenValidationResult
+{
+    [JsonProperty("data")]
+    public Data Data { get; set; }
+}
 
 public class Data
 {
@@ -20,7 +26,7 @@ public class Data
     [JsonProperty("expires_at")]
     public long ExpiresAt { get; set; }
 
-    [JsonProperty("is valid")]
+    [JsonProperty("is_valid")]
     public bool IsValid { get; set; }
 
     [JsonProperty("scopes")]

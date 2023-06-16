@@ -31,7 +31,7 @@ public class FacebookAuthService : IFacebookAuthService
         var response = await _httpClientFactory.CreateClient().GetAsync(formattedUrl);
 
 
-        if (response.EnsureSuccessStatusCode().IsSuccessStatusCode)
+        if (!response.EnsureSuccessStatusCode().IsSuccessStatusCode)
         {
             throw new Exception("Facebook call is unsuccess");
         }
@@ -50,7 +50,7 @@ public class FacebookAuthService : IFacebookAuthService
         var response = await _httpClientFactory.CreateClient().GetAsync(formattedUrl);
 
 
-        if (response.EnsureSuccessStatusCode().IsSuccessStatusCode)
+        if (!response.EnsureSuccessStatusCode().IsSuccessStatusCode)
         {
             throw new Exception("Facebook call is unsuccess");
         }
