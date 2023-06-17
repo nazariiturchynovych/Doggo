@@ -6,5 +6,7 @@ public interface IUnitOfWork
 
     IDogOwnerRepository GetDogOwnerRepository();
 
+    IDogRepository GetDogRepository();
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

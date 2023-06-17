@@ -1,3 +1,4 @@
+// ReSharper disable NotAccessedPositionalProperty.Global
 namespace Doggo.Domain.DTO.User;
 
 using DogOwner;

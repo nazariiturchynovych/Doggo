@@ -26,7 +26,7 @@ public record GetPageOfDogOwnersQuery(int Count, int Page) : IRequest<CommonResu
 
             var page = await userRepository.GetPageOfDogOwnersAsync(request.Count, request.Page, cancellationToken);
 
-            return Success(page.MapUserCollectionToPageOfUsersDto());
+            return Success(page.MapUserCollectionToPageODogOwnersDto());
         }
     };
 };

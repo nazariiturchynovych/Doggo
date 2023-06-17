@@ -1,3 +1,4 @@
+// ReSharper disable NotAccessedPositionalProperty.Global
 namespace Doggo.Domain.DTO;
 
 public record PageOfTDataDto<TEntity>(

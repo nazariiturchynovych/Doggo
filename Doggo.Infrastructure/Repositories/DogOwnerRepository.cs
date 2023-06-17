@@ -14,9 +14,9 @@ public class DogOwnerRepository : AbstractRepository<DogOwner>, IDogOwnerReposit
         _context = context;
     }
 
-    public async Task<DogOwner?> GetAsync(int userId, CancellationToken cancellationToken = default)
+    public async Task<DogOwner?> GetAsync(int dogOwnerId, CancellationToken cancellationToken = default)
     {
-        return await _context.DogOwners.FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken: cancellationToken);
+        return await _context.DogOwners.FirstOrDefaultAsync(x => x.Id == dogOwnerId, cancellationToken: cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<DogOwner>> GetPageOfDogOwnersAsync(int count, int page, CancellationToken cancellationToken = default)

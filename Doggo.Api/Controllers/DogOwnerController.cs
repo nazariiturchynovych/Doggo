@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Authorize(Roles = "DogOwner")]
+[Authorize(Roles = "DogOwner, Admin")]
 [Route("api/[Controller]")]
 public class DogOwnerController : ControllerBase
 {
@@ -45,6 +45,7 @@ public class DogOwnerController : ControllerBase
     {
         return Ok(await _mediator.Send(command, cancellationToken));
     }
+
     [HttpDelete("DeleteDogOwner/{id:int}")]
     public async Task<IActionResult> DeleteDogOwner(int id,CancellationToken cancellationToken)
     {

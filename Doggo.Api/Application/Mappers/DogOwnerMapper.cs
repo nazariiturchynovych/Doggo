@@ -33,7 +33,7 @@ public static class DogOwnerMapper
     }
 
 
-    public static PageOfTDataDto<GetDogOwnerDto> MapUserCollectionToPageOfUsersDto(this IReadOnlyCollection<DogOwner> collection)
+    public static PageOfTDataDto<GetDogOwnerDto> MapUserCollectionToPageODogOwnersDto(this IReadOnlyCollection<DogOwner> collection)
     {
         var collectionDto = new List<GetDogOwnerDto>();
 
