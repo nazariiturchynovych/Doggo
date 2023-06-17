@@ -54,15 +54,18 @@ public static class ServicesExtensions
                 return factory.GetUrlHelper(actionContext!);
             });
 
-        builder.Services.AddHttpClient<IFacebookAuthService, FacebookAuthService>(
-            options => options.BaseAddress = new Uri(FacebookConstants.BaseUrl));
-
         builder.Services.AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ICurrentUserService, CurrenUserService>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<ICacheService, CacheService>();
         builder.Services.AddScoped<IFacebookAuthService, FacebookAuthService>();
+
+        builder.Services.AddHttpClient<IFacebookAuthService, FacebookAuthService>(
+            options =>
+            {
+                options.BaseAddress = new Uri(FacebookConstants.BaseUrl);
+            });
 
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
         builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));

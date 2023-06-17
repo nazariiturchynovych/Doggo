@@ -25,9 +25,7 @@ public class AuthenticationController : ControllerBase
         var signUpResult = await _mediator.Send(command, cancellationToken);
 
         if (signUpResult.IsFailure)
-        {
             return Ok(signUpResult);
-        }
 
         return Ok(
             await _mediator.Send(

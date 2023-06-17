@@ -18,6 +18,10 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
+    builder.Host.UseSerilog((hb, lc) => lc
+        .WriteTo.Console().MinimumLevel.Information()
+        .ReadFrom.Configuration(hb.Configuration));
+
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGenWithJwt();
@@ -72,7 +76,6 @@ try
 
     app.UseHttpsRedirection();
     app.MapControllers();
-
     app.UseSerilogRequestLogging();
 
 // app.SeedUsersAndRolesAsync().Wait();
