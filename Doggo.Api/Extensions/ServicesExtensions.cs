@@ -3,6 +3,7 @@ namespace Doggo.Extensions;
 using System.Reflection;
 using Application.Behaviours;
 using Application.Middlewares;
+using Domain.Constants;
 using Domain.Options;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.UnitOfWork;
@@ -52,7 +53,9 @@ public static class ServicesExtensions
                 var factory = x.GetRequiredService<IUrlHelperFactory>();
                 return factory.GetUrlHelper(actionContext!);
             });
-        builder.Services.AddHttpClient(); //TODO add facebook httpclient?
+
+        builder.Services.AddHttpClient<IFacebookAuthService, FacebookAuthService>(
+            options => options.BaseAddress = new Uri(FacebookConstants.BaseUrl));
 
         builder.Services.AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
@@ -74,6 +77,8 @@ public static class ServicesExtensions
     {
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IDogOwnerRepository, DogOwnerRepository>();
+        builder.Services.AddScoped<IDogRepository, DogRepository>();
     }
 
     public static void RegisterBehaviours(this WebApplicationBuilder builder)

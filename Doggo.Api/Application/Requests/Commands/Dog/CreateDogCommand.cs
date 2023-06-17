@@ -1,5 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Dog;
 
+using Domain.Constants.ErrorConstants;
 using Domain.Entities.DogOwner;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
@@ -31,7 +32,7 @@ public record CreateDogCommand(
             var dog = await repository.GetAsync(_currentUserService.GetUserId(), cancellationToken);
 
             if (dog is not null)
-                return Failure("some text"); //TODO change to some const
+                return Failure(CommonErrors.EntityAlreadyExist);
 
             await repository.AddAsync(new Dog()
             {

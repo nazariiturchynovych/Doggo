@@ -1,5 +1,6 @@
 namespace Doggo.Infrastructure.Services.FacebookAuthService;
 
+using Domain.Constants;
 using Domain.Options;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -7,28 +8,23 @@ using Newtonsoft.Json;
 public class FacebookAuthService : IFacebookAuthService
 {
     private readonly IOptions<FacebookAuthOptions> _facebookSettings;
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly HttpClient _httpClient;
 
-    public FacebookAuthService(IOptions<FacebookAuthOptions> facebookSettings, IHttpClientFactory httpClientFactory)
+    public FacebookAuthService(IOptions<FacebookAuthOptions> facebookSettings, HttpClient httpClient)
     {
         _facebookSettings = facebookSettings;
-        _httpClientFactory = httpClientFactory;
+        _httpClient = httpClient;
     }
-
-    private const string TokenValidatorUrl = "https://graph.facebook.com/debug_token?input_token={0}&access_token={1}|{2}";
-
-    private const string UserInfoUrl = "https://graph.facebook.com/me?fields=first_name,last_name,picture,email&access_token={0}";
-
 
     public async Task<FacebookTokenValidationResult> AuthenticateTokenAsync(string accessToken)
     {
         var formattedUrl = string.Format(
-            TokenValidatorUrl,
+           FacebookConstants.TokenValidatorUrl,
             accessToken,
             _facebookSettings.Value.AppId,
             _facebookSettings.Value.AppSecret);
 
-        var response = await _httpClientFactory.CreateClient().GetAsync(formattedUrl);
+        var response = await _httpClient.GetAsync(formattedUrl);
 
 
         if (!response.EnsureSuccessStatusCode().IsSuccessStatusCode)
@@ -44,10 +40,10 @@ public class FacebookAuthService : IFacebookAuthService
     public async Task<FacebookUserInfoResult> GetUserInfoAsync(string accessToken)
     {
         var formattedUrl = string.Format(
-            UserInfoUrl,
+            FacebookConstants.UserInfoUrl,
             accessToken);
 
-        var response = await _httpClientFactory.CreateClient().GetAsync(formattedUrl);
+        var response = await _httpClient.GetAsync(formattedUrl);
 
 
         if (!response.EnsureSuccessStatusCode().IsSuccessStatusCode)
