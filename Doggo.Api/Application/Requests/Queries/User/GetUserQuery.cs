@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Queries.User;
 
 using Domain.Constants.ErrorConstants;
-using Domain.DTO;
+using Domain.DTO.User;
 using Domain.Entities.User;
 using Domain.Results;
 using Infrastructure.Services.CacheService;
@@ -31,7 +31,7 @@ public record GetUserQuery(int UserId) : IRequest<CommonResult<GetUserDto>>
                 var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
                 if (user is null)
-                    return Failure<GetUserDto>(UserErrors.UserDoesNotExist);
+                    return Failure<GetUserDto>(CommonErrors.EntityDoesNotExist);
 
                 await _cacheService.SetData(user.Id.ToString(), user);
 

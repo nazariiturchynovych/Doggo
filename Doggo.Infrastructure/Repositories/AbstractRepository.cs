@@ -18,9 +18,9 @@ public class AbstractRepository<TEntity> : IAbstractRepository<TEntity>
     }
 
 
-    public void Add(TEntity entity) => Entities.AddAsync(entity ?? throw new ArgumentNullException(nameof(entity)));
+    public async Task AddAsync(TEntity entity) => await Entities.AddAsync(entity ?? throw new ArgumentNullException(nameof(entity)));
 
-    public void AddRange(IEnumerable<TEntity> entities) => Entities.AddRangeAsync(entities);
+    public async Task AddRangeAsync(IEnumerable<TEntity> entities) => await Entities.AddRangeAsync(entities);
 
     public void Update(TEntity entity) => Entities.Update(entity ?? throw new ArgumentNullException(nameof(entity)));
 

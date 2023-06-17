@@ -1,6 +1,7 @@
 namespace Doggo.Application.Mappers;
 
 using Domain.DTO;
+using Domain.DTO.User;
 using Domain.Entities.User;
 using Requests.Commands.User;
 
@@ -16,11 +17,17 @@ public static class UserRequestMapper
     public static GetUserDto MapUserToGetUserDto(this User user)
     {
         return new GetUserDto(
+            Id: user.Id,
             FirstName: user.FirstName,
             LastName: user.LastName,
             Age: user.Age,
-            Email: user.Email!);
+            Email: user.Email!,
+            DogOwner: user.DogOwner?.MapDogOwnerToDogOwnerDto(),
+            Walker: user.Walker?.MapDogOwnerToDogOwnerDto()
+            );
     }
+
+
 
     public static PageOfTDataDto<GetUserDto> MapUserCollectionToPageOfUsersDto(this IReadOnlyCollection<User> collection)
     {

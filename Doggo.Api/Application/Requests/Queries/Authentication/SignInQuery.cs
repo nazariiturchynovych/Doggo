@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Queries.Authentication;
 
 using Domain.Constants.ErrorConstants;
-using Domain.DTO;
+using Domain.DTO.Authentication;
 using Domain.Entities.User;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
@@ -35,7 +35,7 @@ public record SignInQuery
             var user = await userRepository.GetUserWithRoles(request.Email, cancellationToken);
 
             if (user is null)
-                return Failure<SignInDto>(UserErrors.UserDoesNotExist);
+                return Failure<SignInDto>(CommonErrors.EntityDoesNotExist);
 
             var logInResult = await _userManager.CheckPasswordAsync(user, request.Password);
 

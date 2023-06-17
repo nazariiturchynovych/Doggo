@@ -22,11 +22,11 @@ public record DeleteUserCommand(int UserId) : IRequest<CommonResult>
             var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
             if (user is null)
-                return Failure(UserErrors.UserDoesNotExist);
+                return Failure(CommonErrors.EntityDoesNotExist);
 
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
-                return Failure(UserErrors.UserDeleteFailed);
+                return Failure(CommonErrors.EntityDeleteFailed);
 
             return Success();
         }

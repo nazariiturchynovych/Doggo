@@ -12,6 +12,8 @@ public class Dog : Entity
 
     public double? Weight { get; set; }
 
+    public string Description { get; set; } //TODO add to db migrations
+
     public int DogOwnerId { get; set; }
 
     public DogOwner DogOwner { get; set; }

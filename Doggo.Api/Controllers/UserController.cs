@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
+[Authorize(Roles = "User, Admin")]
 [Route("api/[Controller]")]
 public class UserController : ControllerBase
 {
@@ -18,15 +19,13 @@ public class UserController : ControllerBase
         _mediator = mediator;
     }
 
-    [Authorize(Roles = "User, Admin")]
     [HttpGet("GetUser")]
     public async Task<IActionResult> GetUser(CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetUserQuery(User.GetUserId()), cancellationToken));
     }
-    [Authorize(Roles = "User, Admin")]
     [HttpGet("GetPageOfUsers")]
-    public async Task<IActionResult> SendEmailVerificationToken(
+    public async Task<IActionResult> GetPageOfUsers(
         int count,
         int page,
         CancellationToken cancellationToken)
@@ -34,7 +33,6 @@ public class UserController : ControllerBase
         return Ok(await _mediator.Send(new GetPageOfUsersQuery(count, page), cancellationToken));
     }
 
-    [Authorize(Roles = "User, Admin")]
     [HttpPut("UpdateUser")]
     public async Task<IActionResult> UpdateUser(
         UpdateUserCommand command,
@@ -42,7 +40,6 @@ public class UserController : ControllerBase
     {
         return Ok(await _mediator.Send(command, cancellationToken));
     }
-    [Authorize(Roles = "User, Admin")]
     [HttpDelete("DeleteUser")]
     public async Task<IActionResult> DeleteUser(CancellationToken cancellationToken)
     {

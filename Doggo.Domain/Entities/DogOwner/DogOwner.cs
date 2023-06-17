@@ -15,7 +15,8 @@ public class DogOwner : Entity
     public User User { get; set; }
 
     public string Address { get; set; }
-    public int District { get; set; }
+
+    public string District { get; set; }
 
     public ICollection<Dog> Dogs { get; set; }
 

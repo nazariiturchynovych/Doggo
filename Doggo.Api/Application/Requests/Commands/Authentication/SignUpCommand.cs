@@ -27,7 +27,7 @@ public record SignUpCommand
 
             if (user is not null)
             {
-                return Failure(UserErrors.UserAlreadyExist);
+                return Failure(CommonErrors.EntityAlreadyExist);
             }
 
             var userToAdd = new User

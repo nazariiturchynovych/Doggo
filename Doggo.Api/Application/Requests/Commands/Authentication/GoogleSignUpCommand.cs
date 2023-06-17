@@ -32,7 +32,7 @@ public record GoogleSignUpCommand(string Credential) : IRequest<CommonResult>
 
             if (user is not null)
             {
-                return Failure(UserErrors.UserAlreadyExist);
+                return Failure(CommonErrors.EntityAlreadyExist);
             }
 
             var userToAdd = new User

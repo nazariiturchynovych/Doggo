@@ -29,7 +29,7 @@ public record ConfirmEmailAndSetDefaultRoleCommand
             var user = await userRepository.GetUserWithRoles(request.UserId, cancellationToken);
 
             if (user is null)
-                return Failure(UserErrors.UserDoesNotExist);
+                return Failure(CommonErrors.EntityDoesNotExist);
 
             if (user.EmailConfirmed)
                 return Failure(UserErrors.EmailAlreadyConfirmed);

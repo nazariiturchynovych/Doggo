@@ -65,8 +65,9 @@ namespace Doggo.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("District")
-                        .HasColumnType("integer");
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");

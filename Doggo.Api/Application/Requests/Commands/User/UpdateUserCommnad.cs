@@ -28,7 +28,7 @@ public record UpdateUserCommand
 
         public async Task<CommonResult> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await _userManager.FindByIdAsync(_currentUserService.GetUserId());
+            var currentUser = await _userManager.FindByIdAsync(_currentUserService.GetUserId().ToString());
 
             if (currentUser is null)
                 return Failure(CommonErrors.InnerError);
@@ -38,7 +38,7 @@ public record UpdateUserCommand
             var result = await _userManager.UpdateAsync(updatedUser);
 
             if (!result.Succeeded)
-                return Failure(UserErrors.UserUpdateFailed);
+                return Failure(CommonErrors.EntityUpdateFailed);
 
             return Success();
         }

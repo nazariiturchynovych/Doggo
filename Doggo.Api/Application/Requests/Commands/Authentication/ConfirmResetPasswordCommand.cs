@@ -23,7 +23,7 @@ public record ConfirmResetPasswordCommand(string Token, string UserId, string Ne
             var user = await _userManager.FindByIdAsync(request.UserId);
 
             if (user is null)
-                return Failure(UserErrors.UserDoesNotExist);
+                return Failure(CommonErrors.EntityDoesNotExist);
 
             var token = WebUtility.UrlDecode(request.Token);
 

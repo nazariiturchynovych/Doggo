@@ -73,6 +73,8 @@ try
     app.UseHttpsRedirection();
     app.MapControllers();
 
+    app.UseSerilogRequestLogging();
+
 // app.SeedUsersAndRolesAsync().Wait();
     app.Run();
 }

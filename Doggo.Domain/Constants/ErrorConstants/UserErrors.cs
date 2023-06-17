@@ -2,15 +2,7 @@ namespace Doggo.Domain.Constants.ErrorConstants;
 
 public static class UserErrors
 {
-    public const string UserDoesNotExist = "USER_DOES_NOT_EXIST";
-
-    public const string UserAlreadyExist = "USER_ALREADY_EXIST";
-
     public const string UserCreateFailed = "USER_CREATE_FAILED";
-
-    public const string UserUpdateFailed = "USER_UPDATE_FAILED";
-
-    public const string UserDeleteFailed = "USER_DELETE_FAILED";
 
     public const string UserEmailConfirmFailed = "USER_EMAIL_CONFIRM_FAILED";
 

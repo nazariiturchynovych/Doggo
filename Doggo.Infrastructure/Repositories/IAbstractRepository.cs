@@ -2,9 +2,9 @@ namespace Doggo.Infrastructure.Repositories;
 
 public interface IAbstractRepository<TEntity>
 {
-    void Add(TEntity entity);
+    Task AddAsync(TEntity entity);
 
-    void AddRange(IEnumerable<TEntity> entities);
+    Task AddRangeAsync(IEnumerable<TEntity> entities);
 
     void Update(TEntity entity);
 

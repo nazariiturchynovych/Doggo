@@ -31,7 +31,7 @@ public record SendEmailConfirmationTokenCommand(string UserEmail, string Link) :
             var user = await _userManager.FindByEmailAsync(request.UserEmail);
 
             if (user is null)
-                return Failure(UserErrors.UserDoesNotExist);
+                return Failure(CommonErrors.EntityDoesNotExist);
 
             var userId = user.Id;
 

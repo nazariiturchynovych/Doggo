@@ -42,7 +42,7 @@ public record FacebookSignUpCommand(string AccessToken) : IRequest<CommonResult>
 
             if (user is not null)
             {
-                return Failure(UserErrors.UserAlreadyExist);
+                return Failure(CommonErrors.EntityAlreadyExist);
             }
 
             var userToAdd = new User

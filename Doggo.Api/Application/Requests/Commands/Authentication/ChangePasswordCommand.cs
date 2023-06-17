@@ -34,7 +34,7 @@ public record ChangePasswordCommand
             var currentUser = await _userManager.FindByEmailAsync(currentUserEmail);
 
             if (currentUser is null)
-                return Failure(UserErrors.UserDoesNotExist);
+                return Failure(CommonErrors.EntityDoesNotExist);
 
             var passwordCheckingResult = await _userManager.CheckPasswordAsync(currentUser, request.CurrentPassword);
 

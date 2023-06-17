@@ -1,6 +1,7 @@
 namespace Doggo.Application.Requests.Queries.User;
 
 using Domain.DTO;
+using Domain.DTO.User;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using Mappers;

@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Queries.Authentication;
 
 using Domain.Constants.ErrorConstants;
-using Domain.DTO;
+using Domain.DTO.Authentication;
 using Domain.Results;
 using Helpers;
 using Infrastructure.Repositories.UnitOfWork;
@@ -35,7 +35,7 @@ public record GoogleSignInQuery(string Token) : IRequest<CommonResult>
             var user = await userRepository.GetUserWithRoles(payload.Email, cancellationToken);
 
             if (user is null)
-                return Failure<SignInDto>(UserErrors.UserDoesNotExist);
+                return Failure<SignInDto>(CommonErrors.EntityDoesNotExist);
 
 
             return Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));

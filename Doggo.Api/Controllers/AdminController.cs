@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("api/[Controller]")]
 public class AdminController : ControllerBase
 {
@@ -17,11 +18,16 @@ public class AdminController : ControllerBase
         _mediator = mediator;
     }
 
-    [Authorize(Roles = "Admin")]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetUser(int id,CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetUserQuery(id), cancellationToken));
+    }
+
+    [HttpGet("GetPageOfUsers")]
+    public async Task<IActionResult> GetPageOfUsers(GetPageOfUsersQuery query,CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(query, cancellationToken));
     }
 
 

@@ -1,14 +1,13 @@
 namespace Doggo.Application.Requests.Queries.Authentication;
 
 using Domain.Constants.ErrorConstants;
-using Domain.DTO;
+using Domain.DTO.Authentication;
+using Domain.DTO.User;
 using Domain.Results;
-using Helpers;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.FacebookAuthService;
 using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
-using User;
 
 public record FacebookSignInQuery(string AccessToken) : IRequest<CommonResult<GetUserDto>>
 {
@@ -31,12 +30,12 @@ public record FacebookSignInQuery(string AccessToken) : IRequest<CommonResult<Ge
 
             if (result is null)
             {
-                return Failure(UserErrors.UserGoogleAuthorizationFailed);
+                return Failure(UserErrors.UserFacebookAuthorizationFailed);
             }
 
             if (!result.Data.IsValid)
             {
-                return Failure(UserErrors.UserGoogleAuthorizationFailed);
+                return Failure(UserErrors.UserFacebookAuthorizationFailed);
             }
 
             var userInfoResult = await _facebookAuthService.GetUserInfoAsync(request.AccessToken);
@@ -46,7 +45,7 @@ public record FacebookSignInQuery(string AccessToken) : IRequest<CommonResult<Ge
             var user = await userRepository.GetUserWithRoles(userInfoResult.Email, cancellationToken);
 
             if (user is null)
-                return Failure<SignInDto>(UserErrors.UserDoesNotExist);
+                return Failure<SignInDto>(CommonErrors.EntityDoesNotExist);
 
 
             return Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
