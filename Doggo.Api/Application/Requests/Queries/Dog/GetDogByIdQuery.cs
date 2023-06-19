@@ -41,9 +41,9 @@ public record GetDogByIdQuery(int Id) : IRequest<CommonResult<GetDogDto>>
                 cachedEntity = dog;
             }
 
-            var getUserDto = cachedEntity.MapDogToGetDogDto();
+            var entityDto = cachedEntity.MapDogToGetDogDto();
 
-            return Success(getUserDto);
+            return Success(entityDto);
         }
     }
 };

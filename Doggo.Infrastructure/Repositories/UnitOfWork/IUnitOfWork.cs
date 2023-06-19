@@ -6,6 +6,10 @@ public interface IUnitOfWork
 
     IDogOwnerRepository GetDogOwnerRepository();
 
+    IWalkerRepository GetWalkerRepository();
+
+    IPossibleScheduleRepository GetPossibleScheduleRepository();
+
     IDogRepository GetDogRepository();
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);

@@ -23,7 +23,7 @@ public static class UserRequestMapper
             Age: user.Age,
             Email: user.Email!,
             DogOwner: user.DogOwner?.MapDogOwnerToDogOwnerDto(),
-            Walker: user.Walker?.MapDogOwnerToDogOwnerDto()
+            Walker: user.Walker?.MapWalkerToWalkerDto()
             );
     }
 
