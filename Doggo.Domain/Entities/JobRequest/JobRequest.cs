@@ -14,6 +14,8 @@ public class JobRequest : AuditableDateEntity
 
     public RequiredSchedule RequiredSchedule { get; set; }
 
+    public string Description { get; set; }
+
     public int DogOwnerId { get; set; }
 
     public DogOwner DogOwner { get; set; }

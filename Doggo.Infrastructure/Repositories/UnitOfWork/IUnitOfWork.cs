@@ -10,9 +10,14 @@ public interface IUnitOfWork
 
     IPossibleScheduleRepository GetPossibleScheduleRepository();
 
+
+    IRequiredScheduleRepository GetRequiredScheduleRepository();
+
     IDogRepository GetDogRepository();
 
     IPersonalIdentifierRepository GetPersonalIdentifierRepository();
+
+    IJobRequestRepository GetJobRequestRepository();
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

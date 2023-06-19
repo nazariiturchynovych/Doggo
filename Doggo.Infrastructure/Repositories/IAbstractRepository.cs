@@ -1,8 +1,10 @@
 namespace Doggo.Infrastructure.Repositories;
 
-public interface IAbstractRepository<TEntity>
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+public interface IAbstractRepository<TEntity> where TEntity : class
 {
-    Task AddAsync(TEntity entity);
+    Task<EntityEntry<TEntity>> AddAsync(TEntity entity);
 
     Task AddRangeAsync(IEnumerable<TEntity> entities);
 

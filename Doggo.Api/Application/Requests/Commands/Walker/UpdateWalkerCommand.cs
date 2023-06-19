@@ -24,7 +24,7 @@ public record UpdateWalkerCommand(int WalkerId ,string? Skills, string? About) :
             var currentWalker = await repository.GetAsync(request.WalkerId, cancellationToken);
 
             if (currentWalker is null)
-                return Failure(CommonErrors.InnerError);
+                return Failure(CommonErrors.EntityDoesNotExist);
 
             var updatedWalker = request.MapWalkerUpdateCommandToWalker(currentWalker);
 
