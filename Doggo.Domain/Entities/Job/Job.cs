@@ -16,6 +16,8 @@ public class Job : AuditableDateEntity
     public int WalkerId { get; set; }
 
     public Walker Walker { get; set; }
+
+    public int JobRequestId { get; set; }
     public JobRequest JobRequest { get; set; }
 
     public string Comment { get; set; }

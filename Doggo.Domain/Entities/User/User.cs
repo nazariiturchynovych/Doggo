@@ -2,8 +2,8 @@
 namespace Doggo.Domain.Entities.User;
 
 using Base;
+using Documents;
 using DogOwner;
-using JobRequest.Documents;
 using Microsoft.AspNetCore.Identity;
 using Walker;
 

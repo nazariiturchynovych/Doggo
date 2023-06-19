@@ -31,7 +31,7 @@ public record UpdateUserCommand
             var currentUser = await _userManager.FindByIdAsync(_currentUserService.GetUserId().ToString());
 
             if (currentUser is null)
-                return Failure(CommonErrors.InnerError);
+                return Failure(CommonErrors.EntityDoesNotExist);
 
             var updatedUser = request.MapUserUpdateCommandToUser(currentUser);
 

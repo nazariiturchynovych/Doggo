@@ -1,8 +1,8 @@
 namespace Doggo.Infrastructure.Persistence.EntityConfiguration;
 
 using Domain.Entities.DogOwner;
-using Domain.Entities.JobRequest.Documents;
 using Domain.Entities.User;
+using Domain.Entities.User.Documents;
 using Domain.Entities.Walker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

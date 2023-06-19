@@ -40,9 +40,18 @@ public class UserController : ControllerBase
     {
         return Ok(await _mediator.Send(command, cancellationToken));
     }
+
     [HttpDelete("DeleteUser")]
     public async Task<IActionResult> DeleteUser(CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeleteUserCommand(User.GetUserId()), cancellationToken));
+    }
+
+    [HttpPost("AddPersonalIdentifier")]
+    public async Task<IActionResult> AddUserPersonalIdentifier (
+        AddUserPersonalIdentifierCommand command,
+        CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(command, cancellationToken));
     }
 }

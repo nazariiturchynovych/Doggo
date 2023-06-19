@@ -6,6 +6,7 @@ using Domain.Entities.Job;
 using Domain.Entities.JobRequest;
 using Domain.Entities.JobRequest.Schedules;
 using Domain.Entities.User;
+using Domain.Entities.User.Documents;
 using Domain.Entities.Walker;
 using Domain.Entities.Walker.Schedule;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -36,4 +37,6 @@ public class DoggoDbContext : IdentityDbContext<User, Role, int, UserClaim, User
     public DbSet<RequiredSchedule> RequiredSchedules { get; set; }
 
     public DbSet<Job> Jobs { get; set; }
+
+    public DbSet<PersonalIdentifier> PersonalIdentifiers { get; set; }
 }

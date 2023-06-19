@@ -84,6 +84,7 @@ public static class ServicesExtensions
         builder.Services.AddScoped<IDogRepository, DogRepository>();
         builder.Services.AddScoped<IWalkerRepository, WalkerRepository>();
         builder.Services.AddScoped<IPossibleScheduleRepository, PossibleScheduleRepository>();
+        builder.Services.AddScoped<IPersonalIdentifierRepository, PersonalIdentifierRepository>();
     }
 
     public static void RegisterBehaviours(this WebApplicationBuilder builder)

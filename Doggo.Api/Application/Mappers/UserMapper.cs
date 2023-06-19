@@ -27,8 +27,6 @@ public static class UserRequestMapper
             );
     }
 
-
-
     public static PageOfTDataDto<GetUserDto> MapUserCollectionToPageOfUsersDto(this IReadOnlyCollection<User> collection)
     {
         var collectionDto = new List<GetUserDto>();
@@ -39,4 +37,5 @@ public static class UserRequestMapper
         }
         return new PageOfTDataDto<GetUserDto>(collectionDto);
     }
+
 }

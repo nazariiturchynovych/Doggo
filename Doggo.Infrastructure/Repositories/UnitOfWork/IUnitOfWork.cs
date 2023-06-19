@@ -12,5 +12,7 @@ public interface IUnitOfWork
 
     IDogRepository GetDogRepository();
 
+    IPersonalIdentifierRepository GetPersonalIdentifierRepository();
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

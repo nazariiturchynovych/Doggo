@@ -10,6 +10,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly IDogRepository _dogRepository;
     private readonly IWalkerRepository _walkerRepository;
     private readonly IPossibleScheduleRepository _possibleScheduleRepository;
+    private readonly IPersonalIdentifierRepository _personalIdentifierRepository;
 
     public UnitOfWork(
         DoggoDbContext context,
@@ -17,7 +18,8 @@ public class UnitOfWork : IUnitOfWork
         IDogOwnerRepository dogOwnerRepository,
         IDogRepository dogRepository,
         IWalkerRepository walkerRepository,
-        IPossibleScheduleRepository possibleScheduleRepository)
+        IPossibleScheduleRepository possibleScheduleRepository,
+        IPersonalIdentifierRepository personalIdentifierRepository)
     {
         _context = context;
         _userRepository = userRepository;
@@ -25,6 +27,7 @@ public class UnitOfWork : IUnitOfWork
         _dogRepository = dogRepository;
         _walkerRepository = walkerRepository;
         _possibleScheduleRepository = possibleScheduleRepository;
+        _personalIdentifierRepository = personalIdentifierRepository;
     }
 
 
@@ -34,6 +37,9 @@ public class UnitOfWork : IUnitOfWork
 
     public IWalkerRepository GetWalkerRepository() => _walkerRepository;
     public IPossibleScheduleRepository GetPossibleScheduleRepository() => _possibleScheduleRepository;
+
+
+    public IPersonalIdentifierRepository GetPersonalIdentifierRepository() => _personalIdentifierRepository;
 
     public IDogRepository GetDogRepository() => _dogRepository;
 
