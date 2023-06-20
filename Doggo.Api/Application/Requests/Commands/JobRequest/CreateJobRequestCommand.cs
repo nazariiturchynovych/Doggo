@@ -15,6 +15,7 @@ public record CreateJobRequestCommand(
     int RequiredAge,
     bool IsPersonalIdentifierRequired,
     string Description,
+    decimal Salary,
     RequiredScheduleDto RequiredScheduleDto
 ) : IRequest<CommonResult>
 {
@@ -46,6 +47,7 @@ public record CreateJobRequestCommand(
                     CreatedDate = DateTime.Now,
                     RequiredAge = request.RequiredAge,
                     Description = request.Description,
+                    Salary = request.Salary,
                     IsPersonalIdentifierRequired = request.IsPersonalIdentifierRequired,
                 });
 

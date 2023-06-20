@@ -79,12 +79,16 @@ public static class ServicesExtensions
     public static void RegisterRepositories(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-        builder.Services.AddScoped<IUserRepository, UserRepository>();
-        builder.Services.AddScoped<IDogOwnerRepository, DogOwnerRepository>();
         builder.Services.AddScoped<IDogRepository, DogRepository>();
+        builder.Services.AddScoped<IJobRepository, JobRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IWalkerRepository, WalkerRepository>();
+        builder.Services.AddScoped<IDogOwnerRepository, DogOwnerRepository>();
+        builder.Services.AddScoped<IJobRequestRepository, JobRequestRepository>();
         builder.Services.AddScoped<IPossibleScheduleRepository, PossibleScheduleRepository>();
+        builder.Services.AddScoped<IRequiredScheduleRepository, RequiredScheduleRepository>();
         builder.Services.AddScoped<IPersonalIdentifierRepository, PersonalIdentifierRepository>();
+
     }
 
     public static void RegisterBehaviours(this WebApplicationBuilder builder)

@@ -10,6 +10,7 @@ public interface IUnitOfWork
 
     IPossibleScheduleRepository GetPossibleScheduleRepository();
 
+    IJobRepository GetJobRepository();
 
     IRequiredScheduleRepository GetRequiredScheduleRepository();
 

@@ -20,6 +20,8 @@ public class JobRequest : AuditableDateEntity
 
     public DogOwner DogOwner { get; set; }
 
+    public decimal Salary { get; set; }
+
     public Job Job { get; set; }
 
     public int DogId { get; set; }

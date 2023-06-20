@@ -13,11 +13,12 @@ public class Job : AuditableDateEntity
 
     public DogOwner DogOwner { get; set; }
 
-    public int WalkerId { get; set; }
+    public int? WalkerId { get; set; }
 
-    public Walker Walker { get; set; }
+    public Walker? Walker { get; set; }
 
     public int JobRequestId { get; set; }
+
     public JobRequest JobRequest { get; set; }
 
     public string Comment { get; set; }
