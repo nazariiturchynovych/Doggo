@@ -12,7 +12,7 @@ public static class WalkerMapper
     {
         return new WalkerDto(walker.Id);
     }
-    
+
     public static Walker MapWalkerUpdateCommandToWalker(this UpdateWalkerCommand updateWalkerCommand, Walker walker)
     {
         walker.Skills = updateWalkerCommand.Skills ?? walker.Skills;
@@ -22,14 +22,22 @@ public static class WalkerMapper
 
     public static GetWalkerDto MapWalkerToGetWalkerDto(this Walker walker)
     {
-        var dogs = new List<GetPossibleScheduleDto>();
+        var possibleSchedules = new List<GetPossibleScheduleDto>();
 
         foreach (var possibleSchedule in walker.PossibleSchedules)
         {
-            dogs.Add(possibleSchedule.MapPossibleScheduleToGetPossibleScheduleDto());
+            possibleSchedules.Add(possibleSchedule.MapPossibleScheduleToGetPossibleScheduleDto());
         }
 
-        return new GetWalkerDto(walker.Id, walker.Skills, walker.About, dogs);
+        return new GetWalkerDto(
+            walker.Id,
+            walker.Skills,
+            walker.About,
+            walker.User.FirstName,
+            walker.User.LastName,
+            walker.User.PhoneNumber!,
+            walker.User.Email!,
+            possibleSchedules);
     }
 
 
@@ -41,7 +49,7 @@ public static class WalkerMapper
         {
             collectionDto.Add(walker.MapWalkerToGetWalkerDto());
         }
+
         return new PageOfTDataDto<GetWalkerDto>(collectionDto);
     }
-
 }

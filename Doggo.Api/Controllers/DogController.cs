@@ -29,6 +29,15 @@ public class DogController : ControllerBase
     {
         return Ok(await _mediator.Send(new GetDogByIdQuery(id), cancellationToken));
     }
+
+    [HttpGet("GetDogOwnersDogs")]
+    public async Task<IActionResult> GetDogOwnersDogs(
+        int dogOwnerId,
+        CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new GetDogOwnerDogsQuery(dogOwnerId), cancellationToken));
+    }
+
     [HttpGet("GetPageOfDogs")]
     public async Task<IActionResult> GetPageOfDogs(
         int count,

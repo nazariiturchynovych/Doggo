@@ -42,9 +42,7 @@ public record ConfirmEmailAndSetDefaultRoleCommand
             var addToRoleResult = await _userManager.AddToRoleAsync(user, RoleConstants.User);
 
             if (!addToRoleResult.Succeeded)
-            {
                 return Failure(UserErrors.AddToRoleFailed);
-            }
 
             return Success();
         }

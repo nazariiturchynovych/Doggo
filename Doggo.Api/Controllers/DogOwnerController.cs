@@ -25,17 +25,29 @@ public class DogOwnerController : ControllerBase
     }
 
     [HttpGet("GetDogOwner/{id:int}")]
-    public async Task<IActionResult> GetDogOwner(int id,CancellationToken cancellationToken)
+    public async Task<IActionResult> GetDogOwner(int id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetDogOwnerByIdQuery(id), cancellationToken));
     }
+
     [HttpGet("GetPageOfDogOwners")]
     public async Task<IActionResult> GetPageOfDogOwners(
+        string searchTerm,
+        string sortColumn,
+        string sortOrder,
         int count,
         int page,
         CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetPageOfDogOwnersQuery(count, page), cancellationToken));
+        return Ok(
+            await _mediator.Send(
+                new GetPageOfDogOwnersQuery(
+                    searchTerm,
+                    sortColumn,
+                    sortOrder,
+                    count,
+                    page),
+                cancellationToken));
     }
 
     [HttpPut("UpdateDogOwner")]
@@ -47,7 +59,7 @@ public class DogOwnerController : ControllerBase
     }
 
     [HttpDelete("DeleteDogOwner/{id:int}")]
-    public async Task<IActionResult> DeleteDogOwner(int id,CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteDogOwner(int id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeleteDogOwnerCommand(id), cancellationToken));
     }

@@ -6,6 +6,8 @@ public interface IDogRepository : IAbstractRepository<Dog>
 {
     public Task<Dog?> GetAsync(int userId, CancellationToken cancellationToken = default);
 
+    public Task<IReadOnlyCollection<Dog>> GetDogOwnerDogsAsync(int dogOwnerId, CancellationToken cancellationToken = default);
+
     public Task<IReadOnlyCollection<Dog>> GetPageOfDogsAsync(
         int count,
         int page,

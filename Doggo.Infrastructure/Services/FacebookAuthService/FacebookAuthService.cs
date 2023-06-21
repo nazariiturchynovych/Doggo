@@ -32,7 +32,7 @@ public class FacebookAuthService : IFacebookAuthService
 
         if (!response.EnsureSuccessStatusCode().IsSuccessStatusCode)
         {
-            throw new Exception("Facebook call is unsuccess");
+            throw new Exception("Facebook call is unsuccessful");
         }
 
         var responseAsString = await response.Content.ReadAsStringAsync();
@@ -51,7 +51,7 @@ public class FacebookAuthService : IFacebookAuthService
 
         if (!response.EnsureSuccessStatusCode().IsSuccessStatusCode)
         {
-            throw new Exception("Facebook call is unsuccess");
+            throw new Exception("Facebook call is unsuccessful");
         }
 
         var responseAsString = await response.Content.ReadAsStringAsync();

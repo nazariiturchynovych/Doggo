@@ -24,7 +24,15 @@ public static class DogOwnerMapper
             dogs.Add(dog.MapDogToDogDto());
         }
 
-        return new GetDogOwnerDto(dogOwner.Id, dogOwner.Address, dogOwner.District, dogs);
+        return new GetDogOwnerDto(
+            dogOwner.Id,
+            dogOwner.Address,
+            dogOwner.District,
+            dogOwner.User.FirstName,
+            dogOwner.User.LastName,
+            dogOwner.User.PhoneNumber!,
+            dogOwner.User.Email!,
+            dogs);
     }
 
     public static DogOwnerDto MapDogOwnerToDogOwnerDto(this DogOwner dogOwner)
@@ -33,7 +41,8 @@ public static class DogOwnerMapper
     }
 
 
-    public static PageOfTDataDto<GetDogOwnerDto> MapDogOwnerCollectionToPageODogOwnersDto(this IReadOnlyCollection<DogOwner> collection)
+    public static PageOfTDataDto<GetDogOwnerDto> MapDogOwnerCollectionToPageODogOwnersDto(
+        this IReadOnlyCollection<DogOwner> collection)
     {
         var collectionDto = new List<GetDogOwnerDto>();
 
@@ -41,6 +50,7 @@ public static class DogOwnerMapper
         {
             collectionDto.Add(dogOwner.MapDogOwnerToGetDogOwnerDto());
         }
+
         return new PageOfTDataDto<GetDogOwnerDto>(collectionDto);
     }
 }

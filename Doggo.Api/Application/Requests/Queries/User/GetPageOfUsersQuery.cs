@@ -7,7 +7,12 @@ using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record GetPageOfUsersQuery(int Count, int Page) : IRequest<CommonResult<PageOfTDataDto<GetUserDto>>>
+public record GetPageOfUsersQuery(
+    string? SearchTerm,
+    string? SortColumn,
+    string? SortOrder,
+    int Count,
+    int Page) : IRequest<CommonResult<PageOfTDataDto<GetUserDto>>>
 {
     public class Handler : IRequestHandler<GetPageOfUsersQuery, CommonResult<PageOfTDataDto<GetUserDto>>>
     {
@@ -24,7 +29,13 @@ public record GetPageOfUsersQuery(int Count, int Page) : IRequest<CommonResult<P
         {
             var userRepository = _unitOfWork.GetUserRepository();
 
-            var page = await userRepository.GetPageOfUsersAsync(request.Count, request.Page, cancellationToken);
+            var page = await userRepository.GetPageOfUsersAsync(
+                request.SearchTerm,
+                request.SortColumn,
+                request.SortOrder,
+                request.Count,
+                request.Page,
+                cancellationToken);
 
             return Success(page.MapUserCollectionToPageOfUsersDto());
         }

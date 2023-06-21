@@ -8,15 +8,15 @@ using Mappers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-public record UpdateUserCommand
+public record AddUserInformationCommand
 (
-    string? FirstName,
-    string? LastName,
-    int? Age,
-    string? PhoneNumber
+    string FirstName,
+    string LastName,
+    int Age,
+    string PhoneNumber
 ) : IRequest<CommonResult>
 {
-    public class Handler : IRequestHandler<UpdateUserCommand, CommonResult>
+    public class Handler : IRequestHandler<AddUserInformationCommand, CommonResult>
     {
         private readonly UserManager<User> _userManager;
         private readonly ICurrentUserService _currentUserService;
@@ -27,14 +27,14 @@ public record UpdateUserCommand
             _currentUserService = currentUserService;
         }
 
-        public async Task<CommonResult> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult> Handle(AddUserInformationCommand request, CancellationToken cancellationToken)
         {
             var currentUser = await _userManager.FindByIdAsync(_currentUserService.GetUserId().ToString());
 
             if (currentUser is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
 
-            var updatedUser = request.MapUserUpdateCommandToUser(currentUser);
+            var updatedUser = request.MapAddUserInformationCommandToUser(currentUser);
 
             var result = await _userManager.UpdateAsync(updatedUser);
 

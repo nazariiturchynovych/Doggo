@@ -25,6 +25,7 @@ public record DeleteUserCommand(int UserId) : IRequest<CommonResult>
                 return Failure(CommonErrors.EntityDoesNotExist);
 
             var result = await _userManager.DeleteAsync(user);
+
             if (!result.Succeeded)
                 return Failure(CommonErrors.EntityDeleteFailed);
 

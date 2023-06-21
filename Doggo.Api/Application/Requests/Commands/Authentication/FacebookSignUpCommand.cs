@@ -63,9 +63,8 @@ public record FacebookSignUpCommand(string AccessToken) : IRequest<CommonResult>
             var addToRoleResult = await _userManager.AddToRoleAsync(userToAdd, RoleConstants.User);
 
             if (!addToRoleResult.Succeeded)
-            {
                 return Failure(UserErrors.AddToRoleFailed);
-            }
+
 
             return Success();
         }

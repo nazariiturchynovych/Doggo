@@ -8,9 +8,9 @@ using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
 
-public record GoogleSignInQuery(string Token) : IRequest<CommonResult>
+public record GoogleSignInQuery(string Token) : IRequest<CommonResult<SignInDto>>
 {
-    public class Handler : IRequestHandler<GoogleSignInQuery, CommonResult>
+    public class Handler : IRequestHandler<GoogleSignInQuery, CommonResult<SignInDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
@@ -21,24 +21,20 @@ public record GoogleSignInQuery(string Token) : IRequest<CommonResult>
             _jwtTokenGeneratorService = jwtTokenGeneratorService;
         }
 
-        public async Task<CommonResult> Handle(GoogleSignInQuery request, CancellationToken cancellationToken)
+        public async Task<CommonResult<SignInDto>> Handle(GoogleSignInQuery request, CancellationToken cancellationToken)
         {
             var payload = await GoogleAuthHelper.AuthenticateTokenAsync(request.Token);
 
             if (payload is null)
-            {
-                return Failure(UserErrors.UserGoogleAuthorizationFailed);
-            }
+                return Failure<SignInDto>(UserErrors.UserGoogleAuthorizationFailed);
 
             var userRepository = _unitOfWork.GetUserRepository();
 
             var user = await userRepository.GetUserWithRoles(payload.Email, cancellationToken);
 
-            if (user is null)
-                return Failure<SignInDto>(CommonErrors.EntityDoesNotExist);
-
-
-            return Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
+            return user is null ?
+                Failure<SignInDto>(CommonErrors.EntityDoesNotExist) :
+                Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
         }
     }
 }

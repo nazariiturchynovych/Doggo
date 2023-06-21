@@ -24,16 +24,12 @@ public record GoogleSignUpCommand(string Credential) : IRequest<CommonResult>
             var payload = await GoogleAuthHelper.AuthenticateTokenAsync(request.Credential);
 
             if (payload is null)
-            {
                 return Failure(UserErrors.UserGoogleAuthorizationFailed);
-            }
 
             var user = await _userManager.FindByEmailAsync(payload.Email);
 
             if (user is not null)
-            {
                 return Failure(CommonErrors.EntityAlreadyExist);
-            }
 
             var userToAdd = new User
             {

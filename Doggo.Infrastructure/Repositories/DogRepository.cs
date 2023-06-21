@@ -20,11 +20,23 @@ public class DogRepository : AbstractRepository<Dog>, IDogRepository
         return await _context.Dogs.FirstOrDefaultAsync(x => x.Id == dogId, cancellationToken: cancellationToken);
     }
 
-    public async Task<IReadOnlyCollection<Dog>> GetPageOfDogsAsync(int count, int page, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<Dog>> GetDogOwnerDogsAsync(
+        int dogOwnerId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _context.Dogs.Where(x => x.DogOwnerId == dogOwnerId)
+            .OrderBy(ps => ps.Id)
+            .ToListAsync(cancellationToken: cancellationToken);
+    }
+
+    public async Task<IReadOnlyCollection<Dog>> GetPageOfDogsAsync(
+        int count,
+        int page,
+        CancellationToken cancellationToken = default)
     {
         return await _context.Dogs.OrderBy(ps => ps.Id)
-                    .Skip(count * (page - 1))
-                    .Take(count)
-                    .ToListAsync(cancellationToken: cancellationToken);
+            .Skip(count * (page - 1))
+            .Take(count)
+            .ToListAsync(cancellationToken: cancellationToken);
     }
 }

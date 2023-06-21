@@ -7,6 +7,9 @@ public interface IUserRepository
     public Task<User?> GetAsync(int id, CancellationToken cancellationToken = default);
 
     public Task<IReadOnlyCollection<User>> GetPageOfUsersAsync(
+        string? searchTerm,
+        string? sortColumn,
+        string? sortOrder,
         int count,
         int page,
         CancellationToken cancellationToken = default);

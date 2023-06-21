@@ -32,7 +32,7 @@ public static class DogMapper
             dog.Description);
     }
 
-    public static PageOfTDataDto<GetDogDto> MapDogCollectionToPageODogDto(this IReadOnlyCollection<Dog> collection)
+    public static PageOfTDataDto<GetDogDto> MapDogCollectionToPageOfDogDto(this IReadOnlyCollection<Dog> collection)
     {
         var collectionDto = new List<GetDogDto>();
 

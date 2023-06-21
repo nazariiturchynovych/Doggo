@@ -2,16 +2,15 @@ namespace Doggo.Application.Requests.Queries.Authentication;
 
 using Domain.Constants.ErrorConstants;
 using Domain.DTO.Authentication;
-using Domain.DTO.User;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.FacebookAuthService;
 using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
 
-public record FacebookSignInQuery(string AccessToken) : IRequest<CommonResult<GetUserDto>>
+public record FacebookSignInQuery(string AccessToken) : IRequest<CommonResult<SignInDto>>
 {
-    public class Handler : IRequestHandler<FacebookSignInQuery, CommonResult>
+    public class Handler : IRequestHandler<FacebookSignInQuery, CommonResult<SignInDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
@@ -24,18 +23,18 @@ public record FacebookSignInQuery(string AccessToken) : IRequest<CommonResult<Ge
             _facebookAuthService = facebookAuthService;
         }
 
-        public async Task<CommonResult> Handle(FacebookSignInQuery request, CancellationToken cancellationToken)
+        public async Task<CommonResult<SignInDto>> Handle(FacebookSignInQuery request, CancellationToken cancellationToken)
         {
             var result = await _facebookAuthService.AuthenticateTokenAsync(request.AccessToken);
 
             if (result is null)
             {
-                return Failure(UserErrors.UserFacebookAuthorizationFailed);
+                return Failure<SignInDto>(UserErrors.UserFacebookAuthorizationFailed);
             }
 
             if (!result.Data.IsValid)
             {
-                return Failure(UserErrors.UserFacebookAuthorizationFailed);
+                return Failure<SignInDto>(UserErrors.UserFacebookAuthorizationFailed);
             }
 
             var userInfoResult = await _facebookAuthService.GetUserInfoAsync(request.AccessToken);

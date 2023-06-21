@@ -24,18 +24,38 @@ public class UserController : ControllerBase
     {
         return Ok(await _mediator.Send(new GetUserQuery(User.GetUserId()), cancellationToken));
     }
+
     [HttpGet("GetPageOfUsers")]
     public async Task<IActionResult> GetPageOfUsers(
+        string searchTerm,
+        string sortColumn,
+        string sortOrder,
         int count,
         int page,
         CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetPageOfUsersQuery(count, page), cancellationToken));
+        return Ok(
+            await _mediator.Send(
+                new GetPageOfUsersQuery(
+                    searchTerm,
+                    sortColumn,
+                    sortOrder,
+                    count,
+                    page),
+                cancellationToken));
     }
 
     [HttpPut("UpdateUser")]
     public async Task<IActionResult> UpdateUser(
         UpdateUserCommand command,
+        CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(command, cancellationToken));
+    }
+
+    [HttpPost("AddUserInformation")]
+    public async Task<IActionResult> AddUserInformation(
+        AddUserInformationCommand command,
         CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(command, cancellationToken));
@@ -48,7 +68,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("AddPersonalIdentifier")]
-    public async Task<IActionResult> AddUserPersonalIdentifier (
+    public async Task<IActionResult> AddUserPersonalIdentifier(
         AddUserPersonalIdentifierCommand command,
         CancellationToken cancellationToken)
     {

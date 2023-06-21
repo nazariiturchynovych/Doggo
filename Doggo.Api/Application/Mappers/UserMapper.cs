@@ -12,8 +12,19 @@ public static class UserRequestMapper
         user.Age = updateUserCommand.Age ?? user.Age;
         user.FirstName = updateUserCommand.FirstName ?? user.FirstName;
         user.LastName = updateUserCommand.LastName ?? user.LastName;
+        user.PhoneNumber = updateUserCommand.PhoneNumber ?? user.PhoneNumber;
         return user;
     }
+
+    public static User MapAddUserInformationCommandToUser(this AddUserInformationCommand addUserInformationCommand, User user)
+    {
+        user.Age = addUserInformationCommand.Age;
+        user.FirstName = addUserInformationCommand.FirstName;
+        user.LastName = addUserInformationCommand.LastName;
+        user.PhoneNumber = addUserInformationCommand.PhoneNumber;
+        return user;
+    }
+
     public static GetUserDto MapUserToGetUserDto(this User user)
     {
         return new GetUserDto(
@@ -23,8 +34,7 @@ public static class UserRequestMapper
             Age: user.Age,
             Email: user.Email!,
             DogOwner: user.DogOwner?.MapDogOwnerToDogOwnerDto(),
-            Walker: user.Walker?.MapWalkerToWalkerDto()
-            );
+            Walker: user.Walker?.MapWalkerToWalkerDto());
     }
 
     public static PageOfTDataDto<GetUserDto> MapUserCollectionToPageOfUsersDto(this IReadOnlyCollection<User> collection)
@@ -35,7 +45,7 @@ public static class UserRequestMapper
         {
             collectionDto.Add(user.MapUserToGetUserDto());
         }
+
         return new PageOfTDataDto<GetUserDto>(collectionDto);
     }
-
 }
