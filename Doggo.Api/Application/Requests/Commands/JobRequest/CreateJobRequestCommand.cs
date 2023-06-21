@@ -10,13 +10,13 @@ using Infrastructure.Services.CurrentUserService;
 using MediatR;
 
 public record CreateJobRequestCommand(
-    int DogId,
-    int DogOwnerId,
+    Guid DogId,
+    Guid DogOwnerId,
     int RequiredAge,
     bool IsPersonalIdentifierRequired,
     string Description,
     decimal Salary,
-    RequiredScheduleDto RequiredScheduleDto
+    GetRequiredScheduleDto GetRequiredScheduleDto
 ) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<CreateJobRequestCommand, CommonResult>
@@ -57,10 +57,10 @@ public record CreateJobRequestCommand(
             await requiredScheduleRepository.AddAsync(
                 new RequiredSchedule()
                 {
-                    From = request.RequiredScheduleDto.From,
-                    To = request.RequiredScheduleDto.To,
-                    DayOfWeek = request.RequiredScheduleDto.DayOfWeek,
-                    IsRegular = request.RequiredScheduleDto.IsRegular,
+                    From = request.GetRequiredScheduleDto.From,
+                    To = request.GetRequiredScheduleDto.To,
+                    DayOfWeek = request.GetRequiredScheduleDto.DayOfWeek,
+                    IsRegular = request.GetRequiredScheduleDto.IsRegular,
                     JobRequestId = entityToAdd.Id
                 }); //TODO entity entry can be null
 

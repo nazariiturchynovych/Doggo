@@ -4,10 +4,16 @@ using Domain.Entities.Walker;
 
 public interface IWalkerRepository : IAbstractRepository<Walker>
 {
-    public Task<Walker?> GetAsync(int userId, CancellationToken cancellationToken = default);
+    public Task<Walker?> GetAsync(Guid userId, CancellationToken cancellationToken = default);
+
+    public Task<Walker?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
     public Task<IReadOnlyCollection<Walker>> GetPageOfWalkersAsync(
-        int count,
+        string? nameSearchTerm,
+        string? skillSearchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int pageCount,
         int page,
         CancellationToken cancellationToken = default);
 }

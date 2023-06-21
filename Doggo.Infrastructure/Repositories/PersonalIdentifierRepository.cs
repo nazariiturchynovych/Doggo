@@ -2,7 +2,6 @@ namespace Doggo.Infrastructure.Repositories;
 
 using Abstractions;
 using Domain.Entities.User.Documents;
-using Domain.Enums;
 using Persistence;
 
 public class PersonalIdentifierRepository : AbstractRepository<PersonalIdentifier>, IPersonalIdentifierRepository

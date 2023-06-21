@@ -50,7 +50,7 @@ public class AuthenticationController : ControllerBase
 
     [HttpGet("ConfirmEmail")]
     public async Task<IActionResult> ConfirmEmail(
-        int userId,
+        Guid userId,
         string token)
     {
         return Ok(await _mediator.Send(new ConfirmEmailAndSetDefaultRoleCommand(userId, token)));

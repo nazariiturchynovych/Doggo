@@ -1,5 +1,6 @@
 namespace Doggo.Application.Requests.Queries.Dog;
 
+using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.DTO.Dog;
 using Domain.Entities.DogOwner;
@@ -9,7 +10,7 @@ using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
 
-public record GetDogByIdQuery(int Id) : IRequest<CommonResult<GetDogDto>>
+public record GetDogByIdQuery(Guid Id) : IRequest<CommonResult<GetDogDto>>
 {
     public class Handler : IRequestHandler<GetDogByIdQuery, CommonResult<GetDogDto>>
     {
@@ -25,7 +26,7 @@ public record GetDogByIdQuery(int Id) : IRequest<CommonResult<GetDogDto>>
         public async Task<CommonResult<GetDogDto>> Handle(GetDogByIdQuery request, CancellationToken cancellationToken)
         {
 
-            var cachedEntity = await _cacheService.GetData<Dog>(request.Id.ToString());
+            var cachedEntity = await _cacheService.GetData<Dog>(CacheKeys.Dog + request.Id);
 
             if (cachedEntity is null)
             {
@@ -36,7 +37,7 @@ public record GetDogByIdQuery(int Id) : IRequest<CommonResult<GetDogDto>>
                 if (dog is null)
                     return Failure<GetDogDto>(CommonErrors.EntityDoesNotExist);
 
-                await _cacheService.SetData(dog.Id.ToString(), dog);
+                await _cacheService.SetData(CacheKeys.Dog + dog.Id, dog);
 
                 cachedEntity = dog;
             }

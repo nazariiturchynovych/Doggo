@@ -4,10 +4,10 @@ using Domain.Entities.JobRequest.Schedules;
 
 public interface IRequiredScheduleRepository : IAbstractRepository<RequiredSchedule>
 {
-    public Task<RequiredSchedule?> GetAsync(int userId, CancellationToken cancellationToken = default);
+    public Task<RequiredSchedule?> GetAsync(Guid userId, CancellationToken cancellationToken = default);
 
     public Task<IReadOnlyCollection<RequiredSchedule>> GetPageOfRequiredSchedulesAsync(
-        int count,
+        int pageCount,
         int page,
         CancellationToken cancellationToken = default);
 }

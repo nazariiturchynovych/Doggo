@@ -19,6 +19,12 @@ public class UserController : ControllerBase
         _mediator = mediator;
     }
 
+    [HttpGet("GetUser/{id:Guid}")]
+    public async Task<IActionResult> GetUser(Guid id,CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new GetUserQuery(id), cancellationToken));
+    }
+
     [HttpGet("GetUser")]
     public async Task<IActionResult> GetUser(CancellationToken cancellationToken)
     {
@@ -27,10 +33,10 @@ public class UserController : ControllerBase
 
     [HttpGet("GetPageOfUsers")]
     public async Task<IActionResult> GetPageOfUsers(
-        string searchTerm,
-        string sortColumn,
-        string sortOrder,
-        int count,
+        string? searchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int pageCount,
         int page,
         CancellationToken cancellationToken)
     {
@@ -40,7 +46,7 @@ public class UserController : ControllerBase
                     searchTerm,
                     sortColumn,
                     sortOrder,
-                    count,
+                    pageCount,
                     page),
                 cancellationToken));
     }

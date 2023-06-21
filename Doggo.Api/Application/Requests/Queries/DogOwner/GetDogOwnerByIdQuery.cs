@@ -1,5 +1,6 @@
 namespace Doggo.Application.Requests.Queries.DogOwner;
 
+using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.DTO.DogOwner;
 using Domain.Entities.DogOwner;
@@ -9,7 +10,7 @@ using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
 
-public record GetDogOwnerByIdQuery(int Id) : IRequest<CommonResult<GetDogOwnerDto>>
+public record GetDogOwnerByIdQuery(Guid Id) : IRequest<CommonResult<GetDogOwnerDto>>
 {
     public class Handler : IRequestHandler<GetDogOwnerByIdQuery, CommonResult<GetDogOwnerDto>>
     {
@@ -25,7 +26,7 @@ public record GetDogOwnerByIdQuery(int Id) : IRequest<CommonResult<GetDogOwnerDt
         public async Task<CommonResult<GetDogOwnerDto>> Handle(GetDogOwnerByIdQuery request, CancellationToken cancellationToken)
         {
 
-            var cachedEntity = await _cacheService.GetData<DogOwner>(request.Id.ToString());
+            var cachedEntity = await _cacheService.GetData<DogOwner>(CacheKeys.DogOwner + request.Id);
 
             if (cachedEntity is null)
             {
@@ -36,7 +37,7 @@ public record GetDogOwnerByIdQuery(int Id) : IRequest<CommonResult<GetDogOwnerDt
                 if (dogOwner is null)
                     return Failure<GetDogOwnerDto>(CommonErrors.EntityDoesNotExist);
 
-                await _cacheService.SetData(dogOwner.Id.ToString(), dogOwner);
+                await _cacheService.SetData(CacheKeys.DogOwner + dogOwner.Id, dogOwner);
 
                 cachedEntity = dogOwner;
             }

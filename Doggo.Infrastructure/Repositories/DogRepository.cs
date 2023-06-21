@@ -1,5 +1,6 @@
 namespace Doggo.Infrastructure.Repositories;
 
+using System.Linq.Expressions;
 using Abstractions;
 using Domain.Entities.DogOwner;
 using Microsoft.EntityFrameworkCore;
@@ -15,13 +16,13 @@ public class DogRepository : AbstractRepository<Dog>, IDogRepository
         _context = context;
     }
 
-    public async Task<Dog?> GetAsync(int dogId, CancellationToken cancellationToken = default)
+    public async Task<Dog?> GetAsync(Guid dogId, CancellationToken cancellationToken = default)
     {
         return await _context.Dogs.FirstOrDefaultAsync(x => x.Id == dogId, cancellationToken: cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<Dog>> GetDogOwnerDogsAsync(
-        int dogOwnerId,
+        Guid dogOwnerId,
         CancellationToken cancellationToken = default)
     {
         return await _context.Dogs.Where(x => x.DogOwnerId == dogOwnerId)
@@ -30,13 +31,46 @@ public class DogRepository : AbstractRepository<Dog>, IDogRepository
     }
 
     public async Task<IReadOnlyCollection<Dog>> GetPageOfDogsAsync(
-        int count,
+        string? nameSearchTerm,
+        string? descriptionSearchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int pageCount,
         int page,
         CancellationToken cancellationToken = default)
     {
-        return await _context.Dogs.OrderBy(ps => ps.Id)
-            .Skip(count * (page - 1))
-            .Take(count)
+        IQueryable<Dog> dogQuery = _context.Dogs;
+        if (!string.IsNullOrWhiteSpace(nameSearchTerm))
+        {
+            dogQuery = dogQuery.Where(
+                x =>
+                    x.Name.Contains(nameSearchTerm) );
+        }
+        
+        if (!string.IsNullOrWhiteSpace(descriptionSearchTerm))
+        {
+            dogQuery = dogQuery.Where(
+                x =>
+                    x.Description.Contains(descriptionSearchTerm) );
+        }
+
+        Expression<Func<Dog, object?>> keySelector = sortColumn?.ToLower() switch
+        {
+            "name" => dog => dog.Name,
+            "description" => dog => dog.Description,
+            "age" => dog => dog.Age,
+            "weight" => dog => dog.Weight,
+            _ => dog => dog.Id,
+        };
+
+
+        dogQuery = sortOrder?.ToLower() == "desc"
+            ? dogQuery.OrderByDescending(keySelector)
+            : dogQuery.OrderBy(keySelector);
+
+        return await dogQuery
+            .Skip(pageCount * (page - 1))
+            .Take(pageCount)
             .ToListAsync(cancellationToken: cancellationToken);
     }
 }

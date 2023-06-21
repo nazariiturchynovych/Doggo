@@ -16,36 +16,42 @@ public class DogOwnerRepository : AbstractRepository<DogOwner>, IDogOwnerReposit
         _context = context;
     }
 
-    public async Task<DogOwner?> GetAsync(int dogOwnerId, CancellationToken cancellationToken = default)
+    public async Task<DogOwner?> GetAsync(Guid dogOwnerId, CancellationToken cancellationToken = default)
+    {
+        return await _context.DogOwners.Where(x => x.Id == dogOwnerId)
+            .Include(x => x.User)
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+    }
+
+    public async Task<DogOwner?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         return await _context.DogOwners
-            .Include(x => x.Dogs)
             .Include(x => x.User)
-            .FirstOrDefaultAsync(x => x.Id == dogOwnerId, cancellationToken: cancellationToken);
+            .FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken: cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<DogOwner>> GetPageOfDogOwnersAsync(
-        string? searchTerm,
+        string? nameSearchTerm,
         string? sortColumn,
         string? sortOrder,
-        int count,
+        int pageCount,
         int page,
         CancellationToken cancellationToken = default)
     {
         IQueryable<DogOwner> dogOwnerQuery = _context.DogOwners;
-        if (!string.IsNullOrWhiteSpace(searchTerm))
+        if (!string.IsNullOrWhiteSpace(nameSearchTerm))
         {
             dogOwnerQuery = dogOwnerQuery.Where(
                 x =>
-                    x.User.FirstName.Contains(searchTerm) || x.User.LastName.Contains(searchTerm));
+                    x.User.FirstName.Contains(nameSearchTerm) || x.User.LastName.Contains(nameSearchTerm));
         }
 
         Expression<Func<DogOwner, object>> keySelector = sortColumn?.ToLower() switch
         {
             "district" => dogOwner => dogOwner.District,
             "address" => dogOwner => dogOwner.Address,
-            "firstName" => dogOwner => dogOwner.User.FirstName,
-            "lastName" => dogOwner => dogOwner.User.LastName,
+            "firstname" => dogOwner => dogOwner.User.FirstName,
+            "lastname" => dogOwner => dogOwner.User.LastName,
             "age" => dogOwner => dogOwner.User.Age,
             _ => dogOwner => dogOwner.User.Id,
         };
@@ -55,10 +61,9 @@ public class DogOwnerRepository : AbstractRepository<DogOwner>, IDogOwnerReposit
             : dogOwnerQuery.OrderBy(keySelector);
 
         return await dogOwnerQuery
-            .Skip(count * (page - 1))
-            .Take(count)
+            .Skip(pageCount * (page - 1))
+            .Take(pageCount)
             .Include(x => x.User)
-            .Include(x => x.Dogs)
             .ToListAsync(cancellationToken: cancellationToken);
     }
 }

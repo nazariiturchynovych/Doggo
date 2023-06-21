@@ -24,15 +24,15 @@ public class DogController : ControllerBase
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    [HttpGet("GetDog/{id:int}")]
-    public async Task<IActionResult> GetDog(int id,CancellationToken cancellationToken)
+    [HttpGet("GetDog/{id:Guid}")]
+    public async Task<IActionResult> GetDog(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetDogByIdQuery(id), cancellationToken));
     }
 
     [HttpGet("GetDogOwnersDogs")]
     public async Task<IActionResult> GetDogOwnersDogs(
-        int dogOwnerId,
+        Guid dogOwnerId,
         CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetDogOwnerDogsQuery(dogOwnerId), cancellationToken));
@@ -40,11 +40,24 @@ public class DogController : ControllerBase
 
     [HttpGet("GetPageOfDogs")]
     public async Task<IActionResult> GetPageOfDogs(
-        int count,
+        string? nameSearchTerm,
+        string? descriptionSearchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int pageCount,
         int page,
         CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetPageOfDogsQuery(count, page), cancellationToken));
+        return Ok(
+            await _mediator.Send(
+                new GetPageOfDogsQuery(
+                    nameSearchTerm,
+                    descriptionSearchTerm,
+                    sortColumn,
+                    sortOrder,
+                    pageCount,
+                    page),
+                cancellationToken));
     }
 
     [HttpPut("UpdateDog")]
@@ -55,8 +68,8 @@ public class DogController : ControllerBase
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    [HttpDelete("DeleteDog/{id:int}")]
-    public async Task<IActionResult> DeleteDog(int id,CancellationToken cancellationToken)
+    [HttpDelete("DeleteDog/{id:Guid}")]
+    public async Task<IActionResult> DeleteDog(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeleteDogCommand(id), cancellationToken));
     }

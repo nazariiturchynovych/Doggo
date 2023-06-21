@@ -15,16 +15,25 @@ public class PossibleScheduleRepository : AbstractRepository<PossibleSchedule>, 
         _context = context;
     }
 
-    public async Task<PossibleSchedule?> GetAsync(int dogOwnerId, CancellationToken cancellationToken = default)
+    public async Task<PossibleSchedule?> GetAsync(Guid possibleScheduleId, CancellationToken cancellationToken = default)
     {
-        return await _context.PossibleSchedules.FirstOrDefaultAsync(x => x.Id == dogOwnerId, cancellationToken: cancellationToken);
+        return await _context.PossibleSchedules.FirstOrDefaultAsync(x => x.Id == possibleScheduleId, cancellationToken: cancellationToken);
     }
 
-    public async Task<IReadOnlyCollection<PossibleSchedule>> GetPageOfPossibleSchedulesAsync(int count, int page, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<PossibleSchedule>> GetWalkerPossibleSchedulesAsync(
+        Guid walkerId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _context.PossibleSchedules.Where(x => x.WalkerId == walkerId)
+            .OrderBy(ps => ps.Id)
+            .ToListAsync(cancellationToken: cancellationToken);
+    }
+
+    public async Task<IReadOnlyCollection<PossibleSchedule>> GetPageOfPossibleSchedulesAsync(int pageCount, int page, CancellationToken cancellationToken = default)
     {
         return await _context.PossibleSchedules.OrderBy(ps => ps.Id)
-                    .Skip(count * (page - 1))
-                    .Take(count)
+                    .Skip(pageCount * (page - 1))
+                    .Take(pageCount)
                     .ToListAsync(cancellationToken: cancellationToken);
     }
 }

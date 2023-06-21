@@ -7,7 +7,7 @@ using DogOwner;
 using Microsoft.AspNetCore.Identity;
 using Walker;
 
-public class User : IdentityUser<int>, IEntity
+public class User : IdentityUser<Guid>, IEntity
 {
     public string FirstName { get; set; }
 

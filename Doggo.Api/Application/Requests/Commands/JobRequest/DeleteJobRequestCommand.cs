@@ -5,7 +5,7 @@ using Doggo.Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
-public record DeleteJobRequestCommand(int JobRequestId) : IRequest<CommonResult>
+public record DeleteJobRequestCommand(Guid JobRequestId) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<DeleteJobRequestCommand, CommonResult>
     {

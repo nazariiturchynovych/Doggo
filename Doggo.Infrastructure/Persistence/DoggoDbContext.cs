@@ -12,7 +12,7 @@ using Domain.Entities.Walker.Schedule;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-public class DoggoDbContext : IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+public class DoggoDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
 {
     public DoggoDbContext(DbContextOptions<DoggoDbContext> options)
         : base(options)

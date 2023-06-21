@@ -5,11 +5,11 @@ namespace Doggo.Domain.DTO.Walker;
 using PossibleSchedule;
 
 public record GetWalkerDto(
-    int Id,
+    Guid Id,
+    Guid UserId,
     string Skills,
     string About,
     string FirstName,
     string LastName,
     string PhoneNumber,
-    string Email,
-    IReadOnlyCollection<GetPossibleScheduleDto> Schedules);
+    string Email);

@@ -4,12 +4,16 @@ using Domain.Entities.DogOwner;
 
 public interface IDogRepository : IAbstractRepository<Dog>
 {
-    public Task<Dog?> GetAsync(int userId, CancellationToken cancellationToken = default);
+    public Task<Dog?> GetAsync(Guid userId, CancellationToken cancellationToken = default);
 
-    public Task<IReadOnlyCollection<Dog>> GetDogOwnerDogsAsync(int dogOwnerId, CancellationToken cancellationToken = default);
+    public Task<IReadOnlyCollection<Dog>> GetDogOwnerDogsAsync(Guid dogOwnerId, CancellationToken cancellationToken = default);
 
     public Task<IReadOnlyCollection<Dog>> GetPageOfDogsAsync(
-        int count,
+        string? nameSearchTerm,
+        string? descriptionSearchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int pageCount,
         int page,
         CancellationToken cancellationToken = default);
 }

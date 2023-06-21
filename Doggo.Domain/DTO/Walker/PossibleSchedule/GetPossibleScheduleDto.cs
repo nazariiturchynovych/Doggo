@@ -2,7 +2,7 @@
 namespace Doggo.Domain.DTO.Walker.PossibleSchedule;
 
 public record GetPossibleScheduleDto(
-    int Id,
+    Guid Id,
     TimeOnly From,
     TimeOnly To,
     DayOfWeek DayOfWeek);

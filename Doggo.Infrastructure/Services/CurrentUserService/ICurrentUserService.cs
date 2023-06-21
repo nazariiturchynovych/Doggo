@@ -4,7 +4,7 @@ public interface ICurrentUserService
 {
     public string GetUserEmail();
 
-    public int GetUserId();
+    public Guid GetUserId();
 
     public string GetUserRole();
 

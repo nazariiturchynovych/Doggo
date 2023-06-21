@@ -2,6 +2,7 @@ namespace Doggo.Application.Mappers;
 
 using Domain.DTO;
 using Domain.DTO.User;
+using Domain.DTO.User.PersonalIdentifier;
 using Domain.Entities.User;
 using Requests.Commands.User;
 
@@ -33,18 +34,12 @@ public static class UserRequestMapper
             LastName: user.LastName,
             Age: user.Age,
             Email: user.Email!,
-            DogOwner: user.DogOwner?.MapDogOwnerToDogOwnerDto(),
-            Walker: user.Walker?.MapWalkerToWalkerDto());
+            PersonalIdentifier: new GetPersonalIdentifierDto(user.PersonalIdentifier.PersonalIdentifierType));
     }
 
     public static PageOfTDataDto<GetUserDto> MapUserCollectionToPageOfUsersDto(this IReadOnlyCollection<User> collection)
     {
-        var collectionDto = new List<GetUserDto>();
-
-        foreach (var user in collection)
-        {
-            collectionDto.Add(user.MapUserToGetUserDto());
-        }
+        var collectionDto = collection.Select(user => user.MapUserToGetUserDto()).ToList();
 
         return new PageOfTDataDto<GetUserDto>(collectionDto);
     }

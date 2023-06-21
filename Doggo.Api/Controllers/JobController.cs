@@ -24,19 +24,44 @@ public class JobController : ControllerBase
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    [HttpGet("GetJob/{id:int}")]
-    public async Task<IActionResult> GetJob(int id,CancellationToken cancellationToken)
+    [HttpGet("GetJob/{id:Guid}")]
+    public async Task<IActionResult> GetJob(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetJobByIdQuery(id), cancellationToken));
     }
+
     [HttpGet("GetPageOfJobs")]
     public async Task<IActionResult> GetPageOfJobs(
-        int count,
+        string? commentSearchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int pageCount,
         int page,
         CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetPageOfJobsQuery(count, page), cancellationToken));
+        return Ok(
+            await _mediator.Send(
+                new GetPageOfJobsQuery(
+                    commentSearchTerm,
+                    sortColumn,
+                    sortOrder,
+                    pageCount,
+                    page),
+                cancellationToken));
     }
+
+    [HttpPost("ApplyJob")]
+    public async Task<IActionResult> ApplyJob(ApplyJobCommand command, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(command, cancellationToken));
+    }
+
+    [HttpPost("DeclineJob")]
+    public async Task<IActionResult> DeclineJob(DeclineJobCommand command, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(command, cancellationToken));
+    }
+
 
     [HttpPut("UpdateJob")]
     public async Task<IActionResult> UpdateJob(
@@ -46,8 +71,8 @@ public class JobController : ControllerBase
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    [HttpDelete("DeleteJob/{id:int}")]
-    public async Task<IActionResult> DeleteJob(int id,CancellationToken cancellationToken)
+    [HttpDelete("DeleteJob/{id:Guid}")]
+    public async Task<IActionResult> DeleteJob(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeleteJobCommand(id), cancellationToken));
     }

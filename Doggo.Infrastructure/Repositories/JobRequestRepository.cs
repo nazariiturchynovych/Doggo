@@ -1,5 +1,6 @@
 namespace Doggo.Infrastructure.Repositories;
 
+using System.Linq.Expressions;
 using Abstractions;
 using Domain.Entities.JobRequest;
 using Microsoft.EntityFrameworkCore;
@@ -15,22 +16,52 @@ public class JobRequestRepository : AbstractRepository<JobRequest>, IJobRequestR
         _context = context;
     }
 
-    public async Task<JobRequest?> GetAsync(int dogId, CancellationToken cancellationToken = default)
+    public async Task<JobRequest?> GetAsync(Guid dogId, CancellationToken cancellationToken = default)
     {
         return await _context.JobRequests.Where(x => x.Id == dogId)
             .Include(x => x.RequiredSchedule)
             .FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 
+    public async Task<IReadOnlyCollection<JobRequest>> GetDogOwnerJobRequests(
+        Guid dogOwnerId,
+        CancellationToken cancellationToken = default)
+    {
+        return await _context.JobRequests.Where(x => x.DogOwnerId == dogOwnerId)
+            .OrderBy(ps => ps.Id)
+            .ToListAsync(cancellationToken: cancellationToken);
+    }
+
     public async Task<IReadOnlyCollection<JobRequest>> GetPageOfJobRequestsAsync(
-        int count,
+        string? descriptionSearchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int pageCount,
         int page,
         CancellationToken cancellationToken = default)
     {
-        return await _context.JobRequests.OrderBy(ps => ps.Id)
-            .Skip(count * (page - 1))
-            .Take(count)
-            .Include(x => x.RequiredSchedule)
+        IQueryable<JobRequest> jobRequestQuery = _context.JobRequests;
+        if (!string.IsNullOrWhiteSpace(descriptionSearchTerm))
+        {
+            jobRequestQuery = jobRequestQuery.Where(
+                x =>
+                    x.Description.Contains(descriptionSearchTerm) );
+        }
+
+        Expression<Func<JobRequest, object>> keySelector = sortColumn?.ToLower() switch
+        {
+            "description" => jobRequest => jobRequest.Description,
+            "salary" => jobRequest => jobRequest.Salary,
+            _ => jobRequest => jobRequest.Id,
+        };
+
+        jobRequestQuery = sortOrder?.ToLower() == "desc"
+            ? jobRequestQuery.OrderByDescending(keySelector)
+            : jobRequestQuery.OrderBy(keySelector);
+
+        return await jobRequestQuery
+            .Skip(pageCount * (page - 1))
+            .Take(pageCount)
             .ToListAsync(cancellationToken: cancellationToken);
     }
 }

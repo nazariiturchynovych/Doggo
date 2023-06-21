@@ -1,5 +1,6 @@
 namespace Doggo.Application.Requests.Queries.Walker.PossibleSchedule;
 
+using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.DTO.Walker.PossibleSchedule;
 using Domain.Entities.Walker.Schedule;
@@ -9,7 +10,7 @@ using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
 
-public record GetPossibleScheduleByIdQuery(int Id) : IRequest<CommonResult<GetPossibleScheduleDto>>
+public record GetPossibleScheduleByIdQuery(Guid Id) : IRequest<CommonResult<GetPossibleScheduleDto>>
 {
     public class Handler : IRequestHandler<GetPossibleScheduleByIdQuery, CommonResult<GetPossibleScheduleDto>>
     {
@@ -22,10 +23,11 @@ public record GetPossibleScheduleByIdQuery(int Id) : IRequest<CommonResult<GetPo
             _cacheService = cacheService;
         }
 
-        public async Task<CommonResult<GetPossibleScheduleDto>> Handle(GetPossibleScheduleByIdQuery request, CancellationToken cancellationToken)
+        public async Task<CommonResult<GetPossibleScheduleDto>> Handle(
+            GetPossibleScheduleByIdQuery request,
+            CancellationToken cancellationToken)
         {
-
-            var cachedEntity = await _cacheService.GetData<PossibleSchedule>(request.Id.ToString());
+            var cachedEntity = await _cacheService.GetData<PossibleSchedule>(CacheKeys.PossibleSchedule + request.Id);
 
             if (cachedEntity is null)
             {
@@ -36,7 +38,7 @@ public record GetPossibleScheduleByIdQuery(int Id) : IRequest<CommonResult<GetPo
                 if (possibleSchedule is null)
                     return Failure<GetPossibleScheduleDto>(CommonErrors.EntityDoesNotExist);
 
-                await _cacheService.SetData(possibleSchedule.Id.ToString(), possibleSchedule);
+                await _cacheService.SetData(CacheKeys.PossibleSchedule + request.Id, possibleSchedule);
 
                 cachedEntity = possibleSchedule;
             }

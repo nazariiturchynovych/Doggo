@@ -6,7 +6,7 @@ using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record UpdateDogOwnerCommand(int DogOwnerId ,string? Address, string? District) : IRequest<CommonResult>
+public record UpdateDogOwnerCommand(Guid DogOwnerId ,string? Address, string? District) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<UpdateDogOwnerCommand, CommonResult>
     {

@@ -24,22 +24,29 @@ public class PossibleScheduleController : ControllerBase
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    [HttpGet("GetPossibleSchedule/{id:int}")]
-    public async Task<IActionResult> GetPossibleSchedule(int id,CancellationToken cancellationToken)
+    [HttpGet("GetPossibleSchedule/{id:Guid}")]
+    public async Task<IActionResult> GetPossibleSchedule(Guid id,CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetPossibleScheduleByIdQuery(id), cancellationToken));
     }
+
+    [HttpGet("GetWalkerPossibleSchedules")]
+    public async Task<IActionResult> GetWalkerPossibleSchedules(Guid walkerId,CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new GetWalkersPossibleSchedulesQuery(walkerId), cancellationToken));
+    }
+
     [HttpGet("GetPageOfPossibleSchedules")]
     public async Task<IActionResult> GetPageOfPossibleSchedules(
-        int count,
+        int pageCount,
         int page,
         CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetPageOfPossibleScheduleQuery(count, page), cancellationToken));
+        return Ok(await _mediator.Send(new GetPageOfPossibleScheduleQuery(pageCount, page), cancellationToken));
     }
 
-    [HttpDelete("DeletePossibleSchedule/{id:int}")]
-    public async Task<IActionResult> DeletePossibleSchedule(int id,CancellationToken cancellationToken)
+    [HttpDelete("DeletePossibleSchedule/{id:Guid}")]
+    public async Task<IActionResult> DeletePossibleSchedule(Guid id,CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeletePossibleScheduleCommand(id), cancellationToken));
     }

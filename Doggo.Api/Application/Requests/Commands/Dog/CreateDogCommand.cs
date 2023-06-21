@@ -11,7 +11,7 @@ public record CreateDogCommand(
     string Name,
     double Age,
     double Weight,
-    int DogOwnerId,
+    Guid DogOwnerId,
     string Description) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<CreateDogCommand, CommonResult>

@@ -16,7 +16,7 @@ public class JobRequest : AuditableDateEntity
 
     public string Description { get; set; }
 
-    public int DogOwnerId { get; set; }
+    public Guid DogOwnerId { get; set; }
 
     public DogOwner DogOwner { get; set; }
 
@@ -24,7 +24,7 @@ public class JobRequest : AuditableDateEntity
 
     public Job Job { get; set; }
 
-    public int DogId { get; set; }
+    public Guid DogId { get; set; }
 
     public Dog Dog { get; set; }
 }

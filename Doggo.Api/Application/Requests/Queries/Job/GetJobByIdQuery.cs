@@ -1,5 +1,6 @@
 namespace Doggo.Application.Requests.Queries.Job;
 
+using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.DTO.Job;
 using Domain.Entities.Job;
@@ -9,7 +10,7 @@ using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
 
-public record GetJobByIdQuery(int Id) : IRequest<CommonResult<GetJobDto>>
+public record GetJobByIdQuery(Guid Id) : IRequest<CommonResult<GetJobDto>>
 {
     public class Handler : IRequestHandler<GetJobByIdQuery, CommonResult<GetJobDto>>
     {
@@ -24,8 +25,7 @@ public record GetJobByIdQuery(int Id) : IRequest<CommonResult<GetJobDto>>
 
         public async Task<CommonResult<GetJobDto>> Handle(GetJobByIdQuery request, CancellationToken cancellationToken)
         {
-
-            var cachedEntity = await _cacheService.GetData<Job>(request.Id.ToString());
+            var cachedEntity = await _cacheService.GetData<Job>(CacheKeys.Job + request.Id);
 
             if (cachedEntity is null)
             {
@@ -36,7 +36,7 @@ public record GetJobByIdQuery(int Id) : IRequest<CommonResult<GetJobDto>>
                 if (dog is null)
                     return Failure<GetJobDto>(CommonErrors.EntityDoesNotExist);
 
-                await _cacheService.SetData(dog.Id.ToString(), dog);
+                await _cacheService.SetData(CacheKeys.Job + request.Id, dog);
 
                 cachedEntity = dog;
             }

@@ -15,16 +15,16 @@ public class RequiredScheduleRepository : AbstractRepository<RequiredSchedule>, 
         _context = context;
     }
 
-    public async Task<RequiredSchedule?> GetAsync(int dogOwnerId, CancellationToken cancellationToken = default)
+    public async Task<RequiredSchedule?> GetAsync(Guid dogOwnerId, CancellationToken cancellationToken = default)
     {
         return await _context.RequiredSchedules.FirstOrDefaultAsync(x => x.Id == dogOwnerId, cancellationToken: cancellationToken);
     }
 
-    public async Task<IReadOnlyCollection<RequiredSchedule>> GetPageOfRequiredSchedulesAsync(int count, int page, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<RequiredSchedule>> GetPageOfRequiredSchedulesAsync(int pageCount, int page, CancellationToken cancellationToken = default)
     {
         return await _context.RequiredSchedules.OrderBy(ps => ps.Id)
-                    .Skip(count * (page - 1))
-                    .Take(count)
+                    .Skip(pageCount * (page - 1))
+                    .Take(pageCount)
                     .ToListAsync(cancellationToken: cancellationToken);
     }
 }

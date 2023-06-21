@@ -1,5 +1,6 @@
 namespace Doggo.Application.Requests.Queries.JobRequest;
 
+using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.DTO.JobRequest;
 using Domain.Entities.JobRequest;
@@ -9,7 +10,7 @@ using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
 
-public record GetJobRequestByIdQuery(int Id) : IRequest<CommonResult<GetJobRequestDto>>
+public record GetJobRequestByIdQuery(Guid Id) : IRequest<CommonResult<GetJobRequestDto>>
 {
     public class Handler : IRequestHandler<GetJobRequestByIdQuery, CommonResult<GetJobRequestDto>>
     {
@@ -26,20 +27,20 @@ public record GetJobRequestByIdQuery(int Id) : IRequest<CommonResult<GetJobReque
             GetJobRequestByIdQuery request,
             CancellationToken cancellationToken)
         {
-            var cachedEntity = await _cacheService.GetData<JobRequest>(request.Id.ToString());
+            var cachedEntity = await _cacheService.GetData<JobRequest>(CacheKeys.JobRequest + request.Id);
 
             if (cachedEntity is null)
             {
                 var repository = _unitOfWork.GetJobRequestRepository();
 
-                var dog = await repository.GetAsync(request.Id, cancellationToken);
+                var jobRequest = await repository.GetAsync(request.Id, cancellationToken);
 
-                if (dog is null)
+                if (jobRequest is null)
                     return Failure<GetJobRequestDto>(CommonErrors.EntityDoesNotExist);
 
-                await _cacheService.SetData(dog.Id.ToString(), dog);
+                await _cacheService.SetData(CacheKeys.JobRequest + request.Id, jobRequest);
 
-                cachedEntity = dog;
+                cachedEntity = jobRequest;
             }
 
             var entityDto = cachedEntity.MapJobRequestToGetJobRequestDto();

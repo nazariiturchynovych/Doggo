@@ -5,7 +5,7 @@ using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
-public record DeleteWalkerCommand(int WalkerId) : IRequest<CommonResult>
+public record DeleteWalkerCommand(Guid WalkerId) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<DeleteWalkerCommand, CommonResult>
     {

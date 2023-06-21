@@ -4,8 +4,8 @@ using System.Security.Claims;
 
 public static class ClaimsPrincipalExtensions
 {
-    public static int GetUserId(this ClaimsPrincipal claimsPrincipal)
+    public static Guid GetUserId(this ClaimsPrincipal claimsPrincipal)
     {
-        return int.Parse(claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+        return Guid.Parse(claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
     }
 }

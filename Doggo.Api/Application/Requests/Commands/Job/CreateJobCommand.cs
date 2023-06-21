@@ -4,24 +4,22 @@ using Domain.Entities.Job;
 using Domain.Enums;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
-using Infrastructure.Services.CurrentUserService;
 using MediatR;
 
 public record CreateJobCommand(
-    int WalkerId,
-    int DogOwnerId,
-    int JobRequestId,
-    string Comment) : IRequest<CommonResult>
+    Guid WalkerId,
+    Guid DogOwnerId,
+    Guid JobRequestId,
+    string Comment,
+    decimal Salary) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<CreateJobCommand, CommonResult>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ICurrentUserService _currentUserService;
 
-        public Handler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
+        public Handler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _currentUserService = currentUserService;
         }
 
         public async Task<CommonResult> Handle(CreateJobCommand request, CancellationToken cancellationToken)
@@ -30,6 +28,8 @@ public record CreateJobCommand(
 
             await repository.AddAsync(new Job()
             {
+                Salary = request.Salary,
+                WalkerId = request.WalkerId,
                 DogOwnerId = request.DogOwnerId,
                 JobRequestId = request.JobRequestId,
                 CreatedDate = DateTime.UtcNow,

@@ -2,7 +2,7 @@
 namespace Doggo.Domain.DTO.JobRequest;
 
 public record GetJobRequestDto(
-    int Id,
+    Guid Id,
     bool IsPersonalIdentifierRequired,
     string Description,
     int RequiredAge,

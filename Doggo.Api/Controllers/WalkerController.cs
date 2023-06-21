@@ -2,6 +2,7 @@ namespace Doggo.Controllers;
 
 using Application.Requests.Commands.Walker;
 using Application.Requests.Queries.Walker;
+using Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,18 +25,38 @@ public class WalkerController : ControllerBase
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    [HttpGet("GetWalker/{id:int}")]
-    public async Task<IActionResult> GetWalker(int id,CancellationToken cancellationToken)
+    [HttpGet("GetWalker/{id:Guid}")]
+    public async Task<IActionResult> GetWalker(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetWalkerByIdQuery(id), cancellationToken));
     }
+
+    [HttpGet("GetWalker")]
+    public async Task<IActionResult> GetWalker(CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new GetCurrentWalkerQuery(User.GetUserId()), cancellationToken));
+    }
+
     [HttpGet("GetPageOfWalkers")]
     public async Task<IActionResult> GetPageOfWalkers(
-        int count,
+        string? nameSearchTerm,
+        string? skillSearchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int pageCount,
         int page,
         CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetPageOfWalkerQuery(count, page), cancellationToken));
+        return Ok(
+            await _mediator.Send(
+                new GetPageOfWalkerQuery(
+                    nameSearchTerm,
+                    skillSearchTerm,
+                    sortColumn,
+                    sortOrder,
+                    pageCount,
+                    page),
+                cancellationToken));
     }
 
     [HttpPut("UpdateWalker")]
@@ -46,8 +67,8 @@ public class WalkerController : ControllerBase
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    [HttpDelete("DeleteWalker/{id:int}")]
-    public async Task<IActionResult> DeleteWalker(int id,CancellationToken cancellationToken)
+    [HttpDelete("DeleteWalker/{id:Guid}")]
+    public async Task<IActionResult> DeleteWalker(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeleteWalkerCommand(id), cancellationToken));
     }

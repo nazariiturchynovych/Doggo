@@ -18,8 +18,8 @@ public class AdminController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetUser(int id,CancellationToken cancellationToken)
+    [HttpGet("{id:Guid}")]
+    public async Task<IActionResult> GetUser(Guid id,CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetUserQuery(id), cancellationToken));
     }
@@ -39,8 +39,8 @@ public class AdminController : ControllerBase
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    [HttpDelete("DeleteUser/{id:int}")]
-    public async Task<IActionResult> DeleteUser(int id,CancellationToken cancellationToken)
+    [HttpDelete("DeleteUser/{id:Guid}")]
+    public async Task<IActionResult> DeleteUser(Guid id,CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeleteUserCommand(id), cancellationToken));
     }

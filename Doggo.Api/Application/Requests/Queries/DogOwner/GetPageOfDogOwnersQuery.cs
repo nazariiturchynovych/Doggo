@@ -8,11 +8,11 @@ using Mappers;
 using MediatR;
 
 public record GetPageOfDogOwnersQuery(
-    string? SearchTerm,
+    string? NameSearchTerm,
     string? SortColumn,
     string? SortOrder,
     int Count,
-    int Page) : IRequest<CommonResult<PageOfTDataDto<GetDogOwnerDto>>>
+    int PageCount) : IRequest<CommonResult<PageOfTDataDto<GetDogOwnerDto>>>
 {
     public class Handler : IRequestHandler<GetPageOfDogOwnersQuery, CommonResult<PageOfTDataDto<GetDogOwnerDto>>>
     {
@@ -27,15 +27,15 @@ public record GetPageOfDogOwnersQuery(
             GetPageOfDogOwnersQuery request,
             CancellationToken cancellationToken)
         {
-            var userRepository = _unitOfWork.GetDogOwnerRepository();
+            var dogOwnerRepository = _unitOfWork.GetDogOwnerRepository();
 
-            var page = await userRepository
+            var page = await dogOwnerRepository
                 .GetPageOfDogOwnersAsync(
-                request.SearchTerm,
+                request.NameSearchTerm,
                 request.SortColumn,
                 request.SortOrder,
                 request.Count,
-                request.Page,
+                request.PageCount,
                 cancellationToken);
 
             return Success(page.MapDogOwnerCollectionToPageODogOwnersDto());

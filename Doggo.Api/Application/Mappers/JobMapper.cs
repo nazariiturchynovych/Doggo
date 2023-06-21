@@ -17,18 +17,17 @@ public static class JobMapper
     {
         return new GetJobDto(
             job.Id,
+            job.WalkerId,
+            job.DogOwnerId,
+            job.DogId,
             job.Comment,
+            job.Salary,
             job.JobRequest.MapJobRequestToGetJobRequestDto());
     }
 
     public static PageOfTDataDto<GetJobDto> MapJobCollectionToPageOJobDto(this IReadOnlyCollection<Job> collection)
     {
-        var collectionDto = new List<GetJobDto>();
-
-        foreach (var job in collection)
-        {
-            collectionDto.Add(job.MapJobToGetJobDto());
-        }
+        var collectionDto = collection.Select(job => job.MapJobToGetJobDto()).ToList();
 
         return new PageOfTDataDto<GetJobDto>(collectionDto);
     }

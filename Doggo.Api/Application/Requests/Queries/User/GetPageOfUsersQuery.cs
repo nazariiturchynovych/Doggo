@@ -12,7 +12,7 @@ public record GetPageOfUsersQuery(
     string? SortColumn,
     string? SortOrder,
     int Count,
-    int Page) : IRequest<CommonResult<PageOfTDataDto<GetUserDto>>>
+    int PageCount) : IRequest<CommonResult<PageOfTDataDto<GetUserDto>>>
 {
     public class Handler : IRequestHandler<GetPageOfUsersQuery, CommonResult<PageOfTDataDto<GetUserDto>>>
     {
@@ -34,7 +34,7 @@ public record GetPageOfUsersQuery(
                 request.SortColumn,
                 request.SortOrder,
                 request.Count,
-                request.Page,
+                request.PageCount,
                 cancellationToken);
 
             return Success(page.MapUserCollectionToPageOfUsersDto());

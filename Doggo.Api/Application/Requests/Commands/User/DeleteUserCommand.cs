@@ -6,7 +6,7 @@ using Domain.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-public record DeleteUserCommand(int UserId) : IRequest<CommonResult>
+public record DeleteUserCommand(Guid UserId) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<DeleteUserCommand, CommonResult>
     {

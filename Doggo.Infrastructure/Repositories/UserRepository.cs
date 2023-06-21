@@ -15,11 +15,10 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<User?> GetAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<User?> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Users.Where(u => u.Id == id)
-            .Include(x => x.DogOwner)
-            .Include(x => x.Walker)
+            .Include(x => x.PersonalIdentifier)
             .FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 
@@ -27,7 +26,7 @@ public class UserRepository : IUserRepository
         string? searchTerm,
         string? sortColumn,
         string? sortOrder,
-        int count,
+        int pageCount,
         int page,
         CancellationToken cancellationToken = default)
     {
@@ -42,8 +41,8 @@ public class UserRepository : IUserRepository
 
         Expression<Func<User, object>> keySelector = sortColumn?.ToLower() switch
         {
-            "firstName" => user => user.FirstName,
-            "lastName" => user => user.LastName,
+            "firstname" => user => user.FirstName,
+            "lastname" => user => user.LastName,
             "age" => user => user.Age,
             _ => user => user.Id,
         };
@@ -52,10 +51,8 @@ public class UserRepository : IUserRepository
 
 
         return await userQuery
-            .Skip(count * (page - 1))
-            .Take(count)
-            .Include(x => x.DogOwner)
-            .Include(x => x.Walker)
+            .Skip(pageCount * (page - 1))
+            .Take(pageCount)
             .ToListAsync(cancellationToken: cancellationToken);
 
     }
@@ -68,7 +65,7 @@ public class UserRepository : IUserRepository
                 .FirstOrDefaultAsync(cancellationToken: cancellationToken);
         }
 
-        public async Task<User?> GetUserWithRoles(int userId, CancellationToken cancellationToken = default)
+        public async Task<User?> GetUserWithRoles(Guid userId, CancellationToken cancellationToken = default)
         {
             return await _context.Users.Where(u => u.Id == userId)
                 .Include(u => u.UserRoles)

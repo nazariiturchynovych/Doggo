@@ -7,18 +7,12 @@ using Requests.Commands.Dog;
 
 public static class DogMapper
 {
-    public static DogDto MapDogToDogDto(this Dog dog)
-    {
-        return new DogDto(dog.Id, dog.Name);
-    }
-
     public static Dog MapDogUpdateCommandToDog(this UpdateDogCommand command, Dog dog)
     {
         dog.Age = command.Age ?? dog.Age;
         dog.Weight = command.Weight ?? dog.Weight;
         dog.Description = command.Description ?? dog.Description;
         dog.Name = command.Name ?? dog.Name;
-
         return dog;
     }
 
@@ -26,6 +20,7 @@ public static class DogMapper
     {
         return new GetDogDto(
             dog.Id,
+            dog.DogOwnerId,
             dog.Name,
             dog.Age,
             dog.Weight,
@@ -34,12 +29,7 @@ public static class DogMapper
 
     public static PageOfTDataDto<GetDogDto> MapDogCollectionToPageOfDogDto(this IReadOnlyCollection<Dog> collection)
     {
-        var collectionDto = new List<GetDogDto>();
-
-        foreach (var dogOwner in collection)
-        {
-            collectionDto.Add(dogOwner.MapDogToGetDogDto());
-        }
+        var collectionDto = collection.Select(dogOwner => dogOwner.MapDogToGetDogDto()).ToList();
 
         return new PageOfTDataDto<GetDogDto>(collectionDto);
     }

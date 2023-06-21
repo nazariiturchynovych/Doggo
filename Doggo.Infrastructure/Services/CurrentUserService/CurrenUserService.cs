@@ -19,10 +19,10 @@ public class CurrenUserService : ICurrentUserService
         return _contextAccessor?.HttpContext?.User.Claims.First(x => x.Type == ClaimTypes.Email).Value ?? throw _exception;
     }
 
-    public int GetUserId()
+    public Guid GetUserId()
     {
         var id = _contextAccessor?.HttpContext?.User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value ?? throw _exception;
-        return int.Parse(id);
+        return Guid.Parse(id);
     }
 
     public string GetUserRole()

@@ -3,7 +3,7 @@ namespace Doggo.Domain.Entities.User;
 
 using Microsoft.AspNetCore.Identity;
 
-public class UserRole : IdentityUserRole<int>
+public class UserRole : IdentityUserRole<Guid>
 {
     public virtual User User { get; set; }
 

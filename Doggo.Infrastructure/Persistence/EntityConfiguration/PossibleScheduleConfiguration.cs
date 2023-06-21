@@ -1,6 +1,6 @@
 namespace Doggo.Infrastructure.Persistence.EntityConfiguration;
 
-using Doggo.Domain.Entities.Walker.Schedule;
+using Domain.Entities.Walker.Schedule;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

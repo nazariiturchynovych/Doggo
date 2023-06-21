@@ -31,6 +31,7 @@ public static class JobRequestMapper
             jobRequest.RequiredSchedule.MapRequiredScheduleToGetRequiredScheduleDto());
     }
 
+
     public static PageOfTDataDto<GetJobRequestDto> MapJobRequestCollectionToPageOJobRequestsDto(this IReadOnlyCollection<JobRequest> collection)
     {
         var collectionDto = new List<GetJobRequestDto>();

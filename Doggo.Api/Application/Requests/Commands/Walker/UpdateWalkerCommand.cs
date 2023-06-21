@@ -6,7 +6,7 @@ using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record UpdateWalkerCommand(int WalkerId ,string? Skills, string? About) : IRequest<CommonResult>
+public record UpdateWalkerCommand(Guid WalkerId ,string? Skills, string? About) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<UpdateWalkerCommand, CommonResult>
     {

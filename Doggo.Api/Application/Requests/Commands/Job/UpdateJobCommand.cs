@@ -6,7 +6,7 @@ using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record UpdateJobCommand(int JobId ,string Comment) : IRequest<CommonResult>
+public record UpdateJobCommand(Guid JobId ,string Comment) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<UpdateJobCommand, CommonResult>
     {

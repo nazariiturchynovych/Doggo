@@ -1,7 +1,6 @@
 namespace Doggo.Application.Mappers;
 
 using Domain.DTO;
-using Domain.DTO.Dog;
 using Domain.DTO.DogOwner;
 using Domain.Entities.DogOwner;
 using Requests.Commands.DogOwner;
@@ -17,39 +16,22 @@ public static class DogOwnerMapper
 
     public static GetDogOwnerDto MapDogOwnerToGetDogOwnerDto(this DogOwner dogOwner)
     {
-        var dogs = new List<DogDto>();
-
-        foreach (var dog in dogOwner.Dogs)
-        {
-            dogs.Add(dog.MapDogToDogDto());
-        }
-
         return new GetDogOwnerDto(
             dogOwner.Id,
+            dogOwner.UserId,
             dogOwner.Address,
             dogOwner.District,
             dogOwner.User.FirstName,
             dogOwner.User.LastName,
             dogOwner.User.PhoneNumber!,
-            dogOwner.User.Email!,
-            dogs);
-    }
-
-    public static DogOwnerDto MapDogOwnerToDogOwnerDto(this DogOwner dogOwner)
-    {
-        return new DogOwnerDto(dogOwner.Id);
+            dogOwner.User.Email!);
     }
 
 
     public static PageOfTDataDto<GetDogOwnerDto> MapDogOwnerCollectionToPageODogOwnersDto(
         this IReadOnlyCollection<DogOwner> collection)
     {
-        var collectionDto = new List<GetDogOwnerDto>();
-
-        foreach (var dogOwner in collection)
-        {
-            collectionDto.Add(dogOwner.MapDogOwnerToGetDogOwnerDto());
-        }
+        var collectionDto = collection.Select(dogOwner => dogOwner.MapDogOwnerToGetDogOwnerDto()).ToList();
 
         return new PageOfTDataDto<GetDogOwnerDto>(collectionDto);
     }

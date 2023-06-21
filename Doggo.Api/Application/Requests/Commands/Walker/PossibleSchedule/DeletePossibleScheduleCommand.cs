@@ -5,7 +5,7 @@ using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
-public record DeletePossibleScheduleCommand(int PossibleScheduleId) : IRequest<CommonResult>
+public record DeletePossibleScheduleCommand(Guid PossibleScheduleId) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<DeletePossibleScheduleCommand, CommonResult>
     {

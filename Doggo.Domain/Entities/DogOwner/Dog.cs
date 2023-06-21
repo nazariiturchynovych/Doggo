@@ -14,11 +14,11 @@ public class Dog : Entity
 
     public string Description { get; set; }
 
-    public int DogOwnerId { get; set; }
+    public Guid DogOwnerId { get; set; }
 
     public DogOwner DogOwner { get; set; }
 
-    public int JobRequestId { get; set; }
+    public Guid JobRequestId { get; set; }
 
-    public ICollection<JobRequest> JobRequest { get; set; }
+    public ICollection<JobRequest> JobRequests { get; set; }
 }

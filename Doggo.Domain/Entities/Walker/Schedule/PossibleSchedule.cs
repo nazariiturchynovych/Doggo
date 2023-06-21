@@ -5,7 +5,7 @@ using Base;
 
 public class PossibleSchedule : Entity
 {
-    public int WalkerId { get; set; }
+    public Guid WalkerId { get; set; }
 
     public Walker Walker { get; set; }
 

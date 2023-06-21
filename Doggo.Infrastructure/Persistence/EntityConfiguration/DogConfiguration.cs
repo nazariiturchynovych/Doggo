@@ -10,7 +10,7 @@ public class DogConfiguration : IEntityTypeConfiguration<Dog>
     {
         builder.ToTable("Dogs");
 
-        builder.HasMany(x => x.JobRequest)
+        builder.HasMany(x => x.JobRequests)
             .WithOne(x => x.Dog)
             .HasForeignKey(x => x.DogId);
     }

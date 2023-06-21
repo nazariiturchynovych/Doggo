@@ -8,7 +8,7 @@ using Mappers;
 using MediatR;
 
 public record UpdateJobRequestCommand(
-    int JobRequestId,
+    Guid JobRequestId,
     int? RequiredAge,
     bool? IsPersonalIdentifierRequired,
     string Description,

@@ -8,7 +8,7 @@ using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record GetDogOwnerDogsQuery(int DogOwnerId) : IRequest<CommonResult<PageOfTDataDto<GetDogDto>>>
+public record GetDogOwnerDogsQuery(Guid DogOwnerId) : IRequest<CommonResult<PageOfTDataDto<GetDogDto>>>
 {
     public class Handler : IRequestHandler<GetDogOwnerDogsQuery, CommonResult<PageOfTDataDto<GetDogDto>>>
     {

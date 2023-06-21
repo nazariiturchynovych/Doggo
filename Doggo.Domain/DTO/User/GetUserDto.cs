@@ -2,13 +2,13 @@
 namespace Doggo.Domain.DTO.User;
 
 using DogOwner;
+using PersonalIdentifier;
 using Walker;
 
 public record GetUserDto(
-    int Id,
+    Guid Id,
     string FirstName,
     string LastName,
     int Age,
     string Email,
-    DogOwnerDto? DogOwner,
-    WalkerDto? Walker);
+    GetPersonalIdentifierDto PersonalIdentifier);

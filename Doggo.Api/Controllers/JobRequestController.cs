@@ -1,5 +1,6 @@
 namespace Doggo.Controllers;
 
+using Application.Requests.Commands.Job;
 using Application.Requests.Commands.JobRequest;
 using Application.Requests.Queries.JobRequest;
 using MediatR;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Authorize(Roles = "JobRequest, Admin")]
+[Authorize(Roles = "DogOwner, Admin")]
 [Route("api/[Controller]")]
 public class JobRequestController : ControllerBase
 {
@@ -24,19 +25,38 @@ public class JobRequestController : ControllerBase
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    [HttpGet("GetJobRequest/{id:int}")]
-    public async Task<IActionResult> GetJobRequest(int id, CancellationToken cancellationToken)
+    [HttpGet("GetJobRequest/{id:Guid}")]
+    public async Task<IActionResult> GetJobRequest(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetJobRequestByIdQuery(id), cancellationToken));
     }
 
+    [HttpGet("GetDogOwnerJobRequests")]
+    public async Task<IActionResult> GetDogOwnerJobRequests(
+        Guid dogOwnerId,
+        CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new GetDogOwnerJobRequestsQuery(dogOwnerId), cancellationToken));
+    }
+
     [HttpGet("GetPageOfJobRequests")]
     public async Task<IActionResult> GetPageOfJobRequests(
-        int count,
+        string? descriptionSearchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int pageCount,
         int page,
         CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetPageOfJobRequestsQuery(count, page), cancellationToken));
+        return Ok(
+            await _mediator.Send(
+                new GetPageOfJobRequestsQuery(
+                    descriptionSearchTerm,
+                    sortColumn,
+                    sortOrder,
+                    pageCount,
+                    page),
+                cancellationToken));
     }
 
     [HttpPut("UpdateJobRequest")]
@@ -47,8 +67,8 @@ public class JobRequestController : ControllerBase
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
-    [HttpDelete("DeleteJobRequest/{id:int}")]
-    public async Task<IActionResult> DeleteJobRequest(int id, CancellationToken cancellationToken)
+    [HttpDelete("DeleteJobRequest/{id:Guid}")]
+    public async Task<IActionResult> DeleteJobRequest(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeleteJobRequestCommand(id), cancellationToken));
     }

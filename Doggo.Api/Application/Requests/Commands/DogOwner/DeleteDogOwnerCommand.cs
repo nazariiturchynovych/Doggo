@@ -5,7 +5,7 @@ using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
-public record DeleteDogOwnerCommand(int DogOwnerId) : IRequest<CommonResult>
+public record DeleteDogOwnerCommand(Guid DogOwnerId) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<DeleteDogOwnerCommand, CommonResult>
     {

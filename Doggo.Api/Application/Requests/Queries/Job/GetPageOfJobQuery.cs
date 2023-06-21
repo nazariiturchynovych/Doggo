@@ -7,7 +7,12 @@ using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record GetPageOfJobsQuery(int Count, int Page) : IRequest<CommonResult<PageOfTDataDto<GetJobDto>>>
+public record GetPageOfJobsQuery(
+    string? CommentSearchTerm,
+    string? SortColumn,
+    string? SortOrder,
+    int Count,
+    int PageCount) : IRequest<CommonResult<PageOfTDataDto<GetJobDto>>>
 {
     public class Handler : IRequestHandler<GetPageOfJobsQuery, CommonResult<PageOfTDataDto<GetJobDto>>>
     {
@@ -24,7 +29,13 @@ public record GetPageOfJobsQuery(int Count, int Page) : IRequest<CommonResult<Pa
         {
             var userRepository = _unitOfWork.GetJobRepository();
 
-            var page = await userRepository.GetPageOfJobsAsync(request.Count, request.Page, cancellationToken);
+            var page = await userRepository.GetPageOfJobsAsync(
+                request.CommentSearchTerm,
+                request.SortColumn,
+                request.SortOrder,
+                request.Count,
+                request.PageCount,
+                cancellationToken);
 
             return Success(page.MapJobCollectionToPageOJobDto());
         }

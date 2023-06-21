@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 public record ConfirmEmailAndSetDefaultRoleCommand
-    (int UserId, string Token) : IRequest<CommonResult>
+    (Guid UserId, string Token) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<ConfirmEmailAndSetDefaultRoleCommand, CommonResult>
     {

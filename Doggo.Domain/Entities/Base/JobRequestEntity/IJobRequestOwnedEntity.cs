@@ -1,11 +1,10 @@
-namespace Doggo.Domain.Entities.Base.JobRequest;
+namespace Doggo.Domain.Entities.Base.JobRequestEntity;
 
-using Doggo.Domain.Entities.Base;
-using Entities.JobRequest;
+using JobRequest;
 
 public interface IJobRequestOwnedEntity
 {
-    public int JobRequestId { get; set; }
+    public Guid JobRequestId { get; set; }
 
     public JobRequest JobRequest { get; set; }
 }

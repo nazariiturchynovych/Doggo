@@ -14,15 +14,14 @@ public static class PossibleScheduleMapper
             possibleSchedule.To,
             possibleSchedule.DayOfWeek);
     }
-    
-    public static PageOfTDataDto<GetPossibleScheduleDto> MapPossibleScheduleCollectionToPageOPossibleSchedulesDto(this IReadOnlyCollection<PossibleSchedule> collection)
-    {
-        var collectionDto = new List<GetPossibleScheduleDto>();
 
-        foreach (var possibleSchedule in collection)
-        {
-            collectionDto.Add(possibleSchedule.MapPossibleScheduleToGetPossibleScheduleDto());
-        }
+    public static PageOfTDataDto<GetPossibleScheduleDto> MapPossibleScheduleCollectionToPageOPossibleSchedulesDto(
+        this IReadOnlyCollection<PossibleSchedule> collection)
+    {
+        var collectionDto = collection
+            .Select(possibleSchedule => possibleSchedule.MapPossibleScheduleToGetPossibleScheduleDto())
+            .ToList();
+
         return new PageOfTDataDto<GetPossibleScheduleDto>(collectionDto);
     }
 }
