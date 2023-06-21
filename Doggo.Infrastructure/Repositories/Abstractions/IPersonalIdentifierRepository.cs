@@ -1,7 +1,6 @@
-namespace Doggo.Infrastructure.Repositories;
+namespace Doggo.Infrastructure.Repositories.Abstractions;
 
 using Domain.Entities.User.Documents;
-using Domain.Enums;
 
 public interface IPersonalIdentifierRepository : IAbstractRepository<PersonalIdentifier>
 {

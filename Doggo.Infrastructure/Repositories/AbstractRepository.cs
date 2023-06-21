@@ -1,5 +1,6 @@
 namespace Doggo.Infrastructure.Repositories;
 
+using Abstractions;
 using Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -21,7 +22,7 @@ public class AbstractRepository<TEntity> : IAbstractRepository<TEntity>
     }
 
 
-    public async Task<EntityEntry<TEntity>> AddAsync(TEntity entity) => await _entities.AddAsync(entity ?? throw new ArgumentNullException(nameof(entity)));
+    public async Task AddAsync(TEntity entity) => await _entities.AddAsync(entity ?? throw new ArgumentNullException(nameof(entity)));
 
     public async Task AddRangeAsync(IEnumerable<TEntity> entities) => await _entities.AddRangeAsync(entities);
 

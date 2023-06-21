@@ -1,6 +1,6 @@
-namespace Doggo.Infrastructure.Repositories;
+namespace Doggo.Infrastructure.Repositories.Abstractions;
 
-using Domain.Entities.DogOwner;
+using Doggo.Domain.Entities.DogOwner;
 
 public interface IDogOwnerRepository : IAbstractRepository<DogOwner>
 {

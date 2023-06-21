@@ -39,17 +39,18 @@ public record CreateJobRequestCommand(
             if (jobRequest is not null)
                 return Failure(CommonErrors.EntityAlreadyExist);
 
-            var entityEntry = await jobRequestRepository.AddAsync(
-                new JobRequest
-                {
-                    DogId = request.DogId,
-                    DogOwnerId = request.DogOwnerId,
-                    CreatedDate = DateTime.Now,
-                    RequiredAge = request.RequiredAge,
-                    Description = request.Description,
-                    Salary = request.Salary,
-                    IsPersonalIdentifierRequired = request.IsPersonalIdentifierRequired,
-                });
+            var entityToAdd = new JobRequest
+            {
+                DogId = request.DogId,
+                DogOwnerId = request.DogOwnerId,
+                CreatedDate = DateTime.Now,
+                RequiredAge = request.RequiredAge,
+                Description = request.Description,
+                Salary = request.Salary,
+                IsPersonalIdentifierRequired = request.IsPersonalIdentifierRequired,
+            };
+
+            await jobRequestRepository.AddAsync(entityToAdd);
 
             var requiredScheduleRepository = _unitOfWork.GetRequiredScheduleRepository();
 
@@ -60,7 +61,7 @@ public record CreateJobRequestCommand(
                     To = request.RequiredScheduleDto.To,
                     DayOfWeek = request.RequiredScheduleDto.DayOfWeek,
                     IsRegular = request.RequiredScheduleDto.IsRegular,
-                    JobRequestId = entityEntry.Entity.Id
+                    JobRequestId = entityToAdd.Id
                 }); //TODO entity entry can be null
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);

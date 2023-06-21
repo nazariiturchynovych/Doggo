@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.OpenApi.Models;
 using FluentValidation;
+using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Services.CacheService;
 using Infrastructure.Services.FacebookAuthService;
 

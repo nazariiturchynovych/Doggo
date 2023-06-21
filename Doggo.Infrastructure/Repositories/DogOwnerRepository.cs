@@ -1,5 +1,6 @@
 namespace Doggo.Infrastructure.Repositories;
 
+using Abstractions;
 using Domain.Entities.DogOwner;
 using Microsoft.EntityFrameworkCore;
 using Persistence;

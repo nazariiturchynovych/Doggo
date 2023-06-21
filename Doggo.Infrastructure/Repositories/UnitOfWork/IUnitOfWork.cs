@@ -1,5 +1,7 @@
 namespace Doggo.Infrastructure.Repositories.UnitOfWork;
 
+using Abstractions;
+
 public interface IUnitOfWork
 {
     IUserRepository GetUserRepository();

@@ -1,5 +1,6 @@
 namespace Doggo.Infrastructure.Repositories;
 
+using Abstractions;
 using Domain.Entities.JobRequest;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
