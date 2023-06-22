@@ -30,6 +30,8 @@ public record UpdateDogOwnerCommand(Guid DogOwnerId ,string? Address, string? Di
 
             repository.Update(updatedDogOwner);
 
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
             return Success();
         }
     }

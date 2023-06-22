@@ -5,21 +5,21 @@ using Domain.Constants.ErrorConstants;
 using Domain.DTO.User;
 using Domain.Entities.User;
 using Domain.Results;
+using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 public record GetUserQuery(Guid UserId) : IRequest<CommonResult<GetUserDto>>
 {
     public class Handler : IRequestHandler<GetUserQuery, CommonResult<GetUserDto>>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IUserRepository _userRepository;
         private readonly ICacheService _cacheService;
 
-        public Handler(UserManager<User> userManager, ICacheService cacheService)
+        public Handler(IUserRepository userRepository, ICacheService cacheService)
         {
-            _userManager = userManager;
+            _userRepository = userRepository;
             _cacheService = cacheService;
         }
 
@@ -29,7 +29,7 @@ public record GetUserQuery(Guid UserId) : IRequest<CommonResult<GetUserDto>>
 
             if (cachedUser is null)
             {
-                var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+                var user = await _userRepository.GetAsync(request.UserId, cancellationToken);
 
                 if (user is null)
                     return Failure<GetUserDto>(CommonErrors.EntityDoesNotExist);

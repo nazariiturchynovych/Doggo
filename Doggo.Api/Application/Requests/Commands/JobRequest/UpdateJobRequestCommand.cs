@@ -36,6 +36,8 @@ public record UpdateJobRequestCommand(
 
             repository.Update(updatedJobRequest);
 
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
             return Success();
         }
     }

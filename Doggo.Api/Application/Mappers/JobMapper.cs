@@ -22,6 +22,8 @@ public static class JobMapper
             job.DogId,
             job.Comment,
             job.Salary,
+            job.Status,
+            job.Dog.MapDogToGetDogDto(),
             job.JobRequest.MapJobRequestToGetJobRequestDto());
     }
 

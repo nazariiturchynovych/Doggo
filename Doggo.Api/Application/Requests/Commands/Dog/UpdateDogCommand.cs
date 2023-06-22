@@ -30,6 +30,8 @@ public record UpdateDogCommand(Guid DogId ,double? Weight, string? Description, 
 
             repository.Update(updatedDog);
 
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
             return Success();
         }
     }

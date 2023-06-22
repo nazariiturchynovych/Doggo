@@ -3,7 +3,6 @@ namespace Doggo.Infrastructure.Repositories;
 using System.Linq.Expressions;
 using Abstractions;
 using Domain.Entities.Job;
-using Domain.Entities.JobRequest;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -21,6 +20,7 @@ public class JobRepository : AbstractRepository<Job>, IJobRepository
     {
         return await _context.Jobs
             .Include(x => x.JobRequest.RequiredSchedule)
+            .Include(x => x.Dog)
             .FirstOrDefaultAsync(x => x.Id == dogId, cancellationToken: cancellationToken);
     }
 
@@ -29,6 +29,8 @@ public class JobRepository : AbstractRepository<Job>, IJobRepository
         CancellationToken cancellationToken = default)
     {
         return await _context.Jobs.Where(x => x.DogOwnerId == dogOwnerId)
+            .Include(x => x.JobRequest.RequiredSchedule)
+            .Include(x => x.Dog)
             .OrderBy(ps => ps.Id)
             .ToListAsync(cancellationToken: cancellationToken);
     }
@@ -38,6 +40,8 @@ public class JobRepository : AbstractRepository<Job>, IJobRepository
         CancellationToken cancellationToken = default)
     {
         return await _context.Jobs.Where(x => x.DogId == dogId)
+            .Include(x => x.JobRequest.RequiredSchedule)
+            .Include(x => x.Dog)
             .OrderBy(x => x.Id)
             .ToListAsync(cancellationToken: cancellationToken);
     }
@@ -47,6 +51,8 @@ public class JobRepository : AbstractRepository<Job>, IJobRepository
         CancellationToken cancellationToken = default)
     {
         return await _context.Jobs.Where(x => x.WalkerId == jobId)
+            .Include(x => x.JobRequest.RequiredSchedule)
+            .Include(x => x.Dog)
             .OrderBy(x => x.Id)
             .ToListAsync(cancellationToken: cancellationToken);
     }
@@ -59,12 +65,14 @@ public class JobRepository : AbstractRepository<Job>, IJobRepository
         int page,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<Job> jobQuery = _context.Jobs;
+        IQueryable<Job> jobQuery = _context.Jobs
+            .Include(x => x.JobRequest.RequiredSchedule)
+            .Include(x => x.Dog);
         if (!string.IsNullOrWhiteSpace(commentSearchTerm))
         {
             jobQuery = jobQuery.Where(
                 x =>
-                    x.Comment.Contains(commentSearchTerm) );
+                    x.Comment.Contains(commentSearchTerm));
         }
 
         Expression<Func<Job, object>> keySelector = sortColumn?.ToLower() switch

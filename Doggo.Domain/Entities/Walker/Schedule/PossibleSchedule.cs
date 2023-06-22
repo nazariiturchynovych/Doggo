@@ -9,9 +9,8 @@ public class PossibleSchedule : Entity
 
     public Walker Walker { get; set; }
 
-    public TimeOnly From { get; set; }
+    public DateTime From { get; set; }
 
-    public TimeOnly To { get; set; }
+    public DateTime To { get; set; }
 
-    public DayOfWeek DayOfWeek { get; set; }
 }

@@ -28,6 +28,7 @@ public class JobRequestRepository : AbstractRepository<JobRequest>, IJobRequestR
         CancellationToken cancellationToken = default)
     {
         return await _context.JobRequests.Where(x => x.DogOwnerId == dogOwnerId)
+            .Include(x => x.RequiredSchedule)
             .OrderBy(ps => ps.Id)
             .ToListAsync(cancellationToken: cancellationToken);
     }
@@ -40,7 +41,8 @@ public class JobRequestRepository : AbstractRepository<JobRequest>, IJobRequestR
         int page,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<JobRequest> jobRequestQuery = _context.JobRequests;
+        IQueryable<JobRequest> jobRequestQuery = _context.JobRequests
+            .Include(x => x.RequiredSchedule);
         if (!string.IsNullOrWhiteSpace(descriptionSearchTerm))
         {
             jobRequestQuery = jobRequestQuery.Where(

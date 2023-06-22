@@ -11,8 +11,7 @@ public static class PossibleScheduleMapper
         return new GetPossibleScheduleDto(
             possibleSchedule.Id,
             possibleSchedule.From,
-            possibleSchedule.To,
-            possibleSchedule.DayOfWeek);
+            possibleSchedule.To);
     }
 
     public static PageOfTDataDto<GetPossibleScheduleDto> MapPossibleScheduleCollectionToPageOPossibleSchedulesDto(

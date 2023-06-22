@@ -38,7 +38,7 @@ public class DogOwnerRepository : AbstractRepository<DogOwner>, IDogOwnerReposit
         int page,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<DogOwner> dogOwnerQuery = _context.DogOwners;
+        IQueryable<DogOwner> dogOwnerQuery = _context.DogOwners.Include(x => x.User);
         if (!string.IsNullOrWhiteSpace(nameSearchTerm))
         {
             dogOwnerQuery = dogOwnerQuery.Where(
@@ -63,7 +63,6 @@ public class DogOwnerRepository : AbstractRepository<DogOwner>, IDogOwnerReposit
         return await dogOwnerQuery
             .Skip(pageCount * (page - 1))
             .Take(pageCount)
-            .Include(x => x.User)
             .ToListAsync(cancellationToken: cancellationToken);
     }
 }

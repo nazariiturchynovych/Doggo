@@ -3,7 +3,6 @@ namespace Doggo.Application.Requests.Queries.Dog;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.DTO.Dog;
-using Domain.Entities.DogOwner;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
@@ -25,8 +24,7 @@ public record GetDogByIdQuery(Guid Id) : IRequest<CommonResult<GetDogDto>>
 
         public async Task<CommonResult<GetDogDto>> Handle(GetDogByIdQuery request, CancellationToken cancellationToken)
         {
-
-            var cachedEntity = await _cacheService.GetData<Dog>(CacheKeys.Dog + request.Id);
+            var cachedEntity = await _cacheService.GetData<GetDogDto>(CacheKeys.Dog + request.Id);
 
             if (cachedEntity is null)
             {
@@ -37,14 +35,14 @@ public record GetDogByIdQuery(Guid Id) : IRequest<CommonResult<GetDogDto>>
                 if (dog is null)
                     return Failure<GetDogDto>(CommonErrors.EntityDoesNotExist);
 
-                await _cacheService.SetData(CacheKeys.Dog + dog.Id, dog);
+                var entityDto = dog.MapDogToGetDogDto();
 
-                cachedEntity = dog;
+                cachedEntity = entityDto;
+
+                await _cacheService.SetData(CacheKeys.DogOwner + dog.Id, entityDto);
             }
 
-            var entityDto = cachedEntity.MapDogToGetDogDto();
-
-            return Success(entityDto);
+            return Success(cachedEntity);
         }
     }
 };

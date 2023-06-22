@@ -3,6 +3,5 @@ namespace Doggo.Domain.DTO.Walker.PossibleSchedule;
 
 public record GetPossibleScheduleDto(
     Guid Id,
-    TimeOnly From,
-    TimeOnly To,
-    DayOfWeek DayOfWeek);
+    DateTime From,
+    DateTime To);

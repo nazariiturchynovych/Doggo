@@ -7,7 +7,7 @@ using Domain.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-public record ConfirmResetPasswordCommand(string Token, string UserId, string NewPassword) : IRequest<CommonResult>
+public record ConfirmResetPasswordCommand(string Token, Guid UserId, string NewPassword) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<ConfirmResetPasswordCommand, CommonResult>
     {
@@ -20,7 +20,7 @@ public record ConfirmResetPasswordCommand(string Token, string UserId, string Ne
 
         public async Task<CommonResult> Handle(ConfirmResetPasswordCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
             if (user is null)
                 return Failure(CommonErrors.EntityDoesNotExist);

@@ -30,6 +30,8 @@ public record UpdateJobCommand(Guid JobId ,string Comment) : IRequest<CommonResu
 
             repository.Update(updatedJob);
 
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
             return Success();
         }
     }

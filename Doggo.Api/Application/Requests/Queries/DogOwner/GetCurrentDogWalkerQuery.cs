@@ -3,7 +3,6 @@ namespace Doggo.Application.Requests.Queries.DogOwner;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.DTO.DogOwner;
-using Domain.Entities.DogOwner;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
@@ -26,7 +25,7 @@ public record GetCurrentDogWalkerQuery(Guid UserId) : IRequest<CommonResult<GetD
         public async Task<CommonResult<GetDogOwnerDto>> Handle(GetCurrentDogWalkerQuery request, CancellationToken cancellationToken)
         {
 
-            var cachedEntity = await _cacheService.GetData<DogOwner>(CacheKeys.DogOwner + request.UserId);
+            var cachedEntity = await _cacheService.GetData<GetDogOwnerDto>(CacheKeys.DogOwner + request.UserId);
 
             if (cachedEntity is null)
             {
@@ -37,14 +36,14 @@ public record GetCurrentDogWalkerQuery(Guid UserId) : IRequest<CommonResult<GetD
                 if (dogOwner is null)
                     return Failure<GetDogOwnerDto>(CommonErrors.EntityDoesNotExist);
 
-                await _cacheService.SetData(dogOwner.Id.ToString(), dogOwner);
+                var entityDto = dogOwner.MapDogOwnerToGetDogOwnerDto();
 
-                cachedEntity = dogOwner;
+                cachedEntity = entityDto;
+
+                await _cacheService.SetData(CacheKeys.DogOwner + dogOwner.Id, entityDto);
             }
 
-            var entityDto = cachedEntity.MapDogOwnerToGetDogOwnerDto();
-
-            return Success(entityDto);
+            return Success(cachedEntity);
         }
     }
 };

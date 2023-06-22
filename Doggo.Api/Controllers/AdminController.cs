@@ -19,15 +19,29 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("{id:Guid}")]
-    public async Task<IActionResult> GetUser(Guid id,CancellationToken cancellationToken)
+    public async Task<IActionResult> GetUser(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetUserQuery(id), cancellationToken));
     }
 
     [HttpGet("GetPageOfUsers")]
-    public async Task<IActionResult> GetPageOfUsers(GetPageOfUsersQuery query,CancellationToken cancellationToken)
+    public async Task<IActionResult> GetPageOfUsers(
+        string? searchTerm,
+        string? sortColumn,
+        string? sortOrder,
+        int pageCount,
+        int page,
+        CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(query, cancellationToken));
+        return Ok(
+            await _mediator.Send(
+                new GetPageOfUsersQuery(
+                    searchTerm,
+                    sortColumn,
+                    sortOrder,
+                    pageCount,
+                    page),
+                cancellationToken));
     }
 
 
@@ -40,9 +54,8 @@ public class AdminController : ControllerBase
     }
 
     [HttpDelete("DeleteUser/{id:Guid}")]
-    public async Task<IActionResult> DeleteUser(Guid id,CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteUser(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeleteUserCommand(id), cancellationToken));
     }
-
 }

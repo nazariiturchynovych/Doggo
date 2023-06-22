@@ -5,7 +5,7 @@ using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
-public record CreatePossibleScheduleCommand(Guid WalkerId ,TimeOnly From, TimeOnly To, DayOfWeek DayOfWeek) : IRequest<CommonResult>
+public record CreatePossibleScheduleCommand(Guid WalkerId ,DateTime From, DateTime To) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<CreatePossibleScheduleCommand, CommonResult>
     {
@@ -23,9 +23,8 @@ public record CreatePossibleScheduleCommand(Guid WalkerId ,TimeOnly From, TimeOn
             await repository.AddAsync(
                 new PossibleSchedule
                 {
-                    From = request.From,
-                    To = request.To,
-                    DayOfWeek = request.DayOfWeek,
+                    From = request.From.ToUniversalTime(),
+                    To = request.To.ToUniversalTime(),
                     WalkerId = request.WalkerId
                 });
 

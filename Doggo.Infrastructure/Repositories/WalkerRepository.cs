@@ -39,7 +39,8 @@ public class WalkerRepository : AbstractRepository<Walker>, IWalkerRepository
         int page,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<Walker> walkerQuery = _context.Walkers;
+        IQueryable<Walker> walkerQuery = _context.Walkers
+            .Include(x => x.User);
         if (!string.IsNullOrWhiteSpace(nameSearchTerm))
         {
             walkerQuery = walkerQuery.Where(
@@ -71,7 +72,6 @@ public class WalkerRepository : AbstractRepository<Walker>, IWalkerRepository
         return await walkerQuery
             .Skip(pageCount * (page - 1))
             .Take(pageCount)
-            .Include(x => x.User)
             .ToListAsync(cancellationToken: cancellationToken);
     }
 }

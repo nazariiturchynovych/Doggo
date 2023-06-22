@@ -2,6 +2,7 @@ namespace Doggo.Controllers;
 
 using Application.Requests.Commands.DogOwner;
 using Application.Requests.Queries.DogOwner;
+using Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,7 @@ public class DogOwnerController : ControllerBase
         _mediator = mediator;
     }
 
+    [AllowAnonymous]
     [HttpPost("CreateDogOwner")]
     public async Task<IActionResult> CreateDogOwner(CreateDogOwnerCommand command, CancellationToken cancellationToken)
     {
@@ -30,9 +32,15 @@ public class DogOwnerController : ControllerBase
         return Ok(await _mediator.Send(new GetDogOwnerByIdQuery(id), cancellationToken));
     }
 
+    [HttpGet("GetCurrentDogOwner")]
+    public async Task<IActionResult> GetCurrentDogOwner(CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new GetCurrentDogWalkerQuery(User.GetUserId()), cancellationToken));
+    }
+
     [HttpGet("GetPageOfDogOwners")]
     public async Task<IActionResult> GetPageOfDogOwners(
-        string? searchTerm,
+        string? nameSearchTerm,
         string? sortColumn,
         string? sortOrder,
         int pageCount,
@@ -42,7 +50,7 @@ public class DogOwnerController : ControllerBase
         return Ok(
             await _mediator.Send(
                 new GetPageOfDogOwnersQuery(
-                    searchTerm,
+                    nameSearchTerm,
                     sortColumn,
                     sortOrder,
                     pageCount,

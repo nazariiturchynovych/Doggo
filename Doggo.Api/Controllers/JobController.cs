@@ -30,6 +30,28 @@ public class JobController : ControllerBase
         return Ok(await _mediator.Send(new GetJobByIdQuery(id), cancellationToken));
     }
 
+    [HttpGet("GetDogOwnerJobs")]
+    public async Task<IActionResult> GetDogOwnerJobs(
+        Guid dogOwnerId,
+        CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new GetDogOwnerJobsQuery(dogOwnerId), cancellationToken));
+    }
+    [HttpGet("GetWalkerJobs")]
+    public async Task<IActionResult> GetWalkerJobs(
+        Guid walkerId,
+        CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new GetWalkerJobsQuery(walkerId), cancellationToken));
+    }
+    [HttpGet("GetDogJobs")]
+    public async Task<IActionResult> GetDogJobs(
+        Guid dogId,
+        CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new GetDogJobsQuery(dogId), cancellationToken));
+    }
+
     [HttpGet("GetPageOfJobs")]
     public async Task<IActionResult> GetPageOfJobs(
         string? commentSearchTerm,

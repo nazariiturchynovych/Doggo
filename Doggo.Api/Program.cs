@@ -59,6 +59,12 @@ try
     builder.RegisterBehaviours();
     builder.RegisterMiddlewares();
 
+   // builder.Services.AddControllers().AddJsonOptions(x =>
+   //  {
+   //      x.JsonSerializerOptions.Converters.Add(new TimeOnlyFromStringConverter());
+   //  });
+
+
     var app = builder.Build();
 
     if (app.Environment.IsDevelopment())
@@ -83,7 +89,7 @@ try
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Unhandled Exception");
+    Log.Fatal(ex, "Exception in program.cs occured");
 }
 finally
 {

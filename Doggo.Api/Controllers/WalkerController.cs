@@ -19,6 +19,7 @@ public class WalkerController : ControllerBase
         _mediator = mediator;
     }
 
+    [AllowAnonymous]
     [HttpPost("CreateWalker")]
     public async Task<IActionResult> CreateWalker(CreateWalkerCommand command, CancellationToken cancellationToken)
     {
@@ -31,11 +32,12 @@ public class WalkerController : ControllerBase
         return Ok(await _mediator.Send(new GetWalkerByIdQuery(id), cancellationToken));
     }
 
-    [HttpGet("GetWalker")]
-    public async Task<IActionResult> GetWalker(CancellationToken cancellationToken)
+    [HttpGet("GetCurrentWalker")]
+    public async Task<IActionResult> GetCurrentWalker(CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new GetCurrentWalkerQuery(User.GetUserId()), cancellationToken));
     }
+
 
     [HttpGet("GetPageOfWalkers")]
     public async Task<IActionResult> GetPageOfWalkers(

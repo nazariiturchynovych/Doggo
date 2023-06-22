@@ -3,7 +3,6 @@ namespace Doggo.Application.Requests.Queries.Walker;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.DTO.Walker;
-using Domain.Entities.Walker;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
@@ -26,7 +25,7 @@ public record GetCurrentWalkerQuery(Guid UserId) : IRequest<CommonResult<GetWalk
         public async Task<CommonResult<GetWalkerDto>> Handle(GetCurrentWalkerQuery request, CancellationToken cancellationToken)
         {
 
-            var cachedEntity = await _cacheService.GetData<Walker>(CacheKeys.Walker + request.UserId);
+            var cachedEntity = await _cacheService.GetData<GetWalkerDto>(CacheKeys.Walker + request.UserId);
 
             if (cachedEntity is null)
             {
@@ -37,14 +36,14 @@ public record GetCurrentWalkerQuery(Guid UserId) : IRequest<CommonResult<GetWalk
                 if (walker is null)
                     return Failure<GetWalkerDto>(CommonErrors.EntityDoesNotExist);
 
-                await _cacheService.SetData(CacheKeys.Walker + request.UserId, walker);
+                var entityDto = walker.MapWalkerToGetWalkerDto();
 
-                cachedEntity = walker;
+                cachedEntity = entityDto;
+
+                await _cacheService.SetData(CacheKeys.DogOwner + walker.Id, entityDto);
             }
 
-            var entityDto = cachedEntity.MapWalkerToGetWalkerDto();
-
-            return Success(entityDto);
+            return Success(cachedEntity);
         }
     }
 }

@@ -34,7 +34,7 @@ public record DeclineJobCommand(
 
             var currentDogOwner = await dogOwnerRepository.GetByUserIdAsync(_currentUserService.GetUserId(), cancellationToken);
 
-            if (currentDogOwner!.JobRequests.All(x => x.Id != job.Id))
+            if (currentDogOwner!.Jobs.All(x => x.Id != job.Id))
                 return Failure(JobErrors.CurrenDogOwnerIsNotOwnerOfThisJob);
 
             job.Status = JobStatus.Declined;

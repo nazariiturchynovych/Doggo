@@ -14,8 +14,6 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
         RuleFor(x => x.FirstName)
             .MinimumLength(1)
             .NotEmpty()
-            .MaximumLength(30)
-            .Matches("/^[a-z ,.'-]+$/i");
-
+            .MaximumLength(30);
     }
 }

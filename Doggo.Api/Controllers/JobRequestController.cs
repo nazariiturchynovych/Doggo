@@ -1,6 +1,6 @@
 namespace Doggo.Controllers;
 
-using Application.Requests.Commands.Job;
+
 using Application.Requests.Commands.JobRequest;
 using Application.Requests.Queries.JobRequest;
 using MediatR;
@@ -24,6 +24,7 @@ public class JobRequestController : ControllerBase
     {
         return Ok(await _mediator.Send(command, cancellationToken));
     }
+
 
     [HttpGet("GetJobRequest/{id:Guid}")]
     public async Task<IActionResult> GetJobRequest(Guid id, CancellationToken cancellationToken)

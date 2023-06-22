@@ -8,7 +8,6 @@ public static class RequiredScheduleMapper
     public static GetRequiredScheduleDto MapRequiredScheduleToGetRequiredScheduleDto(this RequiredSchedule requiredSchedule)
     {
         return new GetRequiredScheduleDto(
-            requiredSchedule.DayOfWeek,
             requiredSchedule.From,
             requiredSchedule.To,
             requiredSchedule.IsRegular);

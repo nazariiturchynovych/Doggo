@@ -15,7 +15,6 @@ public static class JobRequestMapper
 
         jobRequest.RequiredSchedule.From = command.RequiredScheduleDto!.From ?? jobRequest.RequiredSchedule.From;
         jobRequest.RequiredSchedule.To = command.RequiredScheduleDto!.To ?? jobRequest.RequiredSchedule.To;
-        jobRequest.RequiredSchedule.DayOfWeek = command.RequiredScheduleDto!.DayOfWeek ?? jobRequest.RequiredSchedule.DayOfWeek;
         jobRequest.RequiredSchedule.IsRegular = command.RequiredScheduleDto!.IsRegular ?? jobRequest.RequiredSchedule.IsRegular;
 
         return jobRequest;
@@ -36,9 +35,9 @@ public static class JobRequestMapper
     {
         var collectionDto = new List<GetJobRequestDto>();
 
-        foreach (var walker in collection)
+        foreach (var jobRequest in collection)
         {
-            collectionDto.Add(walker.MapJobRequestToGetJobRequestDto());
+            collectionDto.Add(jobRequest.MapJobRequestToGetJobRequestDto());
         }
         return new PageOfTDataDto<GetJobRequestDto>(collectionDto);
     }

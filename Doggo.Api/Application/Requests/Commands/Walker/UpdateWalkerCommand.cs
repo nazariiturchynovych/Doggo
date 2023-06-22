@@ -30,6 +30,8 @@ public record UpdateWalkerCommand(Guid WalkerId ,string? Skills, string? About) 
 
             repository.Update(updatedWalker);
 
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
             return Success();
         }
     }

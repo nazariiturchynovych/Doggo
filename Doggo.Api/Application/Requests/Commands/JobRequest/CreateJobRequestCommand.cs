@@ -6,7 +6,6 @@ using Domain.Entities.JobRequest;
 using Domain.Entities.JobRequest.Schedules;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
-using Infrastructure.Services.CurrentUserService;
 using MediatR;
 
 public record CreateJobRequestCommand(
@@ -22,28 +21,40 @@ public record CreateJobRequestCommand(
     public class Handler : IRequestHandler<CreateJobRequestCommand, CommonResult>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ICurrentUserService _currentUserService;
 
-        public Handler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
+        public Handler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _currentUserService = currentUserService;
         }
 
         public async Task<CommonResult> Handle(CreateJobRequestCommand request, CancellationToken cancellationToken)
         {
+            var dogOwnerRepository = _unitOfWork.GetDogOwnerRepository();
+
+            var dogOwner = await dogOwnerRepository.GetAsync(request.DogOwnerId, cancellationToken);
+
+            if (dogOwner is null)
+                return Failure(CommonErrors.EntityDoesNotExist);
+
+            var dogRepository = _unitOfWork.GetDogRepository();
+
+            var dog = await dogRepository.GetAsync(request.DogId, cancellationToken);
+
+            if (dog is null)
+                return Failure(CommonErrors.EntityDoesNotExist);
+
+            var dogOwnerDogs = await dogRepository.GetDogOwnerDogsAsync(request.DogOwnerId, cancellationToken: cancellationToken);
+
+            if (dogOwnerDogs.Any(x => x.DogOwnerId != request.DogOwnerId))
+                return Failure(JobRequestErrors.DogOwnerIsNotOwnerOfThisDog);
+
             var jobRequestRepository = _unitOfWork.GetJobRequestRepository();
-
-            var jobRequest = await jobRequestRepository.GetAsync(_currentUserService.GetUserId(), cancellationToken);
-
-            if (jobRequest is not null)
-                return Failure(CommonErrors.EntityAlreadyExist);
 
             var entityToAdd = new JobRequest
             {
                 DogId = request.DogId,
                 DogOwnerId = request.DogOwnerId,
-                CreatedDate = DateTime.Now,
+                CreatedDate = DateTime.UtcNow,
                 RequiredAge = request.RequiredAge,
                 Description = request.Description,
                 Salary = request.Salary,
@@ -59,7 +70,6 @@ public record CreateJobRequestCommand(
                 {
                     From = request.GetRequiredScheduleDto.From,
                     To = request.GetRequiredScheduleDto.To,
-                    DayOfWeek = request.GetRequiredScheduleDto.DayOfWeek,
                     IsRegular = request.GetRequiredScheduleDto.IsRegular,
                     JobRequestId = entityToAdd.Id
                 }); //TODO entity entry can be null

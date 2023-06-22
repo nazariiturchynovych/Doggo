@@ -24,11 +24,9 @@ namespace Doggo.Infrastructure.Migrations
 
             modelBuilder.Entity("Doggo.Domain.Entities.DogOwner.Dog", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<double>("Age")
                         .HasColumnType("double precision");
@@ -37,11 +35,11 @@ namespace Doggo.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("DogOwnerId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("DogOwnerId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("JobRequestId")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("JobRequestId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -59,11 +57,9 @@ namespace Doggo.Infrastructure.Migrations
 
             modelBuilder.Entity("Doggo.Domain.Entities.DogOwner.DogOwner", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -73,8 +69,8 @@ namespace Doggo.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -88,11 +84,9 @@ namespace Doggo.Infrastructure.Migrations
 
             modelBuilder.Entity("Doggo.Domain.Entities.Job.Job", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ChangedDate")
                         .HasColumnType("timestamp with time zone");
@@ -104,74 +98,23 @@ namespace Doggo.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("DogOwnerId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("DogId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("DogOwnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("JobRequestId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int>("WalkerId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DogOwnerId");
-
-                    b.HasIndex("WalkerId");
-
-                    b.ToTable("Jobs", (string)null);
-                });
-
-            modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.Documents.PersonalIdentifier", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("PersonalIdentifierType")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("PersonalIdentifiers", (string)null);
-                });
-
-            modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.JobRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("ChangedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("DogId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DogOwnerId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsPersonalIdentifierRequired")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("JobId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RequiredAge")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("WalkerId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -179,34 +122,71 @@ namespace Doggo.Infrastructure.Migrations
 
                     b.HasIndex("DogOwnerId");
 
-                    b.HasIndex("JobId")
+                    b.HasIndex("JobRequestId")
                         .IsUnique();
+
+                    b.HasIndex("WalkerId");
+
+                    b.ToTable("Jobs", (string)null);
+                });
+
+            modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.JobRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ChangedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("DogId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("DogOwnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsPersonalIdentifierRequired")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("RequiredAge")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DogId");
+
+                    b.HasIndex("DogOwnerId");
 
                     b.ToTable("JobRequests", (string)null);
                 });
 
             modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.Schedules.RequiredSchedule", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("integer");
-
-                    b.Property<TimeOnly?>("From")
-                        .HasColumnType("time without time zone");
+                    b.Property<DateTime>("From")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsRegular")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("JobRequestId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("JobRequestId")
+                        .HasColumnType("uuid");
 
-                    b.Property<TimeOnly?>("To")
-                        .HasColumnType("time without time zone");
+                    b.Property<DateTime>("To")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -216,13 +196,31 @@ namespace Doggo.Infrastructure.Migrations
                     b.ToTable("RequiredSchedules");
                 });
 
-            modelBuilder.Entity("Doggo.Domain.Entities.User.Role", b =>
+            modelBuilder.Entity("Doggo.Domain.Entities.User.Documents.PersonalIdentifier", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("PersonalIdentifierType")
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("PersonalIdentifiers", (string)null);
+                });
+
+            modelBuilder.Entity("Doggo.Domain.Entities.User.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("text");
@@ -252,21 +250,19 @@ namespace Doggo.Infrastructure.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleClaims");
+                    b.ToTable("RoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Doggo.Domain.Entities.User.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
@@ -351,12 +347,12 @@ namespace Doggo.Infrastructure.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserClaims");
+                    b.ToTable("UserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Doggo.Domain.Entities.User.UserLogin", b =>
@@ -370,8 +366,8 @@ namespace Doggo.Infrastructure.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -380,11 +376,11 @@ namespace Doggo.Infrastructure.Migrations
 
             modelBuilder.Entity("Doggo.Domain.Entities.User.UserRole", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -401,8 +397,8 @@ namespace Doggo.Infrastructure.Migrations
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -414,23 +410,18 @@ namespace Doggo.Infrastructure.Migrations
 
             modelBuilder.Entity("Doggo.Domain.Entities.Walker.Schedule.PossibleSchedule", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("From")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("To")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<TimeOnly?>("From")
-                        .HasColumnType("time without time zone");
-
-                    b.Property<TimeOnly?>("To")
-                        .HasColumnType("time without time zone");
-
-                    b.Property<int>("WalkerId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("WalkerId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -441,14 +432,20 @@ namespace Doggo.Infrastructure.Migrations
 
             modelBuilder.Entity("Doggo.Domain.Entities.Walker.Walker", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("About")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Skills")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -482,10 +479,22 @@ namespace Doggo.Infrastructure.Migrations
 
             modelBuilder.Entity("Doggo.Domain.Entities.Job.Job", b =>
                 {
+                    b.HasOne("Doggo.Domain.Entities.DogOwner.Dog", "Dog")
+                        .WithMany()
+                        .HasForeignKey("DogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Doggo.Domain.Entities.DogOwner.DogOwner", "DogOwner")
                         .WithMany("Jobs")
                         .HasForeignKey("DogOwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Doggo.Domain.Entities.JobRequest.JobRequest", "JobRequest")
+                        .WithOne("Job")
+                        .HasForeignKey("Doggo.Domain.Entities.Job.Job", "JobRequestId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Doggo.Domain.Entities.Walker.Walker", "Walker")
@@ -494,26 +503,19 @@ namespace Doggo.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Dog");
+
                     b.Navigation("DogOwner");
 
+                    b.Navigation("JobRequest");
+
                     b.Navigation("Walker");
-                });
-
-            modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.Documents.PersonalIdentifier", b =>
-                {
-                    b.HasOne("Doggo.Domain.Entities.User.User", "User")
-                        .WithOne("PersonalIdentifier")
-                        .HasForeignKey("Doggo.Domain.Entities.JobRequest.Documents.PersonalIdentifier", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.JobRequest", b =>
                 {
                     b.HasOne("Doggo.Domain.Entities.DogOwner.Dog", "Dog")
-                        .WithMany("JobRequest")
+                        .WithMany("JobRequests")
                         .HasForeignKey("DogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -524,17 +526,9 @@ namespace Doggo.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Doggo.Domain.Entities.Job.Job", "Job")
-                        .WithOne("JobRequest")
-                        .HasForeignKey("Doggo.Domain.Entities.JobRequest.JobRequest", "JobId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("Dog");
 
                     b.Navigation("DogOwner");
-
-                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.Schedules.RequiredSchedule", b =>
@@ -546,6 +540,17 @@ namespace Doggo.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("JobRequest");
+                });
+
+            modelBuilder.Entity("Doggo.Domain.Entities.User.Documents.PersonalIdentifier", b =>
+                {
+                    b.HasOne("Doggo.Domain.Entities.User.User", "User")
+                        .WithOne("PersonalIdentifier")
+                        .HasForeignKey("Doggo.Domain.Entities.User.Documents.PersonalIdentifier", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Doggo.Domain.Entities.User.UserRole", b =>
@@ -591,7 +596,7 @@ namespace Doggo.Infrastructure.Migrations
 
             modelBuilder.Entity("Doggo.Domain.Entities.DogOwner.Dog", b =>
                 {
-                    b.Navigation("JobRequest");
+                    b.Navigation("JobRequests");
                 });
 
             modelBuilder.Entity("Doggo.Domain.Entities.DogOwner.DogOwner", b =>
@@ -603,14 +608,11 @@ namespace Doggo.Infrastructure.Migrations
                     b.Navigation("Jobs");
                 });
 
-            modelBuilder.Entity("Doggo.Domain.Entities.Job.Job", b =>
-                {
-                    b.Navigation("JobRequest")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.JobRequest", b =>
                 {
+                    b.Navigation("Job")
+                        .IsRequired();
+
                     b.Navigation("RequiredSchedule")
                         .IsRequired();
                 });

@@ -3,7 +3,6 @@ namespace Doggo.Application.Requests.Queries.Job;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.DTO.Job;
-using Domain.Entities.Job;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
@@ -25,25 +24,25 @@ public record GetJobByIdQuery(Guid Id) : IRequest<CommonResult<GetJobDto>>
 
         public async Task<CommonResult<GetJobDto>> Handle(GetJobByIdQuery request, CancellationToken cancellationToken)
         {
-            var cachedEntity = await _cacheService.GetData<Job>(CacheKeys.Job + request.Id);
+            var cachedEntity = await _cacheService.GetData<GetJobDto>(CacheKeys.Job + request.Id);
 
             if (cachedEntity is null)
             {
                 var repository = _unitOfWork.GetJobRepository();
 
-                var dog = await repository.GetAsync(request.Id, cancellationToken);
+                var job = await repository.GetAsync(request.Id, cancellationToken);
 
-                if (dog is null)
+                if (job is null)
                     return Failure<GetJobDto>(CommonErrors.EntityDoesNotExist);
 
-                await _cacheService.SetData(CacheKeys.Job + request.Id, dog);
+                var entityDto = job.MapJobToGetJobDto();
 
-                cachedEntity = dog;
+                cachedEntity = entityDto;
+
+                await _cacheService.SetData(CacheKeys.DogOwner + job.Id, entityDto);
             }
 
-            var entityDto = cachedEntity.MapJobToGetJobDto();
-
-            return Success(entityDto);
+            return Success(cachedEntity);
         }
     }
 }

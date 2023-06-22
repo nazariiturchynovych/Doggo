@@ -73,20 +73,22 @@ public class AuthenticationController : ControllerBase
 
     [HttpPost("SendPasswordResetConfirmationToken")]
     public async Task<IActionResult> SendResetPasswordConfirmationToken(
-        SendResetPasswordTokenCommand sendResetPasswordTokenCommand,
+         string token,
+         Guid userId,
+         string newPassword,
         CancellationToken cancellationToken)
     {
         return Ok(
             await _mediator.Send(
-                sendResetPasswordTokenCommand,
+                new ConfirmResetPasswordCommand(token, userId, newPassword),
                 cancellationToken));
     }
 
-    [HttpPost("ConfirmResetPasswordCommand")]
+    [HttpGet("ConfirmResetPasswordCommand")]// don't work with post method with link from email
     public async Task<IActionResult> ConfirmResetPasswordCommand(
-        string userId,
-        string newPassword,
         string token,
+        Guid userId,
+        string newPassword,
         CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new ConfirmResetPasswordCommand(token, userId, newPassword), cancellationToken));

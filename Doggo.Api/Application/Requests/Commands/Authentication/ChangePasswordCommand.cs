@@ -38,7 +38,7 @@ public record ChangePasswordCommand
 
             var passwordCheckingResult = await _userManager.CheckPasswordAsync(currentUser, request.CurrentPassword);
 
-            if (passwordCheckingResult!)
+            if (!passwordCheckingResult)
                 return Failure(UserErrors.PasswordDoesNotMatch);
 
             var passwordChangingResult = await _userManager.ChangePasswordAsync(

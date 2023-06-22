@@ -34,7 +34,9 @@ public static class UserRequestMapper
             LastName: user.LastName,
             Age: user.Age,
             Email: user.Email!,
-            PersonalIdentifier: new GetPersonalIdentifierDto(user.PersonalIdentifier.PersonalIdentifierType));
+            PersonalIdentifier: user.PersonalIdentifier?.PersonalIdentifierType is null
+                ? null
+                : new GetPersonalIdentifierDto(user.PersonalIdentifier.PersonalIdentifierType));
     }
 
     public static PageOfTDataDto<GetUserDto> MapUserCollectionToPageOfUsersDto(this IReadOnlyCollection<User> collection)
