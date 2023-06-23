@@ -11,7 +11,8 @@ public record UpdateJobRequestCommand(
     Guid JobRequestId,
     int? RequiredAge,
     bool? IsPersonalIdentifierRequired,
-    string Description,
+    decimal? Salary,
+    string? Description,
     UpdateRequiredScheduleDto? RequiredScheduleDto) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<UpdateJobRequestCommand, CommonResult>

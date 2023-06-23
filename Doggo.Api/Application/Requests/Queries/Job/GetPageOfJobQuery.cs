@@ -11,7 +11,7 @@ public record GetPageOfJobsQuery(
     string? CommentSearchTerm,
     string? SortColumn,
     string? SortOrder,
-    int Count,
+    int Page,
     int PageCount) : IRequest<CommonResult<PageOfTDataDto<GetJobDto>>>
 {
     public class Handler : IRequestHandler<GetPageOfJobsQuery, CommonResult<PageOfTDataDto<GetJobDto>>>
@@ -33,8 +33,8 @@ public record GetPageOfJobsQuery(
                 request.CommentSearchTerm,
                 request.SortColumn,
                 request.SortOrder,
-                request.Count,
                 request.PageCount,
+                request.Page,
                 cancellationToken);
 
             return Success(page.MapJobCollectionToPageOJobDto());
