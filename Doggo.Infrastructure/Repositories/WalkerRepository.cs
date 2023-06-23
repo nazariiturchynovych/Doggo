@@ -2,6 +2,7 @@ namespace Doggo.Infrastructure.Repositories;
 
 using System.Linq.Expressions;
 using Abstractions;
+using Domain.Constants;
 using Domain.Entities.Walker;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -57,15 +58,15 @@ public class WalkerRepository : AbstractRepository<Walker>, IWalkerRepository
 
         Expression<Func<Walker, object>> keySelector = sortColumn?.ToLower() switch
         {
-            "About" => walker => walker.About,
-            "Skills" => walker => walker.Skills,
-            "firstName" => walker => walker.User.FirstName,
-            "lastName" => walker => walker.User.LastName,
-            "age" => walker => walker.User.Age,
+            SortingConstants.About => walker => walker.About,
+            SortingConstants.Skills => walker => walker.Skills,
+            SortingConstants.FirstName => walker => walker.User.FirstName,
+            SortingConstants.Lastname => walker => walker.User.LastName,
+            SortingConstants.Age => walker => walker.User.Age,
             _ => walker => walker.User.Id,
         };
 
-        walkerQuery = sortOrder?.ToLower() == "desc"
+        walkerQuery = sortOrder?.ToLower() == SortingConstants.Descending
             ? walkerQuery.OrderByDescending(keySelector)
             : walkerQuery.OrderBy(keySelector);
 

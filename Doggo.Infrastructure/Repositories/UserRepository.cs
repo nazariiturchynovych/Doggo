@@ -2,6 +2,7 @@ namespace Doggo.Infrastructure.Repositories;
 
 using System.Linq.Expressions;
 using Abstractions;
+using Domain.Constants;
 using Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -30,7 +31,6 @@ public class UserRepository : IUserRepository
         int page,
         CancellationToken cancellationToken = default)
     {
-
         IQueryable<User> userQuery = _context.Users;
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
@@ -41,35 +41,35 @@ public class UserRepository : IUserRepository
 
         Expression<Func<User, object>> keySelector = sortColumn?.ToLower() switch
         {
-            "firstname" => user => user.FirstName,
-            "lastname" => user => user.LastName,
-            "age" => user => user.Age,
+            SortingConstants.FirstName => user => user.FirstName,
+            SortingConstants.Lastname => user => user.LastName,
+            SortingConstants.Age => user => user.Age,
             _ => user => user.Id,
         };
 
-        userQuery = sortOrder?.ToLower() == "desc" ? userQuery.OrderByDescending(keySelector) : userQuery.OrderBy(keySelector);
-
+        userQuery = sortOrder?.ToLower() == SortingConstants.Descending
+            ? userQuery.OrderByDescending(keySelector)
+            : userQuery.OrderBy(keySelector);
 
         return await userQuery
             .Skip(pageCount * (page - 1))
             .Take(pageCount)
             .ToListAsync(cancellationToken: cancellationToken);
-
     }
 
-        public async Task<User?> GetUserWithRoles(string userEmail, CancellationToken cancellationToken = default)
-        {
-            return await _context.Users.Where(u => u.Email == userEmail)
-                .Include(u => u.UserRoles)
-                .ThenInclude(x => x.Role)
-                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
-        }
-
-        public async Task<User?> GetUserWithRoles(Guid userId, CancellationToken cancellationToken = default)
-        {
-            return await _context.Users.Where(u => u.Id == userId)
-                .Include(u => u.UserRoles)
-                .ThenInclude(x => x.Role)
-                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
-        }
+    public async Task<User?> GetUserWithRoles(string userEmail, CancellationToken cancellationToken = default)
+    {
+        return await _context.Users.Where(u => u.Email == userEmail)
+            .Include(u => u.UserRoles)
+            .ThenInclude(x => x.Role)
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
+
+    public async Task<User?> GetUserWithRoles(Guid userId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Users.Where(u => u.Id == userId)
+            .Include(u => u.UserRoles)
+            .ThenInclude(x => x.Role)
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+    }
+}

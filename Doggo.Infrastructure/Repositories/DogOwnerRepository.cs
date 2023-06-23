@@ -2,6 +2,7 @@ namespace Doggo.Infrastructure.Repositories;
 
 using System.Linq.Expressions;
 using Abstractions;
+using Domain.Constants;
 using Domain.Entities.DogOwner;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -48,15 +49,15 @@ public class DogOwnerRepository : AbstractRepository<DogOwner>, IDogOwnerReposit
 
         Expression<Func<DogOwner, object>> keySelector = sortColumn?.ToLower() switch
         {
-            "district" => dogOwner => dogOwner.District,
-            "address" => dogOwner => dogOwner.Address,
-            "firstname" => dogOwner => dogOwner.User.FirstName,
-            "lastname" => dogOwner => dogOwner.User.LastName,
-            "age" => dogOwner => dogOwner.User.Age,
+            SortingConstants.District => dogOwner => dogOwner.District,
+            SortingConstants.Address => dogOwner => dogOwner.Address,
+            SortingConstants.FirstName => dogOwner => dogOwner.User.FirstName,
+            SortingConstants.Lastname => dogOwner => dogOwner.User.LastName,
+            SortingConstants.Age => dogOwner => dogOwner.User.Age,
             _ => dogOwner => dogOwner.User.Id,
         };
 
-        dogOwnerQuery = sortOrder?.ToLower() == "desc"
+        dogOwnerQuery = sortOrder?.ToLower() == SortingConstants.Descending
             ? dogOwnerQuery.OrderByDescending(keySelector)
             : dogOwnerQuery.OrderBy(keySelector);
 

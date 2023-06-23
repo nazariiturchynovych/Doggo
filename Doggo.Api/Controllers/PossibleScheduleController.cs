@@ -42,7 +42,7 @@ public class PossibleScheduleController : ControllerBase
         int page,
         CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetPageOfPossibleScheduleQuery(pageCount, page), cancellationToken));
+        return Ok(await _mediator.Send(new GetPageOfPossibleSchedulesQuery(pageCount, page), cancellationToken));
     }
 
     [HttpDelete("DeletePossibleSchedule/{id:Guid}")]

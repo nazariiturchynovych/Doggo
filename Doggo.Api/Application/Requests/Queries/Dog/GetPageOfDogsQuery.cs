@@ -12,7 +12,7 @@ public record GetPageOfDogsQuery(
     string? DescriptionSearchTerm,
     string? SortColumn,
     string? SortOrder,
-    int Count,
+    int Page,
     int PageCount) : IRequest<CommonResult<PageOfTDataDto<GetDogDto>>>
 {
     public class Handler : IRequestHandler<GetPageOfDogsQuery, CommonResult<PageOfTDataDto<GetDogDto>>>
@@ -35,8 +35,8 @@ public record GetPageOfDogsQuery(
                 request.DescriptionSearchTerm,
                 request.SortColumn,
                 request.SortOrder,
-                request.Count,
                 request.PageCount,
+                request.Page,
                 cancellationToken);
 
             return Success(page.MapDogCollectionToPageOfDogDto());

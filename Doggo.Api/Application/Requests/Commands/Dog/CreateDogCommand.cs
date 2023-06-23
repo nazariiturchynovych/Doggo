@@ -8,7 +8,7 @@ using MediatR;
 public record CreateDogCommand(
     string Name,
     double Age,
-    double Weight,
+    double? Weight,
     Guid DogOwnerId,
     string Description) : IRequest<CommonResult>
 {

@@ -7,16 +7,16 @@ using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record GetPageOfWalkerQuery(
+public record GetPageOfWalkersQuery(
     string? NameSearchTerm,
     string? SkillSearchTerm,
     string? SortColumn,
     string? SortOrder,
-    int Count,
+    int Page,
     int PageCount
 ) : IRequest<CommonResult<PageOfTDataDto<GetWalkerDto>>>
 {
-    public class Handler : IRequestHandler<GetPageOfWalkerQuery, CommonResult<PageOfTDataDto<GetWalkerDto>>>
+    public class Handler : IRequestHandler<GetPageOfWalkersQuery, CommonResult<PageOfTDataDto<GetWalkerDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -26,7 +26,7 @@ public record GetPageOfWalkerQuery(
         }
 
         public async Task<CommonResult<PageOfTDataDto<GetWalkerDto>>> Handle(
-            GetPageOfWalkerQuery request,
+            GetPageOfWalkersQuery request,
             CancellationToken cancellationToken)
         {
             var walkerRepository = _unitOfWork.GetWalkerRepository();
@@ -36,8 +36,8 @@ public record GetPageOfWalkerQuery(
                 request.SkillSearchTerm,
                 request.SortColumn,
                 request.SortOrder,
-                request.Count,
                 request.PageCount,
+                request.Page,
                 cancellationToken);
 
             return Success(page.MapWalkerCollectionToPageOWalkersDto());

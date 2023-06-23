@@ -11,7 +11,7 @@ public record GetPageOfDogOwnersQuery(
     string? NameSearchTerm,
     string? SortColumn,
     string? SortOrder,
-    int Count,
+    int Page,
     int PageCount) : IRequest<CommonResult<PageOfTDataDto<GetDogOwnerDto>>>
 {
     public class Handler : IRequestHandler<GetPageOfDogOwnersQuery, CommonResult<PageOfTDataDto<GetDogOwnerDto>>>
@@ -34,7 +34,7 @@ public record GetPageOfDogOwnersQuery(
                 request.NameSearchTerm,
                 request.SortColumn,
                 request.SortOrder,
-                request.Count,
+                request.Page,
                 request.PageCount,
                 cancellationToken);
 

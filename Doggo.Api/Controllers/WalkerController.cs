@@ -51,7 +51,7 @@ public class WalkerController : ControllerBase
     {
         return Ok(
             await _mediator.Send(
-                new GetPageOfWalkerQuery(
+                new GetPageOfWalkersQuery(
                     nameSearchTerm,
                     skillSearchTerm,
                     sortColumn,

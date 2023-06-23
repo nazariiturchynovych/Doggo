@@ -2,6 +2,7 @@ namespace Doggo.Infrastructure.Repositories;
 
 using System.Linq.Expressions;
 using Abstractions;
+using Domain.Constants;
 using Domain.Entities.DogOwner;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -44,27 +45,26 @@ public class DogRepository : AbstractRepository<Dog>, IDogRepository
         {
             dogQuery = dogQuery.Where(
                 x =>
-                    x.Name.Contains(nameSearchTerm) );
+                    x.Name.Contains(nameSearchTerm));
         }
-        
+
         if (!string.IsNullOrWhiteSpace(descriptionSearchTerm))
         {
             dogQuery = dogQuery.Where(
                 x =>
-                    x.Description.Contains(descriptionSearchTerm) );
+                    x.Description.Contains(descriptionSearchTerm));
         }
 
         Expression<Func<Dog, object?>> keySelector = sortColumn?.ToLower() switch
         {
-            "name" => dog => dog.Name,
-            "description" => dog => dog.Description,
-            "age" => dog => dog.Age,
-            "weight" => dog => dog.Weight,
+            SortingConstants.Name => dog => dog.Name,
+            SortingConstants.Description => dog => dog.Description,
+            SortingConstants.Age => dog => dog.Age,
+            SortingConstants.Weight => dog => dog.Weight,
             _ => dog => dog.Id,
         };
 
-
-        dogQuery = sortOrder?.ToLower() == "desc"
+        dogQuery = sortOrder?.ToLower() == SortingConstants.Descending
             ? dogQuery.OrderByDescending(keySelector)
             : dogQuery.OrderBy(keySelector);
 

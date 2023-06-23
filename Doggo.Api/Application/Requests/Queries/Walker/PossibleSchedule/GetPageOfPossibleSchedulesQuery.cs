@@ -7,9 +7,9 @@ using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record GetPageOfPossibleScheduleQuery(int Count, int Page) : IRequest<CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>>
+public record GetPageOfPossibleSchedulesQuery(int PageCount, int Page) : IRequest<CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>>
 {
-    public class Handler : IRequestHandler<GetPageOfPossibleScheduleQuery, CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>>
+    public class Handler : IRequestHandler<GetPageOfPossibleSchedulesQuery, CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,12 +19,12 @@ public record GetPageOfPossibleScheduleQuery(int Count, int Page) : IRequest<Com
         }
 
         public async Task<CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>> Handle(
-            GetPageOfPossibleScheduleQuery request,
+            GetPageOfPossibleSchedulesQuery request,
             CancellationToken cancellationToken)
         {
             var possibleScheduleRepository = _unitOfWork.GetPossibleScheduleRepository();
 
-            var page = await possibleScheduleRepository.GetPageOfPossibleSchedulesAsync(request.Count, request.Page, cancellationToken);
+            var page = await possibleScheduleRepository.GetPageOfPossibleSchedulesAsync(request.PageCount, request.Page, cancellationToken);
 
             return Success(page.MapPossibleScheduleCollectionToPageOPossibleSchedulesDto());
         }

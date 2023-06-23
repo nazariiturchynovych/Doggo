@@ -33,7 +33,7 @@ public class UserController : ControllerBase
 
     [HttpGet("GetPageOfUsers")]
     public async Task<IActionResult> GetPageOfUsers(
-        string? searchTerm,
+        string? nameSearchTerm,
         string? sortColumn,
         string? sortOrder,
         int pageCount,
@@ -43,7 +43,7 @@ public class UserController : ControllerBase
         return Ok(
             await _mediator.Send(
                 new GetPageOfUsersQuery(
-                    searchTerm,
+                    nameSearchTerm,
                     sortColumn,
                     sortOrder,
                     pageCount,

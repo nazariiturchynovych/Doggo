@@ -2,6 +2,7 @@ namespace Doggo.Infrastructure.Repositories;
 
 using System.Linq.Expressions;
 using Abstractions;
+using Domain.Constants;
 using Domain.Entities.JobRequest;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -47,17 +48,17 @@ public class JobRequestRepository : AbstractRepository<JobRequest>, IJobRequestR
         {
             jobRequestQuery = jobRequestQuery.Where(
                 x =>
-                    x.Description.Contains(descriptionSearchTerm) );
+                    x.Description.Contains(descriptionSearchTerm));
         }
 
         Expression<Func<JobRequest, object>> keySelector = sortColumn?.ToLower() switch
         {
-            "description" => jobRequest => jobRequest.Description,
-            "salary" => jobRequest => jobRequest.Salary,
+            SortingConstants.Description => jobRequest => jobRequest.Description,
+            SortingConstants.Salary => jobRequest => jobRequest.Salary,
             _ => jobRequest => jobRequest.Id,
         };
 
-        jobRequestQuery = sortOrder?.ToLower() == "desc"
+        jobRequestQuery = sortOrder?.ToLower() == SortingConstants.Descending
             ? jobRequestQuery.OrderByDescending(keySelector)
             : jobRequestQuery.OrderBy(keySelector);
 

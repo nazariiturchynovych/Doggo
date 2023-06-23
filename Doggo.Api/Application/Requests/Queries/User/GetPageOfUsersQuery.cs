@@ -8,10 +8,10 @@ using Mappers;
 using MediatR;
 
 public record GetPageOfUsersQuery(
-    string? SearchTerm,
+    string? NameSearchTerm,
     string? SortColumn,
     string? SortOrder,
-    int Count,
+    int Page,
     int PageCount) : IRequest<CommonResult<PageOfTDataDto<GetUserDto>>>
 {
     public class Handler : IRequestHandler<GetPageOfUsersQuery, CommonResult<PageOfTDataDto<GetUserDto>>>
@@ -30,11 +30,11 @@ public record GetPageOfUsersQuery(
             var userRepository = _unitOfWork.GetUserRepository();
 
             var page = await userRepository.GetPageOfUsersAsync(
-                request.SearchTerm,
+                request.NameSearchTerm,
                 request.SortColumn,
                 request.SortOrder,
-                request.Count,
                 request.PageCount,
+                request.Page,
                 cancellationToken);
 
             return Success(page.MapUserCollectionToPageOfUsersDto());
