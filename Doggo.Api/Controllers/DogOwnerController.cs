@@ -53,8 +53,8 @@ public class DogOwnerController : ControllerBase
                     nameSearchTerm,
                     sortColumn,
                     sortOrder,
-                    pageCount,
-                    page),
+                    page,
+                    pageCount),
                 cancellationToken));
     }
 

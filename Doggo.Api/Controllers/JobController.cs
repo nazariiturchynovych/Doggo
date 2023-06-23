@@ -67,8 +67,8 @@ public class JobController : ControllerBase
                     commentSearchTerm,
                     sortColumn,
                     sortOrder,
-                    pageCount,
-                    page),
+                    page,
+                    pageCount),
                 cancellationToken));
     }
 

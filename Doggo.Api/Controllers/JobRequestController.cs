@@ -55,8 +55,8 @@ public class JobRequestController : ControllerBase
                     descriptionSearchTerm,
                     sortColumn,
                     sortOrder,
-                    pageCount,
-                    page),
+                    page,
+                    pageCount),
                 cancellationToken));
     }
 

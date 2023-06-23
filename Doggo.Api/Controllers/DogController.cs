@@ -55,8 +55,8 @@ public class DogController : ControllerBase
                     descriptionSearchTerm,
                     sortColumn,
                     sortOrder,
-                    pageCount,
-                    page),
+                    page,
+                    pageCount),
                 cancellationToken));
     }
 

@@ -56,8 +56,8 @@ public class WalkerController : ControllerBase
                     skillSearchTerm,
                     sortColumn,
                     sortOrder,
-                    pageCount,
-                    page),
+                    page,
+                    pageCount),
                 cancellationToken));
     }
 

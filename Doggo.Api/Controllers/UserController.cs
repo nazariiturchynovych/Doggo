@@ -46,8 +46,8 @@ public class UserController : ControllerBase
                     nameSearchTerm,
                     sortColumn,
                     sortOrder,
-                    pageCount,
-                    page),
+                    page,
+                    pageCount),
                 cancellationToken));
     }
 
