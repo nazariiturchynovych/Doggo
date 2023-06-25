@@ -58,6 +58,7 @@ try
     builder.RegisterRepositories();
     builder.RegisterBehaviours();
     builder.RegisterMiddlewares();
+    builder.RegisterAwsServices();
 
    // builder.Services.AddControllers().AddJsonOptions(x =>
    //  {

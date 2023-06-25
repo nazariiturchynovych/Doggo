@@ -1,6 +1,9 @@
 namespace Doggo.Extensions;
 
 using System.Reflection;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
+using Amazon.S3;
 using Application.Behaviours;
 using Application.Middlewares;
 using Domain.Constants;
@@ -20,6 +23,7 @@ using FluentValidation;
 using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Services.CacheService;
 using Infrastructure.Services.FacebookAuthService;
+using Infrastructure.Services.ImageService;
 
 public static class ServicesExtensions
 {
@@ -38,6 +42,7 @@ public static class ServicesExtensions
 
     public static void RegisterOptions(this WebApplicationBuilder builder)
     {
+        builder.Services.Configure<S3Options>(builder.Configuration.GetSection("AWS:S3"));
         builder.Services.Configure<JwtSettingsOptions>(builder.Configuration.GetSection(nameof(JwtSettingsOptions)));
         builder.Services.Configure<SMTPOptions>(builder.Configuration.GetSection(nameof(SMTPOptions)));
         builder.Services.Configure<FacebookAuthOptions>(builder.Configuration.GetSection(nameof(FacebookAuthOptions)));
@@ -61,6 +66,8 @@ public static class ServicesExtensions
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<ICacheService, CacheService>();
         builder.Services.AddScoped<IFacebookAuthService, FacebookAuthService>();
+        builder.Services.AddSingleton<IImageService, ImageService>();
+
 
         builder.Services.AddHttpClient<IFacebookAuthService, FacebookAuthService>(
             options =>
@@ -89,7 +96,6 @@ public static class ServicesExtensions
         builder.Services.AddScoped<IPossibleScheduleRepository, PossibleScheduleRepository>();
         builder.Services.AddScoped<IRequiredScheduleRepository, RequiredScheduleRepository>();
         builder.Services.AddScoped<IPersonalIdentifierRepository, PersonalIdentifierRepository>();
-
     }
 
     public static void RegisterBehaviours(this WebApplicationBuilder builder)
@@ -143,5 +149,18 @@ public static class ServicesExtensions
                     });
             });
         return services;
+    }
+
+    public static void RegisterAwsServices(this WebApplicationBuilder builder)
+    {
+        var awsOptions = builder.Configuration.GetAWSOptions();
+        var credentials = new BasicAWSCredentials(
+            builder.Configuration.GetSection("AWS:IAM:AccessKey").Value,
+            builder.Configuration.GetSection("AWS:IAM:SecretAccessKey").Value);
+        awsOptions.Credentials = credentials;
+
+        builder.Services.AddDefaultAWSOptions(awsOptions);
+
+        builder.Services.AddAWSService<IAmazonS3>();
     }
 }

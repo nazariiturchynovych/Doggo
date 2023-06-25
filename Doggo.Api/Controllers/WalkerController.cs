@@ -74,4 +74,10 @@ public class WalkerController : ControllerBase
     {
         return Ok(await _mediator.Send(new DeleteWalkerCommand(id), cancellationToken));
     }
+
+    [HttpPost("UploadWalkerImage")]
+    public async Task<IActionResult> UploadWalkerImage(Guid id,IFormFile file, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new UploadWalkerImageCommand(id,file), cancellationToken));
+    }
 }
