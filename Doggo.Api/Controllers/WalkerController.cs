@@ -76,21 +76,21 @@ public class WalkerController : ControllerBase
         return Ok(await _mediator.Send(new DeleteWalkerCommand(id), cancellationToken));
     }
 
-    [HttpPost("UploadWalkerImage")]
+    [HttpPost("Walker/{id:Guid}/Image")]
     public async Task<IActionResult> UploadWalkerImage(Guid id, IFormFile file, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new UploadImageCommand(id, file), cancellationToken));
     }
 
-    [HttpGet("GetWalker/{id:Guid}/image")]
+    [HttpGet("Walker/{id:Guid}/Image")]
     public async Task<IActionResult> GetWalkerImage(Guid id, CancellationToken cancellationToken)
     {
-        var resp = await _mediator.Send(new GetImageCommand(id), cancellationToken);
+        var result = await _mediator.Send(new GetImageCommand(id), cancellationToken);
 
-        return File(resp.Data.ResponseStream, resp.Data.Headers.ContentType);
+        return File(result.Data.ResponseStream, result.Data.Headers.ContentType);
     }
 
-    [HttpDelete("Walker/{id:Guid}/image")]
+    [HttpDelete("Walker/{id:Guid}/Image")]
     public async Task<IActionResult> DeleteWalkerImage(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeleteImageCommand(id), cancellationToken));

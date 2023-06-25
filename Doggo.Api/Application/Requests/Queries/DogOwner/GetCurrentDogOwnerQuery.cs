@@ -9,9 +9,9 @@ using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
 
-public record GetCurrentDogWalkerQuery(Guid UserId) : IRequest<CommonResult<GetDogOwnerDto>>
+public record GetCurrentDogOwnerQuery(Guid UserId) : IRequest<CommonResult<GetDogOwnerDto>>
 {
-    public class Handler : IRequestHandler<GetCurrentDogWalkerQuery, CommonResult<GetDogOwnerDto>>
+    public class Handler : IRequestHandler<GetCurrentDogOwnerQuery, CommonResult<GetDogOwnerDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService _cacheService;
@@ -22,7 +22,7 @@ public record GetCurrentDogWalkerQuery(Guid UserId) : IRequest<CommonResult<GetD
             _cacheService = cacheService;
         }
 
-        public async Task<CommonResult<GetDogOwnerDto>> Handle(GetCurrentDogWalkerQuery request, CancellationToken cancellationToken)
+        public async Task<CommonResult<GetDogOwnerDto>> Handle(GetCurrentDogOwnerQuery request, CancellationToken cancellationToken)
         {
 
             var cachedEntity = await _cacheService.GetData<GetDogOwnerDto>(CacheKeys.DogOwner + request.UserId);

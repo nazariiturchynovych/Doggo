@@ -1,6 +1,7 @@
 namespace Doggo.Controllers;
 
 using Application.Requests.Commands.Dog;
+using Application.Requests.Commands.Image;
 using Application.Requests.Queries.Dog;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -72,5 +73,25 @@ public class DogController : ControllerBase
     public async Task<IActionResult> DeleteDog(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeleteDogCommand(id), cancellationToken));
+    }
+    
+    [HttpPost("Dog/{id:Guid}/Image")]
+    public async Task<IActionResult> UploadDogImage(Guid id, IFormFile file, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new UploadImageCommand(id, file), cancellationToken));
+    }
+
+    [HttpGet("Dog/{id:Guid}/Image")]
+    public async Task<IActionResult> GetDogImage(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetImageCommand(id), cancellationToken);
+
+        return File(result.Data.ResponseStream, result.Data.Headers.ContentType);
+    }
+
+    [HttpDelete("Dog/{id:Guid}/Image")]
+    public async Task<IActionResult> DeleteDogImage(Guid id, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new DeleteImageCommand(id), cancellationToken));
     }
 }

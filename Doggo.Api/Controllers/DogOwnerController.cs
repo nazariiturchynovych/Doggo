@@ -1,6 +1,7 @@
 namespace Doggo.Controllers;
 
 using Application.Requests.Commands.DogOwner;
+using Application.Requests.Commands.Image;
 using Application.Requests.Queries.DogOwner;
 using Extensions;
 using MediatR;
@@ -35,7 +36,7 @@ public class DogOwnerController : ControllerBase
     [HttpGet("GetCurrentDogOwner")]
     public async Task<IActionResult> GetCurrentDogOwner(CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetCurrentDogWalkerQuery(User.GetUserId()), cancellationToken));
+        return Ok(await _mediator.Send(new GetCurrentDogOwnerQuery(User.GetUserId()), cancellationToken));
     }
 
     [HttpGet("GetPageOfDogOwners")]
@@ -70,5 +71,25 @@ public class DogOwnerController : ControllerBase
     public async Task<IActionResult> DeleteDogOwner(Guid id, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(new DeleteDogOwnerCommand(id), cancellationToken));
+    }
+    
+    [HttpPost("DogOwner/{id:Guid}/Image")]
+    public async Task<IActionResult> UploadDogOwnerImage(Guid id, IFormFile file, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new UploadImageCommand(id, file), cancellationToken));
+    }
+
+    [HttpGet("DogOwner/{id:Guid}/Image")]
+    public async Task<IActionResult> GetDogOwnerImage(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetImageCommand(id), cancellationToken);
+
+        return File(result.Data.ResponseStream, result.Data.Headers.ContentType);
+    }
+
+    [HttpDelete("DogOwner/{id:Guid}/Image")]
+    public async Task<IActionResult> DeleteDogOwnerImage(Guid id, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new DeleteImageCommand(id), cancellationToken));
     }
 }
