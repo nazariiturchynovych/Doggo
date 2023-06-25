@@ -1,5 +1,6 @@
 namespace Doggo.Controllers;
 
+using Application.Requests.Commands.Image;
 using Application.Requests.Commands.Walker;
 using Application.Requests.Queries.Walker;
 using Extensions;
@@ -76,8 +77,22 @@ public class WalkerController : ControllerBase
     }
 
     [HttpPost("UploadWalkerImage")]
-    public async Task<IActionResult> UploadWalkerImage(Guid id,IFormFile file, CancellationToken cancellationToken)
+    public async Task<IActionResult> UploadWalkerImage(Guid id, IFormFile file, CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new UploadWalkerImageCommand(id,file), cancellationToken));
+        return Ok(await _mediator.Send(new UploadImageCommand(id, file), cancellationToken));
+    }
+
+    [HttpGet("GetWalker/{id:Guid}/image")]
+    public async Task<IActionResult> GetWalkerImage(Guid id, CancellationToken cancellationToken)
+    {
+        var resp = await _mediator.Send(new GetImageCommand(id), cancellationToken);
+
+        return File(resp.Data.ResponseStream, resp.Data.Headers.ContentType);
+    }
+
+    [HttpDelete("Walker/{id:Guid}/image")]
+    public async Task<IActionResult> DeleteWalkerImage(Guid id, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new DeleteImageCommand(id), cancellationToken));
     }
 }
