@@ -9,14 +9,12 @@ using Microsoft.AspNetCore.SignalR;
 
 public sealed class DoggoHub : Hub
 {
-    private readonly IUserRepository _userRepository;
     private readonly IChatRepository _chatRepository;
     private static readonly ConcurrentDictionary<Guid, List<Guid>> UserChatConnections = new();
     private static readonly ConcurrentDictionary<Guid, Chat> Chats = new();
 
-    public DoggoHub(IUserRepository userRepository, IChatRepository chatRepository)
+    public DoggoHub(IChatRepository chatRepository)
     {
-        _userRepository = userRepository;
         _chatRepository = chatRepository;
     }
 
@@ -88,17 +86,18 @@ public sealed class DoggoHub : Hub
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-         UserChatConnections.TryGetValue(Context.User!.GetUserId(), out var connections);
+        UserChatConnections.TryRemove(Context.User!.GetUserId(), out var connections);
 
-        if (connections!.Any())
+        if (connections is not null && !connections.Any())
         {
             await base.OnDisconnectedAsync(exception);
             return;
         }
 
-        foreach (var connection in connections)
+        foreach (var connection in connections!)
         {
             await Groups.RemoveFromGroupAsync(connection.ToString(), Context.ConnectionId);
         }
+
     }
 }
