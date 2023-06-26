@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+</body>
+</html>
+
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:7278/notifications-hub")
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+
+    async function start() {
+        try {
+            await connection.start({ mode: 'no-cors'});
+            console.log("SignalR Connected.");
+        } catch (err) {
+            console.log(err);
+        }
+    };
+connection.on("ReceiveNotification", data => console.log(data))
+
+    connection.onclose(async () => {
+        await start();
+    });
+
+    function send() {
+        connection.send('SendNotification')
+    }
+
+    // Start the connection.
+</script>

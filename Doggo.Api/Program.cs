@@ -46,11 +46,10 @@ try
                 name: "MyAllowSpecificOrigins",
                 policy =>
                 {
-                    policy.WithOrigins("http://localhost:63342");
-                    policy.WithHeaders("Access-Control-Allow-Origin");
-                    policy.AllowAnyMethod();
-                    policy.AllowAnyHeader();
-                    policy.AllowAnyOrigin();
+                    policy.WithOrigins("http://localhost:63342")
+                        .AllowAnyHeader()
+                        .WithMethods("GET", "POST")
+                        .AllowCredentials();
                 });
         });
 
