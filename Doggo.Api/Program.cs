@@ -2,6 +2,7 @@ using Doggo.Application.Middlewares;
 using Doggo.Domain.Constants;
 using Doggo.Domain.Entities.User;
 using Doggo.Extensions;
+using Doggo.Hubs;
 using Doggo.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,8 @@ try
                 name: "MyAllowSpecificOrigins",
                 policy =>
                 {
+                    policy.WithOrigins("http://localhost:63342");
+                    policy.WithHeaders("Access-Control-Allow-Origin");
                     policy.AllowAnyMethod();
                     policy.AllowAnyHeader();
                     policy.AllowAnyOrigin();
@@ -59,6 +62,10 @@ try
     builder.RegisterBehaviours();
     builder.RegisterMiddlewares();
     builder.RegisterAwsServices();
+
+
+    builder.Services.AddSignalR();
+
 
    // builder.Services.AddControllers().AddJsonOptions(x =>
    //  {
@@ -78,12 +85,16 @@ try
 
     app.UseCors("MyAllowSpecificOrigins");
 
+    app.UseRouting();
+
     app.UseAuthentication();
     app.UseAuthorization();
 
     app.UseHttpsRedirection();
     app.MapControllers();
     app.UseSerilogRequestLogging();
+
+    app.MapHub<NotificationsHub>("notifications-hub");
 
 // app.SeedUsersAndRolesAsync().Wait();
     app.Run();
