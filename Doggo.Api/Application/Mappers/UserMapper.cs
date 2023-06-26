@@ -3,6 +3,7 @@ namespace Doggo.Application.Mappers;
 using Domain.DTO;
 using Domain.DTO.User;
 using Domain.DTO.User.PersonalIdentifier;
+using Domain.Entities.Chat;
 using Domain.Entities.User;
 using Requests.Commands.User;
 
@@ -25,6 +26,20 @@ public static class UserRequestMapper
         user.PhoneNumber = addUserInformationCommand.PhoneNumber;
         return user;
     }
+
+    public static UserChatDto MapUserToUserChatDto(this User user)
+    {
+        return new UserChatDto(user.Id, user.UserName!);
+    }
+
+    public static UserChats MapUserToUserChatDto(this ICollection<Chat> chats)
+    {
+        return new UserChats()
+        {
+            Chats = chats.ToList()
+        };
+    }
+
 
     public static GetUserDto MapUserToGetUserDto(this User user)
     {

@@ -1,6 +1,7 @@
 namespace Doggo.Infrastructure.Persistence;
 
 using System.Reflection;
+using Domain.Entities.Chat;
 using Domain.Entities.DogOwner;
 using Domain.Entities.Job;
 using Domain.Entities.JobRequest;
@@ -39,4 +40,6 @@ public class DoggoDbContext : IdentityDbContext<User, Role, Guid, UserClaim, Use
     public DbSet<Job> Jobs { get; set; }
 
     public DbSet<PersonalIdentifier> PersonalIdentifiers { get; set; }
+
+    public DbSet<Chat> Chats { get; set; }
 }

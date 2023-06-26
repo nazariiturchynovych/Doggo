@@ -2,6 +2,7 @@
 namespace Doggo.Domain.Entities.User;
 
 using Base;
+using Chat;
 using Documents;
 using DogOwner;
 using Microsoft.AspNetCore.Identity;
@@ -28,4 +29,8 @@ public class User : IdentityUser<Guid>, IEntity
     public bool InstagramAuth { get; set; }
 
     public ICollection<UserRole> UserRoles { get; set; }
+
+    public ICollection<UserChat> UserChats { get; set; }
+
+    public ICollection<Message> Messages { get; set; }
 }

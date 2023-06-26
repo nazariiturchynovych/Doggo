@@ -93,7 +93,7 @@ try
     app.MapControllers();
     app.UseSerilogRequestLogging();
 
-    app.MapHub<NotificationsHub>("notifications-hub");
+    app.MapHub<DoggoHub>("doggo-hub");
 
 // app.SeedUsersAndRolesAsync().Wait();
     app.Run();
