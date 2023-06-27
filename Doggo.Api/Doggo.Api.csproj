@@ -42,6 +42,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Application\Requests\Commands\Message" />
       <Folder Include="wwwroot" />
     </ItemGroup>
 

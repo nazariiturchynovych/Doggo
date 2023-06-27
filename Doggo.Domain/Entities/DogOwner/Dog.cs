@@ -1,3 +1,4 @@
+// ReSharper disable CollectionNeverUpdated.Global
 #pragma warning disable CS8618
 namespace Doggo.Domain.Entities.DogOwner;
 

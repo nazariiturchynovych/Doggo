@@ -33,5 +33,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserId)
             .IsRequired();
+
+        builder.HasMany(x => x.UserChats)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId);
+
+        builder.HasMany(x => x.Messages)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId);
+
     }
 }

@@ -7,27 +7,23 @@ using Extensions;
 using Infrastructure.Repositories.Abstractions;
 using Microsoft.AspNetCore.SignalR;
 
-public sealed class DoggoHub : Hub
+public sealed class DoggoHub : Hub<IDoggoHub>
 {
     private readonly IChatRepository _chatRepository;
     private static readonly ConcurrentDictionary<Guid, List<Guid>> UserChatConnections = new();
     private static readonly ConcurrentDictionary<Guid, Chat> Chats = new();
+    private readonly Guid _userId;
 
     public DoggoHub(IChatRepository chatRepository)
     {
         _chatRepository = chatRepository;
+        _userId = Context.User!.GetUserId();
     }
 
-    public async Task SendNotification()
-    {
-        var a = "from hub";
-        Console.WriteLine();
-        await Clients.All.SendAsync("ReceiveNotification", a);
-    }
 
     public override async Task OnConnectedAsync()
     {
-        UserChatConnections.TryAdd(Context.User!.GetUserId(), new List<Guid>());
+        UserChatConnections.TryAdd(_userId, new List<Guid>());
         await base.OnConnectedAsync();
     }
 
@@ -41,7 +37,7 @@ public sealed class DoggoHub : Hub
 
             if (chat is null)
             {
-                await Clients.Caller.SendAsync("onError", "OnConnected:" + CommonErrors.EntityDoesNotExist);
+                await Clients.Caller.OnError(CommonErrors.EntityDoesNotExist);
                 return;
             }
 
@@ -50,18 +46,13 @@ public sealed class DoggoHub : Hub
             cachedChat = chat;
         }
 
-        if (cachedChat!.UserChats.All(x => x.UserId != Context.User!.GetUserId()))
-        {
-            await Clients.Caller.SendAsync("onError", "OnConnected:" + "User is not participant of this chat");
-            return;
-        }
+        await Groups.AddToGroupAsync(Context.ConnectionId, cachedChat!.Id.ToString());
 
-        await Groups.AddToGroupAsync(Context.ConnectionId, cachedChat.Id.ToString());
-
-        UserChatConnections.TryGetValue(Context.User!.GetUserId(), out var userChatConnections);
+        UserChatConnections.TryGetValue(_userId, out var userChatConnections);
 
         userChatConnections!.Add(chatId);
-        UserChatConnections.TryUpdate(Context.User!.GetUserId(), userChatConnections, userChatConnections);
+
+        UserChatConnections.TryUpdate(_userId, userChatConnections, userChatConnections);
     }
 
 
@@ -71,33 +62,32 @@ public sealed class DoggoHub : Hub
 
         if (result)
         {
-            await Clients.Caller.SendAsync("onError", "OnConnected:" + CommonErrors.EntityDoesNotExist);
+            await Clients.Caller.OnError(CommonErrors.EntityDoesNotExist);
             return;
         }
 
-        if (cachedChat!.UserChats.All(x => x.UserId != Context.User!.GetUserId()))
+        if (cachedChat!.UserChats.All(x => x.UserId != _userId))
         {
-            await Clients.Caller.SendAsync("onError", "OnConnected:" + "User is not participant of this chat");
+            await Clients.Caller.OnError("User is not participant of this chat");
             return;
         }
 
-        await Clients.Group(chatId.ToString()).SendAsync(message);
+        await Clients.Group(chatId.ToString()).ReceiveMessage(message);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        UserChatConnections.TryRemove(Context.User!.GetUserId(), out var connections);
+        UserChatConnections.TryRemove(_userId, out var connections);
 
-        if (connections is not null && !connections.Any())
+        if (connections is null || !connections.Any())
         {
             await base.OnDisconnectedAsync(exception);
             return;
         }
 
-        foreach (var connection in connections!)
+        foreach (var connection in connections)
         {
             await Groups.RemoveFromGroupAsync(connection.ToString(), Context.ConnectionId);
         }
-
     }
 }

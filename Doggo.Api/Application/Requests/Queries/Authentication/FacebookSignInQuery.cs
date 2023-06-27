@@ -43,11 +43,9 @@ public record FacebookSignInQuery(string AccessToken) : IRequest<CommonResult<Si
 
             var user = await userRepository.GetUserWithRoles(userInfoResult.Email, cancellationToken);
 
-            if (user is null)
-                return Failure<SignInDto>(CommonErrors.EntityDoesNotExist);
-
-
-            return Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
+            return user is null ?
+                Failure<SignInDto>(CommonErrors.EntityDoesNotExist) :
+                Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
         }
     }
 }

@@ -2,5 +2,6 @@ namespace Doggo.Hubs;
 
 public interface IDoggoHub
 {
-    Task ClientHook(string message);
+    public Task OnError(string error);
+    public Task ReceiveMessage(string message);
 }

@@ -13,4 +13,6 @@ public static class CommonErrors
     public const string EntityDeleteFailed = "ENTITY_DELETE_FAILED";
 
     public const string ValidationProblemAreNotOccured = "VALIDATION_PROBLEM_ARE_OCCURED";
+
+    public const string EntitiesDoesNotExist = "ENTITIESDOESNOTEXIST";
 }

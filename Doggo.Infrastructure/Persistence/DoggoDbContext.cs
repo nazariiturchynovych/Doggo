@@ -42,4 +42,6 @@ public class DoggoDbContext : IdentityDbContext<User, Role, Guid, UserClaim, Use
     public DbSet<PersonalIdentifier> PersonalIdentifiers { get; set; }
 
     public DbSet<Chat> Chats { get; set; }
+
+    public DbSet<UserChat> UserChats { get; set; }
 }

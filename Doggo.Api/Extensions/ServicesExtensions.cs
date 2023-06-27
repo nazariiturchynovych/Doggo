@@ -1,7 +1,6 @@
 namespace Doggo.Extensions;
 
 using System.Reflection;
-using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.S3;
 using Application.Behaviours;
@@ -96,6 +95,8 @@ public static class ServicesExtensions
         builder.Services.AddScoped<IPossibleScheduleRepository, PossibleScheduleRepository>();
         builder.Services.AddScoped<IRequiredScheduleRepository, RequiredScheduleRepository>();
         builder.Services.AddScoped<IPersonalIdentifierRepository, PersonalIdentifierRepository>();
+        builder.Services.AddScoped<IChatRepository, ChatRepository>();
+        builder.Services.AddScoped<IUserChatRepository, UserChatRepository>();
     }
 
     public static void RegisterBehaviours(this WebApplicationBuilder builder)

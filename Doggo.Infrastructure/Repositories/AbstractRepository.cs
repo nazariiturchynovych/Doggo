@@ -1,13 +1,11 @@
 namespace Doggo.Infrastructure.Repositories;
 
 using Abstractions;
-using Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Persistence;
 
 public class AbstractRepository<TEntity> : IAbstractRepository<TEntity>
-    where TEntity : class, IEntity
+    where TEntity : class
 {
     private readonly DoggoDbContext _context;
     private readonly DbSet<TEntity> _entities;

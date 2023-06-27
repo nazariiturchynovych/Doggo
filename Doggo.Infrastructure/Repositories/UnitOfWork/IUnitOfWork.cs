@@ -10,6 +10,10 @@ public interface IUnitOfWork
 
     IWalkerRepository GetWalkerRepository();
 
+    IChatRepository GetChatRepository();
+
+    IUserChatRepository GetUserChatRepository();
+
     IPossibleScheduleRepository GetPossibleScheduleRepository();
 
     IJobRepository GetJobRepository();
