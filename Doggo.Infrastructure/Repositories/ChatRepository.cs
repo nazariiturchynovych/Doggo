@@ -27,7 +27,7 @@ public class ChatRepository : AbstractRepository<Chat>, IChatRepository
             .ToListAsync(cancellationToken: cancellationToken);
     }
 
-    public async Task<Chat?> GetByIdAsync(Guid chatId, CancellationToken cancellationToken = default)
+    public async Task<Chat?> GetAsync(Guid chatId, CancellationToken cancellationToken = default)
     {
         return await _context.Chats.FirstOrDefaultAsync(x => x.Id == chatId, cancellationToken: cancellationToken);
     }

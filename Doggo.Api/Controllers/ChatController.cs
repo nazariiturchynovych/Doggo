@@ -37,6 +37,12 @@ public class ChatController : ControllerBase
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
+    [HttpPost("DeleteUsersFromChat")]
+    public async Task<IActionResult> DeleteUsersFromChat(DeleteUsersFromChatCommand command, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(command, cancellationToken));
+    }
+
     [HttpGet("GetChat/{id:Guid}")]
     public async Task<IActionResult> GetChat(Guid id, CancellationToken cancellationToken)
     {

@@ -22,7 +22,7 @@ public record UpdateChatCommand(Guid ChatId ,string? Name) : IRequest<CommonResu
         {
             var repository = _unitOfWork.GetChatRepository();
 
-            var chat = await repository.GetByIdAsync(request.ChatId, cancellationToken);
+            var chat = await repository.GetAsync(request.ChatId, cancellationToken);
 
             if (chat is null)
                 return Failure(CommonErrors.EntityDoesNotExist);

@@ -1,3 +1,4 @@
+using Doggo.Api.Hubs;
 using Doggo.Application.Middlewares;
 using Doggo.Domain.Constants;
 using Doggo.Domain.Entities.User;

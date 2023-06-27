@@ -7,9 +7,9 @@ using Hubs;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
-public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IRequest<CommonResult>
+public record DeleteUsersFromChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IRequest<CommonResult>
 {
-    public class Handler : IRequestHandler<AddUsersToChatCommand, CommonResult>
+    public class Handler : IRequestHandler<DeleteUsersFromChatCommand, CommonResult>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -18,7 +18,7 @@ public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IR
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<CommonResult> Handle(AddUsersToChatCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult> Handle(DeleteUsersFromChatCommand request, CancellationToken cancellationToken)
         {
             var chatRepository = _unitOfWork.GetChatRepository();
 
@@ -38,22 +38,28 @@ public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IR
                     validUsers.Add(userId);
             }
 
-            var userChats = validUsers.Select(
-                userId => new UserChat
-                {
-                    ChatId = request.ChatId,
-                    UserId = userId
-                });
-
             var userChatRepository = _unitOfWork.GetUserChatRepository();
 
-           await userChatRepository.AddRangeAsync(userChats);
+            List<UserChat?> userChatsToDelete = new();
 
-           await _unitOfWork.SaveChangesAsync(cancellationToken);
+            foreach (var userId in validUsers)
+            {
+                var userChatToDelete = await userChatRepository.GetAsync(request.ChatId, userId, cancellationToken);
+                if (userChatToDelete is null)
+                    continue;
+                userChatsToDelete.Add(userChatToDelete);
+            }
 
-           DoggoHub.UpdateChat(request.ChatId, chat);
+            if (!userChatsToDelete.Any())
+                return Failure(CommonErrors.EntitiesDoesNotExist);
 
-           return Success();
+            userChatRepository.RemoveRange(userChatsToDelete!);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            DoggoHub.UpdateChat(request.ChatId, chat);
+
+            return Success();
         }
     }
 }
