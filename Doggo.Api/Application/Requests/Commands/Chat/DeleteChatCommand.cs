@@ -1,4 +1,4 @@
-namespace Doggo.Application.Requests.Commands.Chat;
+namespace Doggo.Api.Application.Requests.Commands.Chat;
 
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
@@ -31,5 +31,5 @@ public record DeleteChatCommand(Guid ChatId) : IRequest<CommonResult>
 
             return Success();
         }
-    };
-};
+    }
+}

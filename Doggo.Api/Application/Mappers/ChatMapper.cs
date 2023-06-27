@@ -1,8 +1,7 @@
-namespace Doggo.Application.Mappers;
+namespace Doggo.Api.Application.Mappers;
 
 using Domain.DTO;
 using Domain.DTO.Chat;
-using Domain.DTO.Chat.Message;
 using Domain.Entities.Chat;
 using Requests.Commands.Chat;
 
@@ -19,13 +18,7 @@ public static class ChatMapper
         return new GetChatDto(
             chat.Id,
             chat.Name,
-            chat.Messages.Select(
-                    x => new GetMessageDto(
-                        x.Value,
-                        x.UserId,
-                        x.User.FirstName,
-                        x.CreatedDate,
-                        x.ChangedDate))
+            chat.Messages.Select(x => x.MapMessageToGetMessageDto())
                 .ToList());
     }
 

@@ -1,5 +1,6 @@
 namespace Doggo.Application.Requests.Queries.Chat;
 
+using Api.Application.Mappers;
 using Domain.DTO;
 using Domain.DTO.Chat;
 using Domain.Results;

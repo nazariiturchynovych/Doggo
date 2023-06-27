@@ -17,6 +17,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly IJobRepository _jobRepository;
     private readonly IChatRepository _chatRepository;
     private readonly IUserChatRepository _userChatRepository;
+    private readonly IMessageRepository _messageRepository;
 
     public UnitOfWork(
         DoggoDbContext context,
@@ -30,7 +31,8 @@ public class UnitOfWork : IUnitOfWork
         IRequiredScheduleRepository requiredScheduleRepository,
         IJobRepository jobRepository,
         IChatRepository chatRepository,
-        IUserChatRepository userChatRepository)
+        IUserChatRepository userChatRepository,
+        IMessageRepository messageRepository)
     {
         _context = context;
         _userRepository = userRepository;
@@ -44,6 +46,7 @@ public class UnitOfWork : IUnitOfWork
         _jobRepository = jobRepository;
         _chatRepository = chatRepository;
         _userChatRepository = userChatRepository;
+        _messageRepository = messageRepository;
     }
 
 
@@ -56,6 +59,8 @@ public class UnitOfWork : IUnitOfWork
     public IChatRepository GetChatRepository() => _chatRepository;
 
     public IUserChatRepository GetUserChatRepository() => _userChatRepository;
+
+    public IMessageRepository GetMessageRepository() => _messageRepository;
 
     public IPossibleScheduleRepository GetPossibleScheduleRepository() => _possibleScheduleRepository;
 

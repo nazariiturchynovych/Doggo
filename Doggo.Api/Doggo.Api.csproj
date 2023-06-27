@@ -4,7 +4,6 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>Doggo</RootNamespace>
         <UserSecretsId>75be6c21-3c92-4fc3-a70b-52aea91304d0</UserSecretsId>
     </PropertyGroup>
 
@@ -40,10 +39,6 @@
       <ProjectReference Include="..\Doggo.Domain\Doggo.Domain.csproj" />
       <ProjectReference Include="..\Doggo.Infrastructure\Doggo.Infrastructure.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Application\Requests\Commands\Message" />
-      <Folder Include="wwwroot" />
-    </ItemGroup>
+    
 
 </Project>

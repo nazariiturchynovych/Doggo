@@ -1,7 +1,7 @@
-namespace Doggo.Application.Requests.Commands.Chat;
+namespace Doggo.Api.Application.Requests.Commands.Chat;
 
-using Domain.Entities.Chat;
-using Domain.Results;
+using Doggo.Domain.Entities.Chat;
+using Doggo.Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 

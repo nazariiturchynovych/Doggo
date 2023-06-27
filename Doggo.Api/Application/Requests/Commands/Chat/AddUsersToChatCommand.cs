@@ -1,4 +1,4 @@
-namespace Doggo.Application.Requests.Commands.Chat;
+namespace Doggo.Api.Application.Requests.Commands.Chat;
 
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.Chat;
@@ -38,7 +38,7 @@ public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IR
             }
 
             var userChats = validUsers.Select(
-                userId => new UserChat()
+                userId => new UserChat
                 {
                     ChatId = request.ChatId,
                     UserId = userId

@@ -14,6 +14,8 @@ public interface IUnitOfWork
 
     IUserChatRepository GetUserChatRepository();
 
+    IMessageRepository GetMessageRepository();
+
     IPossibleScheduleRepository GetPossibleScheduleRepository();
 
     IJobRepository GetJobRepository();
