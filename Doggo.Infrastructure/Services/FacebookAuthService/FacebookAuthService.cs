@@ -9,13 +9,11 @@ public class FacebookAuthService : IFacebookAuthService
 {
     private readonly IOptions<FacebookAuthOptions> _facebookSettings;
     private readonly HttpClient _httpClient;
-    private readonly IHttpClientFactory _httpClientFactory;
 
-    public FacebookAuthService(IOptions<FacebookAuthOptions> facebookSettings, HttpClient httpClient, IHttpClientFactory httpClientFactory)
+    public FacebookAuthService(IOptions<FacebookAuthOptions> facebookSettings, HttpClient httpClient)
     {
         _facebookSettings = facebookSettings;
         _httpClient = httpClient;
-        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<FacebookTokenValidationResult> AuthenticateTokenAsync(string accessToken)

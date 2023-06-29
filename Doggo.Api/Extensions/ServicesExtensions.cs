@@ -1,6 +1,8 @@
 namespace Doggo.Api.Extensions;
 
+using System.Net;
 using System.Reflection;
+using Amazon.Auth.AccessControlPolicy;
 using Amazon.Runtime;
 using Amazon.S3;
 using Doggo.Application.Behaviours;
@@ -23,6 +25,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.OpenApi.Models;
+using Polly;
+using Polly.Contrib.WaitAndRetry;
 
 public static class ServicesExtensions
 {
@@ -67,12 +71,14 @@ public static class ServicesExtensions
         builder.Services.AddScoped<IFacebookAuthService, FacebookAuthService>();
         builder.Services.AddSingleton<IImageService, ImageService>();
 
-
         builder.Services.AddHttpClient<IFacebookAuthService, FacebookAuthService>(
-            options =>
-            {
-                options.BaseAddress = new Uri(FacebookConstants.BaseUrl);
-            });
+                options =>
+                {
+                    options.BaseAddress = new Uri(FacebookConstants.BaseUrl);
+                })
+            .AddTransientHttpErrorPolicy(
+                x => x.WaitAndRetryAsync(
+                    Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(1), 3)));
 
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
         builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));

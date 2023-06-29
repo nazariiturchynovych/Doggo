@@ -3,7 +3,6 @@ using Doggo.Api.Hubs;
 using Doggo.Application.Middlewares;
 using Doggo.Domain.Constants;
 using Doggo.Domain.Entities.User;
-using Doggo.Extensions;
 using Doggo.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
