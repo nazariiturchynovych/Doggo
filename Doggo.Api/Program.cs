@@ -4,6 +4,8 @@ using Doggo.Application.Middlewares;
 using Doggo.Domain.Constants;
 using Doggo.Domain.Entities.User;
 using Doggo.Infrastructure.Persistence;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -79,6 +81,11 @@ try
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+
+    app.MapHealthChecks("/_health", new HealthCheckOptions()
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse 
+    });
 
     app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 

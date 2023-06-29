@@ -1,8 +1,6 @@
 namespace Doggo.Api.Extensions;
 
-using System.Net;
 using System.Reflection;
-using Amazon.Auth.AccessControlPolicy;
 using Amazon.Runtime;
 using Amazon.S3;
 using Doggo.Application.Behaviours;
@@ -10,6 +8,7 @@ using Doggo.Application.Middlewares;
 using Domain.Constants;
 using Domain.Options;
 using FluentValidation;
+using HealthChecks.Aws.S3;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.UnitOfWork;
@@ -53,6 +52,12 @@ public static class ServicesExtensions
 
     public static void RegisterServices(this WebApplicationBuilder builder)
     {
+        builder.Services.AddHealthChecks()
+            .AddNpgSql(builder.Configuration.GetConnectionString(ConnectionConstants.Postgres)!)
+            .AddS3(x => x = builder.Configuration.GetSection("AWS:S3").Get<S3BucketOptions>()!)
+            .AddRedis(builder.Configuration.GetConnectionString(ConnectionConstants.Redis)!)
+            .AddSignalRHub("https://localhost:7278/doggo-hub");
+
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         builder.Services.AddScoped<IUrlHelper>(
@@ -77,15 +82,14 @@ public static class ServicesExtensions
                     options.BaseAddress = new Uri(FacebookConstants.BaseUrl);
                 })
             .AddTransientHttpErrorPolicy(
-                x => x.WaitAndRetryAsync(
-                    Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(1), 3)));
+                x => x.WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(1), 3)));
 
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
         builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         builder.Services.AddStackExchangeRedisCache(
             options =>
             {
-                options.Configuration = builder.Configuration.GetSection("Redis").Value;
+                options.Configuration = builder.Configuration.GetConnectionString(ConnectionConstants.Redis);
             });
     }
 
@@ -138,7 +142,7 @@ public static class ServicesExtensions
                         BearerFormat = "JWT",
                         In = ParameterLocation.Header,
                         Description
-                            = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+                            = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer token\"",
                     });
                 c.AddSecurityRequirement(
                     new OpenApiSecurityRequirement
