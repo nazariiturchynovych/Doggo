@@ -34,12 +34,12 @@
     async function connect() {
 
         connection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:7278/notifications-hub", {accessTokenFactory: () => token})
+            .withUrl("https://localhost:7278/doggo-hub", {accessTokenFactory: () => token})
             .configureLogging(signalR.LogLevel.Information)
             .build();
-    }
 
-    async function start() {
+        connection.on('ReceiveMessage', message => console.log(message));
+        connection.on("OnError", data => console.log(data))
         try {
             await connection.start();
             console.log("SignalR Connected.");
@@ -48,12 +48,14 @@
         }
     }
 
-    
-    connection.on("ReceiveNotification", data => console.log(data))
 
-    connection.onclose(async () => {
-        await start();
-    });
+    async function JoinToHub(chatId) {
+        await connection.send("JoinChat", chatId)
+    }
+
+    async function SendMessage(chatId, message) {
+        await connection.send("SendMessage", chatId, message)
+    }
 
 
     // Start the connection.

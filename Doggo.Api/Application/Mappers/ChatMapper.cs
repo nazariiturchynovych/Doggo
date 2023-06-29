@@ -2,6 +2,8 @@ namespace Doggo.Api.Application.Mappers;
 
 using Domain.DTO;
 using Domain.DTO.Chat;
+using Domain.DTO.Chat.Message;
+using Domain.DTO.UserChat;
 using Domain.Entities.Chat;
 using Requests.Commands.Chat;
 
@@ -18,8 +20,8 @@ public static class ChatMapper
         return new GetChatDto(
             chat.Id,
             chat.Name,
-            chat.Messages.Select(x => x.MapMessageToGetMessageDto())
-                .ToList());
+            chat.Messages is not null ? chat.Messages.Select(x => x.MapMessageToGetMessageDto()).ToList() : new List<GetMessageDto>(),
+            chat.UserChats is not null ? chat.UserChats.Select(x => x.MapUserChatToUserChatDto()).ToList() : new List<UserChatDto>());
     }
 
     public static ChatDto MapChatToChatDto(this Chat chat)
@@ -32,5 +34,14 @@ public static class ChatMapper
         var collectionDto = collection.Select(dogOwner => dogOwner.MapChatToChatDto()).ToList();
 
         return new PageOfTDataDto<ChatDto>(collectionDto);
+    }
+
+    public static UserChatDto MapUserChatToUserChatDto(this UserChat userChat)
+    {
+        return new UserChatDto()
+        {
+            ChatId = userChat.ChatId,
+            UserId = userChat.UserId
+        };
     }
 }

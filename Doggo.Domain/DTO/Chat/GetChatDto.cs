@@ -1,6 +1,6 @@
 namespace Doggo.Domain.DTO.Chat;
 
-using Entities.Chat;
 using Message;
+using UserChat;
 
-public record GetChatDto(Guid ChatId, string Name, ICollection<GetMessageDto> Messages);
+public record GetChatDto(Guid ChatId, string Name, ICollection<GetMessageDto> Messages, ICollection<UserChatDto> UserChats);

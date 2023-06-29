@@ -27,10 +27,6 @@ public static class UserRequestMapper
         return user;
     }
 
-    public static UserChatDto MapUserToUserChatDto(this User user)
-    {
-        return new UserChatDto(user.Id, user.UserName!);
-    }
 
     public static UserChats MapUserToUserChatDto(this ICollection<Chat> chats)
     {

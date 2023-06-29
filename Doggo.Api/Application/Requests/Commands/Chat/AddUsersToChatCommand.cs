@@ -5,6 +5,8 @@ using Domain.Entities.Chat;
 using Domain.Results;
 using Hubs;
 using Infrastructure.Repositories.UnitOfWork;
+using Infrastructure.Services.CacheService;
+using Mappers;
 using MediatR;
 
 public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IRequest<CommonResult>
@@ -12,17 +14,19 @@ public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IR
     public class Handler : IRequestHandler<AddUsersToChatCommand, CommonResult>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICacheService _cacheService;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IUnitOfWork unitOfWork, ICacheService cacheService)
         {
             _unitOfWork = unitOfWork;
+            _cacheService = cacheService;
         }
 
         public async Task<CommonResult> Handle(AddUsersToChatCommand request, CancellationToken cancellationToken)
         {
             var chatRepository = _unitOfWork.GetChatRepository();
 
-            var chat = await chatRepository.GetAsync(request.ChatId, cancellationToken);
+            var chat = await chatRepository.GetWithMessages(request.ChatId, cancellationToken);
 
             if (chat is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
@@ -47,13 +51,13 @@ public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IR
 
             var userChatRepository = _unitOfWork.GetUserChatRepository();
 
-           await userChatRepository.AddRangeAsync(userChats);
+            await userChatRepository.AddRangeAsync(userChats);
 
-           await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-           DoggoHub.UpdateChat(request.ChatId, chat);
+            // await DoggoHub.UpdateChat(request.ChatId, chat.MapChatToGetChatDto(), _cacheService);
 
-           return Success();
+            return Success();
         }
     }
 }

@@ -1,16 +1,21 @@
-namespace Doggo.Extensions;
+namespace Doggo.Api.Extensions;
 
 using System.Reflection;
 using Amazon.Runtime;
 using Amazon.S3;
-using Application.Behaviours;
-using Application.Middlewares;
+using Doggo.Application.Behaviours;
+using Doggo.Application.Middlewares;
 using Domain.Constants;
 using Domain.Options;
+using FluentValidation;
 using Infrastructure.Repositories;
+using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.UnitOfWork;
+using Infrastructure.Services.CacheService;
 using Infrastructure.Services.CurrentUserService;
 using Infrastructure.Services.EmailService;
+using Infrastructure.Services.FacebookAuthService;
+using Infrastructure.Services.ImageService;
 using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -18,11 +23,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.OpenApi.Models;
-using FluentValidation;
-using Infrastructure.Repositories.Abstractions;
-using Infrastructure.Services.CacheService;
-using Infrastructure.Services.FacebookAuthService;
-using Infrastructure.Services.ImageService;
 
 public static class ServicesExtensions
 {
@@ -63,7 +63,7 @@ public static class ServicesExtensions
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ICurrentUserService, CurrenUserService>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-        builder.Services.AddScoped<ICacheService, CacheService>();
+        builder.Services.AddSingleton<ICacheService, CacheService>();
         builder.Services.AddScoped<IFacebookAuthService, FacebookAuthService>();
         builder.Services.AddSingleton<IImageService, ImageService>();
 
@@ -96,6 +96,7 @@ public static class ServicesExtensions
         builder.Services.AddScoped<IRequiredScheduleRepository, RequiredScheduleRepository>();
         builder.Services.AddScoped<IPersonalIdentifierRepository, PersonalIdentifierRepository>();
         builder.Services.AddScoped<IChatRepository, ChatRepository>();
+        builder.Services.AddScoped<IMessageRepository, MessageRepository>();
         builder.Services.AddScoped<IUserChatRepository, UserChatRepository>();
     }
 
@@ -123,7 +124,7 @@ public static class ServicesExtensions
                     });
                 c.AddSecurityDefinition(
                     "Bearer",
-                    new OpenApiSecurityScheme()
+                    new OpenApiSecurityScheme
                     {
                         Name = "Authorization",
                         Type = SecuritySchemeType.ApiKey,

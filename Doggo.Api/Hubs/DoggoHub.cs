@@ -1,12 +1,16 @@
 namespace Doggo.Api.Hubs;
 
 using System.Collections.Concurrent;
+using Application.Mappers;
 using Application.Requests.Commands.Message;
-using Doggo.Extensions;
 using Doggo.Hubs;
+using Domain.Constants;
 using Domain.Constants.ErrorConstants;
+using Domain.DTO.Chat;
 using Domain.Entities.Chat;
 using Infrastructure.Repositories.Abstractions;
+using Infrastructure.Services.CacheService;
+using Infrastructure.Services.CurrentUserService;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
@@ -14,15 +18,16 @@ public sealed class DoggoHub : Hub<IDoggoHub>
 {
     private readonly IChatRepository _chatRepository;
     private readonly IMediator _mediator;
+    private readonly ICacheService _cacheService;
     private static readonly ConcurrentDictionary<Guid, List<Guid>> UserChatConnections = new();
-    public static readonly ConcurrentDictionary<Guid, Chat> Chats = new();
     private readonly Guid _userId;
 
-    public DoggoHub(IChatRepository chatRepository, IMediator mediator)
+    public DoggoHub(IChatRepository chatRepository, IMediator mediator, ICacheService cacheService, ICurrentUserService currentUserService)
     {
         _chatRepository = chatRepository;
         _mediator = mediator;
-        _userId = Context.User!.GetUserId();
+        _cacheService = cacheService;
+        _userId = currentUserService.GetUserId();
     }
 
 
@@ -34,9 +39,9 @@ public sealed class DoggoHub : Hub<IDoggoHub>
 
     public async Task JoinChat(Guid chatId)
     {
-        var result = Chats.TryGetValue(chatId, out var cachedChat);
+        var cachedChat = await _cacheService.GetData<GetChatDto>(CacheKeys.Chat + chatId);
 
-        if (!result)
+        if (cachedChat is null)
         {
             var chat = await _chatRepository.GetAsync(chatId);
 
@@ -46,12 +51,13 @@ public sealed class DoggoHub : Hub<IDoggoHub>
                 return;
             }
 
-            Chats.TryAdd(chat.Id, chat);
+            cachedChat = chat.MapChatToGetChatDto();
 
-            cachedChat = chat;
+            await _cacheService.SetData(CacheKeys.Chat + chat.Id, cachedChat);
+
         }
 
-        await Groups.AddToGroupAsync(Context.ConnectionId, cachedChat!.Id.ToString());
+        await Groups.AddToGroupAsync(Context.ConnectionId, cachedChat.ChatId.ToString());
 
         UserChatConnections.TryGetValue(_userId, out var userChatConnections);
 
@@ -63,15 +69,15 @@ public sealed class DoggoHub : Hub<IDoggoHub>
 
     public async Task SendMessage(Guid chatId, string message)
     {
-        var result = Chats.TryGetValue(chatId, out var cachedChat);
+        var cachedChat = await _cacheService.GetData<GetChatDto>(CacheKeys.Chat + chatId);
 
-        if (result)
+        if (cachedChat is null)
         {
             await Clients.Caller.OnError(CommonErrors.EntityDoesNotExist);
             return;
         }
 
-        if (cachedChat!.UserChats.All(x => x.UserId != _userId))
+        if (cachedChat.UserChats.All(x => x.UserId != _userId))
         {
             await Clients.Caller.OnError("User is not participant of this chat");
             return;
@@ -98,12 +104,13 @@ public sealed class DoggoHub : Hub<IDoggoHub>
         }
     }
 
-    public static void UpdateChat(Guid chatToUpdateId, Chat chat)
+    public static async Task UpdateChat(Guid chatToUpdateId, GetChatDto chat, ICacheService cacheService)
     {
-        Chats.TryGetValue(chatToUpdateId, out var chatToUpdate);
+      var chatToUpdate =  await cacheService.GetData<Chat>(CacheKeys.Chat + chatToUpdateId);
         if (chatToUpdate is not null)
         {
-            Chats.TryUpdate(chatToUpdateId, chat, chatToUpdate);
+           await cacheService.SetData(CacheKeys.Chat + chatToUpdateId, chat);
         }
     }
+
 }

@@ -3,20 +3,22 @@ namespace Doggo.Api.Application.Requests.Commands.Chat;
 using Doggo.Domain.Entities.Chat;
 using Doggo.Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
+using Infrastructure.Services.CurrentUserService;
 using MediatR;
 
 public record CreateGroupChatCommand(
     string Name,
-    Guid ChatId,
-    ICollection<Guid> UsersId) : IRequest<CommonResult>
+    List<Guid> UserIds) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<CreateGroupChatCommand, CommonResult>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUserService _currentUserService;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
         {
             _unitOfWork = unitOfWork;
+            _currentUserService = currentUserService;
         }
 
         public async Task<CommonResult> Handle(CreateGroupChatCommand request, CancellationToken cancellationToken)
@@ -34,7 +36,7 @@ public record CreateGroupChatCommand(
 
             var validUsers = new List<Guid>();
 
-            foreach (var userId in request.UsersId)
+            foreach (var userId in request.UserIds)
             {
                 var user = await userRepository.GetAsync(userId, cancellationToken);
                 if (user is not null)
@@ -42,10 +44,18 @@ public record CreateGroupChatCommand(
             }
 
             var userChats = validUsers.Select(
-                userId => new UserChat()
+                    userId => new UserChat()
+                    {
+                        ChatId = chat.Id,
+                        UserId = userId
+                    })
+                .ToList();
+
+            userChats.Add(
+                new UserChat()
                 {
-                    ChatId = request.ChatId,
-                    UserId = userId
+                    ChatId = chat.Id,
+                    UserId = _currentUserService.GetUserId()
                 });
 
             var userChatRepository = _unitOfWork.GetUserChatRepository();

@@ -5,6 +5,8 @@ using Domain.Entities.Chat;
 using Domain.Results;
 using Hubs;
 using Infrastructure.Repositories.UnitOfWork;
+using Infrastructure.Services.CacheService;
+using Mappers;
 using MediatR;
 
 public record DeleteUsersFromChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IRequest<CommonResult>
@@ -12,10 +14,12 @@ public record DeleteUsersFromChatCommand(Guid ChatId, ICollection<Guid> UsersId)
     public class Handler : IRequestHandler<DeleteUsersFromChatCommand, CommonResult>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICacheService _cacheService;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IUnitOfWork unitOfWork, ICacheService cacheService)
         {
             _unitOfWork = unitOfWork;
+            _cacheService = cacheService;
         }
 
         public async Task<CommonResult> Handle(DeleteUsersFromChatCommand request, CancellationToken cancellationToken)
@@ -57,7 +61,7 @@ public record DeleteUsersFromChatCommand(Guid ChatId, ICollection<Guid> UsersId)
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            DoggoHub.UpdateChat(request.ChatId, chat);
+            // await DoggoHub.UpdateChat(request.ChatId, chat.MapChatToGetChatDto(), _cacheService);
 
             return Success();
         }

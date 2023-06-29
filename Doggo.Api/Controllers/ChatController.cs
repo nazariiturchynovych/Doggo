@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 [ApiController]
-[Authorize(Roles = "DogOwner, Admin, Walker")]
+[Authorize(Roles = "User")]
 [Route("api/[Controller]")]
 public class ChatController : ControllerBase
 {
@@ -20,13 +20,13 @@ public class ChatController : ControllerBase
     }
 
     [HttpPost("CreatePrivateChat")]
-    public async Task<IActionResult> CreateChat(CreatePrivateChatCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreatePrivateChat(CreatePrivateChatCommand command, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
     [HttpPost("CreateGroupChat")]
-    public async Task<IActionResult> CreateChat(CreateGroupChatCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateGroupChat(CreateGroupChatCommand command, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(command, cancellationToken));
     }

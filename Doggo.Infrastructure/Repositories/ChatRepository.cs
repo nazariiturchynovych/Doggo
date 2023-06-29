@@ -29,7 +29,7 @@ public class ChatRepository : AbstractRepository<Chat>, IChatRepository
 
     public async Task<Chat?> GetAsync(Guid chatId, CancellationToken cancellationToken = default)
     {
-        return await _context.Chats.FirstOrDefaultAsync(x => x.Id == chatId, cancellationToken: cancellationToken);
+        return await _context.Chats.Include(x => x.UserChats).FirstOrDefaultAsync(x => x.Id == chatId, cancellationToken: cancellationToken);
     }
 
     public async Task<Chat?> GetWithMessages(Guid charId, CancellationToken cancellationToken = default)
@@ -48,7 +48,7 @@ public class ChatRepository : AbstractRepository<Chat>, IChatRepository
         int page,
         CancellationToken cancellationToken = default)
     {
-        IQueryable<Chat> chatQuery = _context.Chats;
+        IQueryable<Chat> chatQuery = _context.Chats.Where(x => x.IsPrivate == false);
         if (!string.IsNullOrWhiteSpace(nameSearchTerm))
         {
             chatQuery = chatQuery.Where(

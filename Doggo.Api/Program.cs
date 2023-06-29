@@ -1,9 +1,9 @@
+using Doggo.Api.Extensions;
 using Doggo.Api.Hubs;
 using Doggo.Application.Middlewares;
 using Doggo.Domain.Constants;
 using Doggo.Domain.Entities.User;
 using Doggo.Extensions;
-using Doggo.Hubs;
 using Doggo.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -101,7 +101,7 @@ try
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Exception in program.cs occured");
+    Log.Fatal(ex.Message, "Exception in program.cs occured");
 }
 finally
 {

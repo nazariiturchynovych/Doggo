@@ -1,5 +1,6 @@
 namespace Doggo.Application.Validators.Walker;
 
+using Api.Application.Requests.Queries.Walker;
 using FluentValidation;
 using Requests.Queries.Walker;
 
