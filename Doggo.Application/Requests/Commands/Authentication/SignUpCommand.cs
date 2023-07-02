@@ -10,9 +10,9 @@ public record SignUpCommand
 (
     string Email,
     string Password
-) : IRequest<CommonResult>
+) : IRequest<CommonResult<Guid>>
 {
-    public class Handler : IRequestHandler<SignUpCommand, CommonResult>
+    public class Handler : IRequestHandler<SignUpCommand, CommonResult<Guid>>
     {
         private readonly UserManager<User> _userManager;
 
@@ -21,13 +21,13 @@ public record SignUpCommand
             _userManager = userManager;
         }
 
-        public async Task<CommonResult> Handle(SignUpCommand request, CancellationToken cancellationToken)
+        public async Task<CommonResult<Guid>> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user is not null)
             {
-                return Failure(CommonErrors.EntityAlreadyExist);
+                return Failure<Guid>(CommonErrors.EntityAlreadyExist);
             }
 
             var userToAdd = new User
@@ -41,9 +41,9 @@ public record SignUpCommand
             var result = await _userManager.CreateAsync(userToAdd, request.Password);
 
             if (!result.Succeeded)
-                return Failure(UserErrors.UserCreateFailed);
+                return Failure<Guid>(UserErrors.UserCreateFailed);
 
-            return Success();
+            return Success(user!.Id);
         }
     }
 }

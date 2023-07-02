@@ -3,6 +3,7 @@ namespace Doggo.Api.Extensions;
 using System.Reflection;
 using Amazon.Runtime;
 using Amazon.S3;
+using Doggo.Application.Abstractions;
 using Doggo.Application.Behaviours;
 using Doggo.Application.Middlewares;
 using Domain.Constants;
@@ -20,9 +21,6 @@ using Infrastructure.Services.ImageService;
 using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
@@ -59,15 +57,6 @@ public static class ServicesExtensions
             .AddSignalRHub("https://localhost:7278/doggo-hub");
 
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-        builder.Services.AddScoped<IUrlHelper>(
-            x =>
-            {
-                var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
-                var factory = x.GetRequiredService<IUrlHelperFactory>();
-                return factory.GetUrlHelper(actionContext!);
-            });
-
         builder.Services.AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ICurrentUserService, CurrenUserService>();

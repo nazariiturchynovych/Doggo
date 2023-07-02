@@ -1,8 +1,6 @@
-namespace Doggo.Infrastructure.Services.EmailService;
-
-using System.Net.Mail;
+namespace Doggo.Application.Abstractions;
 
 public interface IEmailService
 {
-    public Task SendAsync(MailMessage message);
+    public Task SendAsync(string to, string subject, string body);
 }

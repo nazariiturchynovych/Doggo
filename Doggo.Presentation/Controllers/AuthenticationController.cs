@@ -11,12 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 public class AuthenticationController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly IUrlHelper _urlHelper;
 
-    public AuthenticationController(IMediator mediator, IUrlHelper urlHelper)
+    public AuthenticationController(IMediator mediator)
     {
         _mediator = mediator;
-        _urlHelper = urlHelper;
     }
 
     [HttpPost("SignUp/SendEmailConfirmationToken")]
@@ -27,16 +25,7 @@ public class AuthenticationController : ControllerBase
         if (signUpResult.IsFailure)
             return Ok(signUpResult);
 
-        return Ok(
-            await _mediator.Send(
-                new SendEmailConfirmationTokenCommand(
-                    command.Email,
-                    _urlHelper.Action(
-                        "ConfirmEmail",
-                        "Authentication",
-                        null,
-                        HttpContext.Request.Scheme)!),
-                cancellationToken));
+        return Ok(await _mediator.Send(new SendEmailConfirmationTokenCommand(command.Email), cancellationToken));
     }
 
     [HttpPost("SendEmailVerificationToken")]
@@ -73,9 +62,9 @@ public class AuthenticationController : ControllerBase
 
     [HttpPost("SendPasswordResetConfirmationToken")]
     public async Task<IActionResult> SendResetPasswordConfirmationToken(
-         string token,
-         Guid userId,
-         string newPassword,
+        string token,
+        Guid userId,
+        string newPassword,
         CancellationToken cancellationToken)
     {
         return Ok(
@@ -84,7 +73,7 @@ public class AuthenticationController : ControllerBase
                 cancellationToken));
     }
 
-    [HttpGet("ConfirmResetPasswordCommand")]// don't work with post method with link from email
+    [HttpGet("ConfirmResetPasswordCommand")] // don't work with post method with link from email
     public async Task<IActionResult> ConfirmResetPasswordCommand(
         string token,
         Guid userId,
@@ -117,6 +106,4 @@ public class AuthenticationController : ControllerBase
     {
         return Ok(await _mediator.Send(new FacebookSignInQuery(accessToken), cancellationToken));
     }
-
-
 }

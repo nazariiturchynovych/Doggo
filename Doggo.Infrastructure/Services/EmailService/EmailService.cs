@@ -1,29 +1,37 @@
 namespace Doggo.Infrastructure.Services.EmailService;
 
-using System.Net;
-using System.Net.Mail;
+using Application.Abstractions;
 using Domain.Options;
+using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
+using MimeKit;
+using MimeKit.Text;
 
 public class EmailService : IEmailService
 {
-    private readonly SmtpClient _smtpClient;
+    private readonly IOptions<SMTPOptions> _options;
 
     public EmailService(IOptions<SMTPOptions> options)
     {
-        var options1 = options.Value;
-        _smtpClient = new SmtpClient()
-        {
-            Host = options1.Host,
-            Port = options1.Port,
-            Credentials = new NetworkCredential(options1.UserName, options1.Password),
-            EnableSsl = true
-        };
+        _options = options;
     }
 
-    public Task SendAsync(MailMessage message)
+    public async Task SendAsync(string to, string subject, string body)
     {
-        return _smtpClient
-            .SendMailAsync(message);
+        var mimeMessage = new MimeMessage();
+        mimeMessage.From.Add(new MailboxAddress(nameof(Doggo), _options.Value.UserName));
+        mimeMessage.To.Add(new MailboxAddress(to, to));
+        mimeMessage.Subject = subject;
+
+        mimeMessage.Body = new TextPart(TextFormat.Html)
+        {
+            Text = body
+        };
+
+        using var client = new SmtpClient();
+        await client.ConnectAsync(_options.Value.Host, 587, false);
+        await client.AuthenticateAsync(_options.Value.UserName, _options.Value.Password);
+        await client.SendAsync(mimeMessage);
+        await client.DisconnectAsync(true);
     }
 }
