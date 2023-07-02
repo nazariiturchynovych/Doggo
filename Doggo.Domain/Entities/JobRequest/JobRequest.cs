@@ -2,6 +2,7 @@
 namespace Doggo.Domain.Entities.JobRequest;
 
 using Base.AuditableDateEntity;
+using Dog;
 using DogOwner;
 using Job;
 using Schedules;

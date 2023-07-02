@@ -7,11 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Doggo.Application\Doggo.Application.csproj" />
       <ProjectReference Include="..\Doggo.Domain\Doggo.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AWSSDK.S3" Version="3.7.106.1" />
+      <PackageReference Include="AWSSDK.S3" Version="3.7.107" />
       <PackageReference Include="FluentValidation" Version="11.5.2" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
@@ -23,7 +24,6 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
       <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
       <PackageReference Include="Serilog.Expressions" Version="3.4.1" />

@@ -1,5 +1,6 @@
 namespace Doggo.Infrastructure.Persistence.EntityConfiguration;
 
+using Domain.Entities.Dog;
 using Domain.Entities.DogOwner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

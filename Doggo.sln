@@ -1,10 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doggo.Api", "Doggo.Api\Doggo.Api.csproj", "{EFA42739-102F-4288-8821-9EA068FEBE70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doggo.Web", "Doggo.Web\Doggo.Web.csproj", "{EFA42739-102F-4288-8821-9EA068FEBE70}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doggo.Infrastructure", "Doggo.Infrastructure\Doggo.Infrastructure.csproj", "{22AD5EBE-9730-4A5E-9CBF-47162C2A220F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doggo.Domain", "Doggo.Domain\Doggo.Domain.csproj", "{4B7295FE-734B-4FD9-9B5B-457DEDE2BF5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doggo.Application", "Doggo.Application\Doggo.Application.csproj", "{6013609A-578B-40AE-B773-17748641C7F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doggo.Presentation", "Doggo.Presentation\Doggo.Presentation.csproj", "{22F23BCC-2729-4E96-B59F-0E0CFB09AA2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +28,13 @@ Global
 		{4B7295FE-734B-4FD9-9B5B-457DEDE2BF5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B7295FE-734B-4FD9-9B5B-457DEDE2BF5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B7295FE-734B-4FD9-9B5B-457DEDE2BF5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6013609A-578B-40AE-B773-17748641C7F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6013609A-578B-40AE-B773-17748641C7F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6013609A-578B-40AE-B773-17748641C7F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6013609A-578B-40AE-B773-17748641C7F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F23BCC-2729-4E96-B59F-0E0CFB09AA2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F23BCC-2729-4E96-B59F-0E0CFB09AA2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F23BCC-2729-4E96-B59F-0E0CFB09AA2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F23BCC-2729-4E96-B59F-0E0CFB09AA2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

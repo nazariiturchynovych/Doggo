@@ -2,6 +2,7 @@ namespace Doggo.Infrastructure.Persistence;
 
 using System.Reflection;
 using Domain.Entities.Chat;
+using Domain.Entities.Dog;
 using Domain.Entities.DogOwner;
 using Domain.Entities.Job;
 using Domain.Entities.JobRequest;

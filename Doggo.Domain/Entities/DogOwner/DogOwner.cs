@@ -4,6 +4,7 @@
 namespace Doggo.Domain.Entities.DogOwner;
 
 using Base;
+using Dog;
 using Job;
 using JobRequest;
 using User;
