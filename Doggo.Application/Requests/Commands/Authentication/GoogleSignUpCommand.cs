@@ -1,10 +1,10 @@
 namespace Doggo.Application.Requests.Commands.Authentication;
 
+using Abstractions;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Results;
-using Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,15 +13,17 @@ public record GoogleSignUpCommand(string Credential) : IRequest<CommonResult>
     public class Handler : IRequestHandler<GoogleSignUpCommand, CommonResult>
     {
         private readonly UserManager<User> _userManager;
+        private readonly IGoogleAuthService _googleAuthService;
 
-        public Handler(UserManager<User> userManager)
+        public Handler(UserManager<User> userManager, IGoogleAuthService googleAuthService)
         {
             _userManager = userManager;
+            _googleAuthService = googleAuthService;
         }
 
         public async Task<CommonResult> Handle(GoogleSignUpCommand request, CancellationToken cancellationToken)
         {
-            var payload = await GoogleAuthHelper.AuthenticateTokenAsync(request.Credential);
+            var payload = await _googleAuthService.AuthenticateTokenAsync(request.Credential);
 
             if (payload is null)
                 return Failure(UserErrors.UserGoogleAuthorizationFailed);

@@ -13,10 +13,12 @@ using HealthChecks.Aws.S3;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Repositories.UnitOfWork;
+using Infrastructure.Services;
 using Infrastructure.Services.CacheService;
 using Infrastructure.Services.CurrentUserService;
 using Infrastructure.Services.EmailService;
 using Infrastructure.Services.FacebookAuthService;
+using Infrastructure.Services.GoogleAuthService;
 using Infrastructure.Services.ImageService;
 using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
@@ -57,6 +59,7 @@ public static class ServicesExtensions
             .AddSignalRHub("https://localhost:7278/doggo-hub");
 
         builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
         builder.Services.AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ICurrentUserService, CurrenUserService>();
