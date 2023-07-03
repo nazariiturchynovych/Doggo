@@ -1,5 +1,6 @@
 using Doggo.Api.Extensions;
 using Doggo.Api.Middlewares;
+using Doggo.Application;
 using Doggo.Infrastructure;
 using Doggo.Presentation;
 using Doggo.Presentation.Hubs;
@@ -34,7 +35,7 @@ try
     builder.RegisterMiddlewares();
 
 
-    builder.RegisterInfrastructure();
+    builder.RegisterApplication();
     builder.RegisterInfrastructure();
     builder.RegisterPresentation();
 
