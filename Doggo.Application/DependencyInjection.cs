@@ -13,7 +13,9 @@ public static class DependencyInjection
     {
        builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
        builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+       builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(SavingChangesPipeLineBehaviour<,>));
 
         return builder.Services;
     }

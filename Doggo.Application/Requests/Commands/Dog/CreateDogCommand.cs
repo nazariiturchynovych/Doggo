@@ -1,5 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Dog;
 
+using Base;
 using Domain.Entities.Dog;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
@@ -10,7 +11,7 @@ public record CreateDogCommand(
     double Age,
     double? Weight,
     Guid DogOwnerId,
-    string Description) : IRequest<CommonResult>
+    string Description) : ICommand<CommonResult>
 {
     public class Handler : IRequestHandler<CreateDogCommand, CommonResult>
     {
@@ -34,8 +35,6 @@ public record CreateDogCommand(
                 Weight = request.Weight
 
             });
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Success();
         }
