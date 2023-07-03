@@ -1,4 +1,4 @@
-namespace Doggo.Application.Middlewares;
+namespace Doggo.Api.Middlewares;
 
 using System.Net;
 using System.Text.Json;

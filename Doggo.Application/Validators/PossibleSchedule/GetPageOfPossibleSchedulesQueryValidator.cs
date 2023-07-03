@@ -1,6 +1,5 @@
 namespace Doggo.Application.Validators.PossibleSchedule;
 
-using Domain.Constants;
 using FluentValidation;
 using Requests.Queries.Walker.PossibleSchedule;
 
