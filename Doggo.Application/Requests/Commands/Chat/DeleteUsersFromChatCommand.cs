@@ -1,11 +1,11 @@
-namespace Doggo.Api.Application.Requests.Commands.Chat;
+namespace Doggo.Application.Requests.Commands.Chat;
 
+using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.Chat;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
-using Mappers;
 using MediatR;
 
 public record DeleteUsersFromChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IRequest<CommonResult>
@@ -36,7 +36,7 @@ public record DeleteUsersFromChatCommand(Guid ChatId, ICollection<Guid> UsersId)
 
             foreach (var userId in request.UsersId)
             {
-                var user = await userRepository.GetAsync(userId, cancellationToken);
+                var user = await userRepository.GetWithPersonalIdentifierAsync(userId, cancellationToken);
                 if (user is not null)
                     validUsers.Add(userId);
             }
@@ -60,7 +60,7 @@ public record DeleteUsersFromChatCommand(Guid ChatId, ICollection<Guid> UsersId)
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            // await DoggoHub.UpdateChat(request.ChatId, chat.MapChatToGetChatDto(), _cacheService);
+           await _cacheService.RemoveDataAsync(CacheKeys.Chat + chat.Id, cancellationToken);
 
             return Success();
         }

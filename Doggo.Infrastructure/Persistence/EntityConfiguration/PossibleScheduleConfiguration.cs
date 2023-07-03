@@ -8,6 +8,6 @@ public class PossibleScheduleConfiguration : IEntityTypeConfiguration<PossibleSc
 {
     public void Configure(EntityTypeBuilder<PossibleSchedule> builder)
     {
-        builder.ToTable("PossibleSchedules");
+        builder.ToTable("possible_schedules");
     }
 }

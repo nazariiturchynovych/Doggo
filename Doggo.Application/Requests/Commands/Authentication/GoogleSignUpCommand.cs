@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Authentication;
 
-using Abstractions;
+using Abstractions.Services;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;

@@ -8,6 +8,6 @@ public class MessageConfiguration : IEntityTypeConfiguration<Message>
 {
     public void Configure(EntityTypeBuilder<Message> builder)
     {
-        builder.ToTable("Messages");
+        builder.ToTable("messages");
     }
 }

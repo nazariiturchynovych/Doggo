@@ -1,1 +1,1 @@
-global using static Doggo.Application.ResultFactory.ResultFactory;
+global using static Doggo.Domain.ResultFactory.ResultFactory;

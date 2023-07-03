@@ -2,9 +2,9 @@ namespace Doggo.Application.Requests.Queries.Walker.PossibleSchedule;
 
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
-using Domain.DTO.Walker.PossibleSchedule;
 using Domain.Entities.Walker.Schedule;
 using Domain.Results;
+using DTO.Walker.PossibleSchedule;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
 using Mappers;

@@ -4,11 +4,9 @@ using Application.Requests.Commands.User;
 using Application.Requests.Queries.User;
 using Extensions;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Authorize(Roles = "User, Admin")]
 [Route("api/[Controller]")]
 public class UserController : ControllerBase
 {

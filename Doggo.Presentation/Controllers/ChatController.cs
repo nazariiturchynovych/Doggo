@@ -1,6 +1,5 @@
 namespace Doggo.Presentation.Controllers;
 
-using Api.Application.Requests.Commands.Chat;
 using Application.Requests.Commands.Chat;
 using Application.Requests.Queries.Chat;
 using MediatR;

@@ -1,7 +1,7 @@
 // ReSharper disable InconsistentNaming
 
 #pragma warning disable CS8618
-namespace Doggo.Domain.Options;
+namespace Doggo.Infrastructure.Options;
 public class SMTPOptions
 {
     public string Host { get; init; }

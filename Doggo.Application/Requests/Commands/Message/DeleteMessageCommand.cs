@@ -1,4 +1,4 @@
-namespace Doggo.Api.Application.Requests.Commands.Message;
+namespace Doggo.Application.Requests.Commands.Message;
 
 using Domain.Constants.ErrorConstants;
 using Domain.Results;

@@ -1,14 +1,13 @@
-namespace Doggo.Api.Hubs;
+namespace Doggo.Presentation.Hubs;
 
 using System.Collections.Concurrent;
+using Application.Abstractions.Persistence.Read;
+using Application.DTO.Chat;
 using Application.Mappers;
 using Application.Requests.Commands.Message;
-using Doggo.Hubs;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
-using Domain.DTO.Chat;
 using Domain.Entities.Chat;
-using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Services.CacheService;
 using Infrastructure.Services.CurrentUserService;
 using MediatR;

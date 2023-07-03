@@ -1,8 +1,6 @@
 // ReSharper disable NotAccessedPositionalProperty.Global
 
-namespace Doggo.Domain.DTO.Walker;
-
-using PossibleSchedule;
+namespace Doggo.Application.DTO.Walker;
 
 public record GetWalkerDto(
     Guid Id,

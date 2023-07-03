@@ -1,4 +1,4 @@
 // ReSharper disable NotAccessedPositionalProperty.Global
-namespace Doggo.Domain.DTO.Authentication;
+namespace Doggo.Application.DTO.Authentication;
 
 public record SignInDto(string Token);

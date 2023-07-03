@@ -1,8 +1,8 @@
 // ReSharper disable NotAccessedPositionalProperty.Global
-namespace Doggo.Domain.DTO.Job;
+namespace Doggo.Application.DTO.Job;
 
 using Dog;
-using Enums;
+using Domain.Enums;
 using JobRequest;
 
 public record GetJobDto(

@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Queries.DogOwner;
 
-using Domain.DTO;
-using Domain.DTO.DogOwner;
 using Domain.Results;
+using DTO;
+using DTO.DogOwner;
 using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;

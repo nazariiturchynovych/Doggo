@@ -1,5 +1,5 @@
 // ReSharper disable NotAccessedPositionalProperty.Global
-namespace Doggo.Domain.DTO.User;
+namespace Doggo.Application.DTO.User;
 
 using PersonalIdentifier;
 

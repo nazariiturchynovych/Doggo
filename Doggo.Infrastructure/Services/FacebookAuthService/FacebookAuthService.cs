@@ -1,17 +1,17 @@
 namespace Doggo.Infrastructure.Services.FacebookAuthService;
 
 using Domain.Constants;
-using Domain.Entities.External;
-using Domain.Options;
+using Domain.Results.External;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Options;
 
 public class FacebookAuthService : IFacebookAuthService
 {
-    private readonly IOptions<FacebookAuthOptions> _facebookSettings;
+    private readonly IOptions<FacebookAuthenticationOptions> _facebookSettings;
     private readonly HttpClient _httpClient;
 
-    public FacebookAuthService(IOptions<FacebookAuthOptions> facebookSettings, HttpClient httpClient)
+    public FacebookAuthService(IOptions<FacebookAuthenticationOptions> facebookSettings, HttpClient httpClient)
     {
         _facebookSettings = facebookSettings;
         _httpClient = httpClient;

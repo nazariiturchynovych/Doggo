@@ -1,7 +1,8 @@
 namespace Doggo.Infrastructure.Repositories;
 
 using System.Linq.Expressions;
-using Abstractions;
+using Application.Abstractions.Persistence.Read;
+using Base;
 using Domain.Constants;
 using Domain.Entities.JobRequest;
 using Microsoft.EntityFrameworkCore;

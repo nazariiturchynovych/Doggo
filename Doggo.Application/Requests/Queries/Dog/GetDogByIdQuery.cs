@@ -2,8 +2,8 @@ namespace Doggo.Application.Requests.Queries.Dog;
 
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
-using Domain.DTO.Dog;
 using Domain.Results;
+using DTO.Dog;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
 using Mappers;

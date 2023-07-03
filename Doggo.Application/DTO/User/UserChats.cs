@@ -1,6 +1,7 @@
-namespace Doggo.Domain.DTO.User;
+#pragma warning disable CS8618
+namespace Doggo.Application.DTO.User;
 
-using Entities.Chat;
+using Doggo.Domain.Entities.Chat;
 
 public class UserChats
 {

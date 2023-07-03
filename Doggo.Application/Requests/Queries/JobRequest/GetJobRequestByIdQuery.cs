@@ -2,8 +2,8 @@ namespace Doggo.Application.Requests.Queries.JobRequest;
 
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
-using Domain.DTO.JobRequest;
 using Domain.Results;
+using DTO.JobRequest;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
 using Mappers;

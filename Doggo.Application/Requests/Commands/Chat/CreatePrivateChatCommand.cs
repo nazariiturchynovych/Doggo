@@ -1,7 +1,7 @@
-namespace Doggo.Api.Application.Requests.Commands.Chat;
+namespace Doggo.Application.Requests.Commands.Chat;
 
-using Doggo.Domain.Entities.Chat;
-using Doggo.Domain.Results;
+using Domain.Entities.Chat;
+using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
@@ -23,7 +23,7 @@ public record CreatePrivateChatCommand(
         {
             var chatRepository = _unitOfWork.GetChatRepository();
 
-            var chat = new Chat()
+            var chat = new Chat
             {
                 Name = request.Name,
                 IsPrivate = true
@@ -33,7 +33,7 @@ public record CreatePrivateChatCommand(
 
             var userChatRepository = _unitOfWork.GetUserChatRepository();
 
-            var userChats = new List<UserChat>()
+            var userChats = new List<UserChat>
             {
                 new()
                 {

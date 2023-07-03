@@ -1,5 +1,5 @@
-namespace Doggo.Domain.DTO.User.PersonalIdentifier;
+namespace Doggo.Application.DTO.User.PersonalIdentifier;
 
-using Enums;
+using Doggo.Domain.Enums;
 
 public record GetPersonalIdentifierDto(PersonalIdentifierType PersonalIdentifierType);

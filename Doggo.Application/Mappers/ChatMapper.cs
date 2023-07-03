@@ -1,10 +1,10 @@
-namespace Doggo.Api.Application.Mappers;
+namespace Doggo.Application.Mappers;
 
-using Domain.DTO;
-using Domain.DTO.Chat;
-using Domain.DTO.Chat.Message;
-using Domain.DTO.UserChat;
 using Domain.Entities.Chat;
+using DTO;
+using DTO.Chat;
+using DTO.Chat.Message;
+using DTO.UserChat;
 using Requests.Commands.Chat;
 
 public static class ChatMapper
@@ -38,7 +38,7 @@ public static class ChatMapper
 
     public static UserChatDto MapUserChatToUserChatDto(this UserChat userChat)
     {
-        return new UserChatDto()
+        return new UserChatDto
         {
             ChatId = userChat.ChatId,
             UserId = userChat.UserId

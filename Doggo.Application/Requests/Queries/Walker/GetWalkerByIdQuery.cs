@@ -1,12 +1,12 @@
-namespace Doggo.Api.Application.Requests.Queries.Walker;
+namespace Doggo.Application.Requests.Queries.Walker;
 
-using Doggo.Application.Mappers;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
-using Domain.DTO.Walker;
 using Domain.Results;
+using DTO.Walker;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
+using Mappers;
 using MediatR;
 
 public record GetWalkerByIdQuery(Guid Id) : IRequest<CommonResult<GetWalkerDto>>

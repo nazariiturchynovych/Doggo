@@ -1,7 +1,7 @@
 namespace Doggo.Application.Mappers;
 
-using Domain.DTO.JobRequest;
-using Domain.Entities.JobRequest.Schedules;
+using Domain.Entities.JobRequest.Schedule;
+using DTO.JobRequest;
 
 public static class RequiredScheduleMapper
 {

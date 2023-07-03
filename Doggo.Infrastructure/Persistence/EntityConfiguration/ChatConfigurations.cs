@@ -8,7 +8,7 @@ public class ChatConfigurations : IEntityTypeConfiguration<Chat>
 {
     public void Configure(EntityTypeBuilder<Chat> builder)
     {
-        builder.ToTable("Chats");
+        builder.ToTable("chats");
 
         builder.HasMany(x => x.Messages)
             .WithOne(x => x.Chat)

@@ -1,7 +1,7 @@
-namespace Doggo.Application.ResultFactory;
+namespace Doggo.Domain.ResultFactory;
 
-using Domain.Results;
-using Domain.Results.Abstract;
+using Results;
+using Results.Abstract;
 
 public static class ResultFactory
 {

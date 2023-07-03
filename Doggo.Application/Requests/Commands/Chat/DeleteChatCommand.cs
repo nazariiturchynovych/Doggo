@@ -1,4 +1,4 @@
-namespace Doggo.Api.Application.Requests.Commands.Chat;
+namespace Doggo.Application.Requests.Commands.Chat;
 
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;

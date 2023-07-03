@@ -1,4 +1,5 @@
-namespace Doggo.Domain.Options;
+#pragma warning disable CS8618
+namespace Doggo.Infrastructure.Options;
 
 public class S3Options
 {

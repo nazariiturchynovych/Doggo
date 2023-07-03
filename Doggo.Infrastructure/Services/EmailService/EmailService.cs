@@ -1,11 +1,11 @@
 namespace Doggo.Infrastructure.Services.EmailService;
 
 using Application.Abstractions;
-using Domain.Options;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
+using Options;
 
 public class EmailService : IEmailService
 {

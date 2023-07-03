@@ -1,4 +1,4 @@
-namespace Doggo.Hubs;
+namespace Doggo.Presentation.Hubs;
 
 public interface IDoggoHub
 {

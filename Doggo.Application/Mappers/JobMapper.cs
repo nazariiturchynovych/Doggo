@@ -1,8 +1,8 @@
 namespace Doggo.Application.Mappers;
 
-using Domain.DTO;
-using Domain.DTO.Job;
 using Domain.Entities.Job;
+using DTO;
+using DTO.Job;
 using Requests.Commands.Job;
 
 public static class JobMapper

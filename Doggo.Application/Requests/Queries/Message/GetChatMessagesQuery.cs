@@ -1,8 +1,8 @@
-namespace Doggo.Api.Application.Requests.Queries.Message;
+namespace Doggo.Application.Requests.Queries.Message;
 
-using Domain.DTO;
-using Domain.DTO.Chat.Message;
 using Domain.Results;
+using DTO;
+using DTO.Chat.Message;
 using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;

@@ -8,7 +8,7 @@ public class UserLoginConfigurations : IEntityTypeConfiguration<UserLogin>
 {
     public void Configure(EntityTypeBuilder<UserLogin> builder)
     {
-        builder.ToTable("UserLogins");
+        builder.ToTable("user_logins");
 
         builder.HasKey(
             ul => new

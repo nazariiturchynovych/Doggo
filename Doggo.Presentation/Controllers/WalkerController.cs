@@ -1,6 +1,5 @@
 namespace Doggo.Presentation.Controllers;
 
-using Api.Application.Requests.Queries.Walker;
 using Application.Requests.Commands.Image;
 using Application.Requests.Commands.Walker;
 using Application.Requests.Queries.Walker;

@@ -1,7 +1,7 @@
-namespace Doggo.Api.Application.Requests.Commands.Chat;
+namespace Doggo.Application.Requests.Commands.Chat;
 
-using Doggo.Domain.Entities.Chat;
-using Doggo.Domain.Results;
+using Domain.Entities.Chat;
+using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CurrentUserService;
 using MediatR;
@@ -25,7 +25,7 @@ public record CreateGroupChatCommand(
         {
             var chatRepository = _unitOfWork.GetChatRepository();
 
-            var chat = new Chat()
+            var chat = new Chat
             {
                 Name = request.Name,
             };
@@ -38,13 +38,13 @@ public record CreateGroupChatCommand(
 
             foreach (var userId in request.UserIds)
             {
-                var user = await userRepository.GetAsync(userId, cancellationToken);
+                var user = await userRepository.GetWithPersonalIdentifierAsync(userId, cancellationToken);
                 if (user is not null)
                     validUsers.Add(userId);
             }
 
             var userChats = validUsers.Select(
-                    userId => new UserChat()
+                    userId => new UserChat
                     {
                         ChatId = chat.Id,
                         UserId = userId
@@ -52,7 +52,7 @@ public record CreateGroupChatCommand(
                 .ToList();
 
             userChats.Add(
-                new UserChat()
+                new UserChat
                 {
                     ChatId = chat.Id,
                     UserId = _currentUserService.GetUserId()

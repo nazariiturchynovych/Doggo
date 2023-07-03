@@ -1,13 +1,10 @@
 using Doggo.Api.Extensions;
-using Doggo.Api.Hubs;
-using Doggo.Application.Middlewares;
-using Doggo.Domain.Constants;
-using Doggo.Domain.Entities.User;
-using Doggo.Infrastructure.Persistence;
+using Doggo.Api.Middlewares;
+using Doggo.Infrastructure;
+using Doggo.Presentation;
+using Doggo.Presentation.Hubs;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
@@ -29,49 +26,17 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGenWithJwt();
 
-    builder.Services.AddDbContext<DoggoDbContext>(
-        options =>
-        {
-            options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionConstants.Postgres));
-        });
 
-    builder.Services
-        .AddIdentity<User, Role>()
-        .AddUserManager<UserManager<User>>()
-        .AddEntityFrameworkStores<DoggoDbContext>()
-        .AddDefaultTokenProviders();
-
-    builder.Services.AddCors(
-        options =>
-        {
-            options.AddPolicy(
-                name: "MyAllowSpecificOrigins",
-                policy =>
-                {
-                    policy.WithOrigins("http://localhost:63342")
-                        .AllowAnyHeader()
-                        .WithMethods("GET", "POST")
-                        .AllowCredentials();
-                });
-        });
-
-    builder.ConfigureIdentity();
+    builder.RegisterAndConfigureIdentity();
+    builder.RegisterCors();
     builder.RegisterAuthentication();
-    builder.RegisterOptions();
-    builder.RegisterServices();
-    builder.RegisterRepositories();
-    builder.RegisterBehaviours();
+    builder.RegisterHealthCheckServices();
     builder.RegisterMiddlewares();
-    builder.RegisterAwsServices();
 
 
-    builder.Services.AddSignalR();
-
-
-   // builder.Services.AddControllers().AddJsonOptions(x =>
-   //  {
-   //      x.JsonSerializerOptions.Converters.Add(new TimeOnlyFromStringConverter());
-   //  });
+    builder.RegisterInfrastructure();
+    builder.RegisterInfrastructure();
+    builder.RegisterPresentation();
 
 
     var app = builder.Build();
@@ -82,10 +47,7 @@ try
         app.UseSwaggerUI();
     }
 
-    app.MapHealthChecks("/_health", new HealthCheckOptions()
-    {
-        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse 
-    });
+    app.MapHealthChecks("/_health", new HealthCheckOptions(){ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse});
 
     app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 

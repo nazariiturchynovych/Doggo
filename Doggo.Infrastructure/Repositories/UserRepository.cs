@@ -1,7 +1,7 @@
 namespace Doggo.Infrastructure.Repositories;
 
 using System.Linq.Expressions;
-using Abstractions;
+using Application.Abstractions.Persistence.Read;
 using Domain.Constants;
 using Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<User?> GetAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<User?> GetWithPersonalIdentifierAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Users.Where(u => u.Id == id)
             .Include(x => x.PersonalIdentifier)

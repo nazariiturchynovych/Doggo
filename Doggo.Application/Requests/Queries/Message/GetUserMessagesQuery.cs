@@ -1,11 +1,11 @@
 namespace Doggo.Api.Application.Requests.Queries.Message;
 
+using Doggo.Application.DTO;
+using Doggo.Application.DTO.Chat.Message;
+using Doggo.Application.Mappers;
 using Domain.Constants.ErrorConstants;
-using Domain.DTO;
-using Domain.DTO.Chat.Message;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
-using Mappers;
 using MediatR;
 
 public record GetUserMessagesQuery(Guid UserId) : IRequest<CommonResult<PageOfTDataDto<GetMessageDto>>>

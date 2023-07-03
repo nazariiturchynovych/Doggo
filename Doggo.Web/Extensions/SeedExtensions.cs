@@ -1,4 +1,4 @@
-namespace Doggo.Extensions;
+namespace Doggo.Api.Extensions;
 
 using Domain.Constants;
 using Domain.Entities.User;
@@ -30,7 +30,7 @@ public static class SeedExtensions
                 var adminUser = await userManager.FindByEmailAsync(adminUserEmail);
                 if(adminUser == null)
                 {
-                    var newAdminUser = new User()
+                    var newAdminUser = new User
                     {
                         FirstName = "admin",
                         LastName = "admin",
@@ -48,7 +48,7 @@ public static class SeedExtensions
                 var appUser = await userManager.FindByEmailAsync(appUserEmail);
                 if (appUser == null)
                 {
-                    var newAppUser = new User()
+                    var newAppUser = new User
                     {
                         FirstName = "user",
                         LastName = "user",

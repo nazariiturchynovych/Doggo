@@ -4,7 +4,6 @@ namespace Doggo.Domain.Entities.Walker;
 
 using Base;
 using Job;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Schedule;
 using User;
 

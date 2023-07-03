@@ -1,4 +1,4 @@
-namespace Doggo.Domain.DTO.Chat.Message;
+namespace Doggo.Application.DTO.Chat.Message;
 
 public record GetMessageDto(
     string Value,

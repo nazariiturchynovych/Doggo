@@ -1,7 +1,8 @@
 namespace Doggo.Presentation.Controllers;
 
-using Api.Application.Requests.Commands.Message;
 using Api.Application.Requests.Queries.Message;
+using Application.Requests.Commands.Message;
+using Application.Requests.Queries.Message;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,8 @@
 namespace Doggo.Application.Mappers;
 
-using Domain.DTO;
-using Domain.DTO.Walker.PossibleSchedule;
 using Domain.Entities.Walker.Schedule;
+using DTO;
+using DTO.Walker.PossibleSchedule;
 
 public static class PossibleScheduleMapper
 {

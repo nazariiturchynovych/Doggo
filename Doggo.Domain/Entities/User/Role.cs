@@ -1,9 +1,8 @@
 namespace Doggo.Domain.Entities.User;
 
-using Enums;
 using Microsoft.AspNetCore.Identity;
 
-public class Role : IdentityRole<Guid>
+public sealed class Role : IdentityRole<Guid>
 {
 
     public Role()

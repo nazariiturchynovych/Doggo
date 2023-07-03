@@ -1,8 +1,7 @@
-namespace Doggo.Api.Application.Requests.Commands.Chat;
+namespace Doggo.Application.Requests.Commands.Chat;
 
-using Doggo.Application.Mappers;
 using Domain.Constants.ErrorConstants;
-using Doggo.Domain.Results;
+using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;

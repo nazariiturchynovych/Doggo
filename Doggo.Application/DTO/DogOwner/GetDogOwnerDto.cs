@@ -1,10 +1,6 @@
 // ReSharper disable NotAccessedPositionalProperty.Global
 
-namespace Doggo.Domain.DTO.DogOwner;
-
-using Dog;
-using Job;
-using JobRequest;
+namespace Doggo.Application.DTO.DogOwner;
 
 public record GetDogOwnerDto(
     Guid Id,

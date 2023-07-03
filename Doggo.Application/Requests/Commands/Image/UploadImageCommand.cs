@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Commands.Image;
 
 using System.Net;
-using Doggo.Domain.Results;
+using Domain.Results;
 using Infrastructure.Services.ImageService;
 using MediatR;
 using Microsoft.AspNetCore.Http;

@@ -6,11 +6,12 @@ using Domain.Entities.Dog;
 using Domain.Entities.DogOwner;
 using Domain.Entities.Job;
 using Domain.Entities.JobRequest;
-using Domain.Entities.JobRequest.Schedules;
+using Domain.Entities.JobRequest.Schedule;
 using Domain.Entities.User;
 using Domain.Entities.User.Documents;
 using Domain.Entities.Walker;
 using Domain.Entities.Walker.Schedule;
+using Extensions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,11 @@ public class DoggoDbContext : IdentityDbContext<User, Role, Guid, UserClaim, Use
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        foreach(var entity in builder.Model.GetEntityTypes())
+        {
+            entity.PropertyNameToSnakeCase();
+        }
     }
 
     public DbSet<Walker> Walkers { get; set; }
@@ -47,3 +53,4 @@ public class DoggoDbContext : IdentityDbContext<User, Role, Guid, UserClaim, Use
 
     public DbSet<UserChat> UserChats { get; set; }
 }
+

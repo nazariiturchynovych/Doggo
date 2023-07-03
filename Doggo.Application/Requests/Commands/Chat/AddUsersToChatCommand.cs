@@ -1,5 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Chat;
 
+using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.Chat;
 using Domain.Results;
@@ -24,7 +25,7 @@ public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IR
         {
             var chatRepository = _unitOfWork.GetChatRepository();
 
-            var chat = await chatRepository.GetWithMessages(request.ChatId, cancellationToken);
+            var chat = await chatRepository.GetAsync(request.ChatId, cancellationToken);
 
             if (chat is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
@@ -35,7 +36,7 @@ public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IR
 
             foreach (var userId in request.UsersId)
             {
-                var user = await userRepository.GetAsync(userId, cancellationToken);
+                var user = await userRepository.GetWithPersonalIdentifierAsync(userId, cancellationToken);
                 if (user is not null)
                     validUsers.Add(userId);
             }
@@ -53,7 +54,8 @@ public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IR
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            // await DoggoHub.UpdateChat(request.ChatId, chat.MapChatToGetChatDto(), _cacheService);
+            await _cacheService.RemoveDataAsync(CacheKeys.Chat + chat.Id, cancellationToken);
+            await _cacheService.SetData(CacheKeys.Chat + chat.Id, chat, cancellationToken);
 
             return Success();
         }

@@ -8,6 +8,6 @@ public class JobConfiguration : IEntityTypeConfiguration<Job>
 {
     public void Configure(EntityTypeBuilder<Job> builder)
     {
-        builder.ToTable("Jobs");
+        builder.ToTable("jobs");
     }
 }

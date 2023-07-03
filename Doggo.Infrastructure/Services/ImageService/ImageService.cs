@@ -2,9 +2,9 @@ namespace Doggo.Infrastructure.Services.ImageService;
 
 using Amazon.S3;
 using Amazon.S3.Model;
-using Domain.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Options;
 
 public class ImageService : IImageService
 {

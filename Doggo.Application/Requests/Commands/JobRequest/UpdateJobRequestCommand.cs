@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Commands.JobRequest;
 
 using Domain.Constants.ErrorConstants;
-using Domain.DTO.JobRequest;
 using Domain.Results;
+using DTO.JobRequest;
 using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;

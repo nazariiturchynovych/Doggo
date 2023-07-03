@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Queries.Walker.PossibleSchedule;
 
-using Domain.DTO;
-using Domain.DTO.Walker.PossibleSchedule;
 using Domain.Results;
+using DTO;
+using DTO.Walker.PossibleSchedule;
 using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;

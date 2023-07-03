@@ -1,15 +1,15 @@
 namespace Doggo.Infrastructure.Services.GoogleAuthService;
 
-using Doggo.Application.Abstractions;
-using Doggo.Domain.Options;
+using Application.Abstractions.Services;
 using Google.Apis.Auth;
 using Microsoft.Extensions.Options;
+using Options;
 
 public class GoogleAuthService : IGoogleAuthService
 {
-    private readonly IOptions<GoogleAuthOptions> _options;
+    private readonly IOptions<GoogleAuthenticationOptions> _options;
 
-    public GoogleAuthService(IOptions<GoogleAuthOptions> options)
+    public GoogleAuthService(IOptions<GoogleAuthenticationOptions> options)
     {
         _options = options;
     }

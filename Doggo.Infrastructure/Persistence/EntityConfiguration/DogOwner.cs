@@ -8,7 +8,7 @@ public class DogOwnerConfiguration : IEntityTypeConfiguration<DogOwner>
 {
     public void Configure(EntityTypeBuilder<DogOwner> builder)
     {
-        builder.ToTable("DogOwners");
+        builder.ToTable("dog_owners");
 
         builder.HasIndex(x => x.District);
 

@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Queries.Job;
 
-using Domain.DTO;
-using Domain.DTO.Job;
 using Domain.Results;
+using DTO;
+using DTO.Job;
 using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;

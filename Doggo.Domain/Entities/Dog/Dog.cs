@@ -2,9 +2,9 @@
 #pragma warning disable CS8618
 namespace Doggo.Domain.Entities.Dog;
 
-using Doggo.Domain.Entities.Base;
-using Doggo.Domain.Entities.JobRequest;
+using Base;
 using DogOwner;
+using JobRequest;
 
 public class Dog : Entity
 {

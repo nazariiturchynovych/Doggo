@@ -1,4 +1,4 @@
-namespace Doggo.Domain.DTO.Chat;
+namespace Doggo.Application.DTO.Chat;
 
 using Message;
 using UserChat;

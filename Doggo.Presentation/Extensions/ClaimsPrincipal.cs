@@ -6,6 +6,9 @@ public static class ClaimsPrincipal
 {
     public static Guid GetUserId(this System.Security.Claims.ClaimsPrincipal claimsPrincipal)
     {
-        return Guid.Parse(claimsPrincipal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value);
+        var claim = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+
+       return claim is not null ? Guid.Parse(claim.Value) : throw new Exception("User is not logged in or does not have claims");
+
     }
 }

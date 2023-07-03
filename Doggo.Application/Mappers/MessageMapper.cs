@@ -1,8 +1,8 @@
-namespace Doggo.Api.Application.Mappers;
+namespace Doggo.Application.Mappers;
 
-using Domain.DTO;
-using Domain.DTO.Chat.Message;
 using Domain.Entities.Chat;
+using DTO;
+using DTO.Chat.Message;
 using Requests.Commands.Message;
 
 public static class MessageMapper

@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Queries.Dog;
 
 using Domain.Constants.ErrorConstants;
-using Domain.DTO;
-using Domain.DTO.Dog;
 using Domain.Results;
+using DTO;
+using DTO.Dog;
 using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;

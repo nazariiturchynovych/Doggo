@@ -5,7 +5,7 @@ using Base.AuditableDateEntity;
 using Dog;
 using DogOwner;
 using Job;
-using Schedules;
+using Schedule;
 
 public class JobRequest : AuditableDateEntity
 {

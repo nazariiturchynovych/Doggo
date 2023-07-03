@@ -1,10 +1,10 @@
 namespace Doggo.Application.Mappers;
 
-using Domain.DTO;
-using Domain.DTO.User;
-using Domain.DTO.User.PersonalIdentifier;
 using Domain.Entities.Chat;
 using Domain.Entities.User;
+using DTO;
+using DTO.User;
+using DTO.User.PersonalIdentifier;
 using Requests.Commands.User;
 
 public static class UserRequestMapper

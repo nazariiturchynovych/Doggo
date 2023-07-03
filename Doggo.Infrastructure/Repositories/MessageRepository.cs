@@ -1,6 +1,7 @@
 namespace Doggo.Infrastructure.Repositories;
 
-using Abstractions;
+using Application.Abstractions.Persistence.Read;
+using Base;
 using Domain.Entities.Chat;
 using Microsoft.EntityFrameworkCore;
 using Persistence;

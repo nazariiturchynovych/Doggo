@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Queries.Authentication;
 
-using Abstractions;
+using Abstractions.Services;
 using Domain.Constants.ErrorConstants;
-using Domain.DTO.Authentication;
 using Domain.Results;
+using DTO.Authentication;
 using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;

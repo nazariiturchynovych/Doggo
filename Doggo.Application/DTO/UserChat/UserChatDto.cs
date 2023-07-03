@@ -1,4 +1,4 @@
-namespace Doggo.Domain.DTO.UserChat;
+namespace Doggo.Application.DTO.UserChat;
 
 public class UserChatDto
 {

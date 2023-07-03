@@ -1,6 +1,7 @@
 namespace Doggo.Infrastructure.Repositories;
 
-using Abstractions;
+using Base;
+using Doggo.Application.Abstractions.Persistence.Read;
 using Domain.Entities.User.Documents;
 using Persistence;
 

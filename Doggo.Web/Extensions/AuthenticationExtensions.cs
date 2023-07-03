@@ -1,7 +1,7 @@
 namespace Doggo.Api.Extensions;
 
 using System.Text;
-using Domain.Options;
+using Infrastructure.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 

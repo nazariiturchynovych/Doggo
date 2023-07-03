@@ -8,6 +8,6 @@ public class PersonalIdentifierConfiguration : IEntityTypeConfiguration<Personal
 {
     public void Configure(EntityTypeBuilder<PersonalIdentifier> builder)
     {
-        builder.ToTable("PersonalIdentifiers");
+        builder.ToTable("personal_identifiers");
     }
 }

@@ -8,7 +8,7 @@ public class UserTokenConfigurations : IEntityTypeConfiguration<UserToken>
 {
     public void Configure(EntityTypeBuilder<UserToken> builder)
     {
-        builder.ToTable("UserTokens");
+        builder.ToTable("user_tokens");
 
         builder.HasKey(
             ut => new

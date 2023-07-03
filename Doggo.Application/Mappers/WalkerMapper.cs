@@ -1,8 +1,8 @@
 namespace Doggo.Application.Mappers;
 
-using Domain.DTO;
-using Domain.DTO.Walker;
 using Domain.Entities.Walker;
+using DTO;
+using DTO.Walker;
 using Requests.Commands.Walker;
 
 public static class WalkerMapper

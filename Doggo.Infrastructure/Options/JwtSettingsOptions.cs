@@ -1,5 +1,5 @@
 #pragma warning disable CS8618
-namespace Doggo.Domain.Options;
+namespace Doggo.Infrastructure.Options;
 
 public class JwtSettingsOptions
 {

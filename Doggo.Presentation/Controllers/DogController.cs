@@ -4,12 +4,10 @@ using Application.Requests.Commands.Dog;
 using Application.Requests.Commands.Image;
 using Application.Requests.Queries.Dog;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Authorize(Roles = "DogOwner, Admin")]
 [Route("api/[Controller]")]
 public class DogController : ControllerBase
 {

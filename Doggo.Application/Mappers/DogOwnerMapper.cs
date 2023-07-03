@@ -1,8 +1,8 @@
 namespace Doggo.Application.Mappers;
 
-using Domain.DTO;
-using Domain.DTO.DogOwner;
 using Domain.Entities.DogOwner;
+using DTO;
+using DTO.DogOwner;
 using Requests.Commands.DogOwner;
 
 public static class DogOwnerMapper

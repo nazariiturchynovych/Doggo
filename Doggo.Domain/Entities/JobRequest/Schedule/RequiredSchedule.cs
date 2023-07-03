@@ -1,6 +1,6 @@
 #pragma warning disable CS0108, CS0114
 #pragma warning disable CS8618
-namespace Doggo.Domain.Entities.JobRequest.Schedules;
+namespace Doggo.Domain.Entities.JobRequest.Schedule;
 
 using Base.JobRequestEntity;
 

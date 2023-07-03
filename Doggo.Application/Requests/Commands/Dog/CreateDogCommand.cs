@@ -1,7 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Dog;
 
 using Domain.Entities.Dog;
-using Domain.Entities.DogOwner;
 using Domain.Results;
 using Infrastructure.Repositories.UnitOfWork;
 using MediatR;

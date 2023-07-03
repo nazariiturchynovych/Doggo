@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Queries.Walker;
 
-using Domain.DTO;
-using Domain.DTO.Walker;
 using Domain.Results;
+using DTO;
+using DTO.Walker;
 using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
