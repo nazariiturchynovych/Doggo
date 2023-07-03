@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Queries.User;
 
+using Abstractions.Persistence.Read;
 using Domain.Results;
 using DTO;
 using DTO.User;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
@@ -16,20 +16,18 @@ public record GetPageOfUsersQuery(
 {
     public class Handler : IRequestHandler<GetPageOfUsersQuery, CommonResult<PageOfTDataDto<GetUserDto>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserRepository _userRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IUserRepository userRepository)
         {
-            _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
         }
 
         public async Task<CommonResult<PageOfTDataDto<GetUserDto>>> Handle(
             GetPageOfUsersQuery request,
             CancellationToken cancellationToken)
         {
-            var userRepository = _unitOfWork.GetUserRepository();
-
-            var page = await userRepository.GetPageOfUsersAsync(
+            var page = await _userRepository.GetPageOfUsersAsync(
                 request.NameSearchTerm,
                 request.SortColumn,
                 request.SortOrder,

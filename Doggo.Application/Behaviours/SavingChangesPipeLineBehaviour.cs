@@ -1,7 +1,7 @@
 namespace Doggo.Application.Behaviours;
 
+using Abstractions.Repositories.UnitOfWork;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 using Requests.Base;
 

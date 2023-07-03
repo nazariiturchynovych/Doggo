@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Commands.JobRequest;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
 using DTO.JobRequest;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
@@ -17,27 +17,23 @@ public record UpdateJobRequestCommand(
 {
     public class Handler : IRequestHandler<UpdateJobRequestCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IJobRequestRepository _jobRequestRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IJobRequestRepository jobRequestRepository)
         {
-            _unitOfWork = unitOfWork;
+            _jobRequestRepository = jobRequestRepository;
         }
 
         public async Task<CommonResult> Handle(UpdateJobRequestCommand request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetJobRequestRepository();
+            var jobRequest = await _jobRequestRepository.GetAsync(request.JobRequestId, cancellationToken);
 
-            var currentJobRequest = await repository.GetAsync(request.JobRequestId, cancellationToken);
-
-            if (currentJobRequest is null)
+            if (jobRequest is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
 
-            var updatedJobRequest = request.MapUpdateJobRequestCommandToJobRequest(currentJobRequest);
+            var updatedJobRequest = request.MapUpdateJobRequestCommandToJobRequest(jobRequest);
 
-            repository.Update(updatedJobRequest);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _jobRequestRepository.Update(updatedJobRequest);
 
             return Success();
         }

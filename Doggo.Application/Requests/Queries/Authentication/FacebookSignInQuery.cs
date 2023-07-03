@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Queries.Authentication;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
 using DTO.Authentication;
-using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.FacebookAuthService;
 using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
@@ -12,15 +12,18 @@ public record FacebookSignInQuery(string AccessToken) : IRequest<CommonResult<Si
 {
     public class Handler : IRequestHandler<FacebookSignInQuery, CommonResult<SignInDto>>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
         private readonly IFacebookAuthService _facebookAuthService;
+        private readonly IUserRepository _userRepository;
 
-        public Handler(IUnitOfWork unitOfWork, IJwtTokenGeneratorService jwtTokenGeneratorService, IFacebookAuthService facebookAuthService)
+        public Handler(
+            IJwtTokenGeneratorService jwtTokenGeneratorService,
+            IFacebookAuthService facebookAuthService,
+            IUserRepository userRepository)
         {
-            _unitOfWork = unitOfWork;
             _jwtTokenGeneratorService = jwtTokenGeneratorService;
             _facebookAuthService = facebookAuthService;
+            _userRepository = userRepository;
         }
 
         public async Task<CommonResult<SignInDto>> Handle(FacebookSignInQuery request, CancellationToken cancellationToken)
@@ -39,13 +42,11 @@ public record FacebookSignInQuery(string AccessToken) : IRequest<CommonResult<Si
 
             var userInfoResult = await _facebookAuthService.GetUserInfoAsync(request.AccessToken);
 
-            var userRepository = _unitOfWork.GetUserRepository();
+            var user = await _userRepository.GetUserWithRoles(userInfoResult.Email, cancellationToken);
 
-            var user = await userRepository.GetUserWithRoles(userInfoResult.Email, cancellationToken);
-
-            return user is null ?
-                Failure<SignInDto>(CommonErrors.EntityDoesNotExist) :
-                Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
+            return user is null
+                ? Failure<SignInDto>(CommonErrors.EntityDoesNotExist)
+                : Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
         }
     }
 }

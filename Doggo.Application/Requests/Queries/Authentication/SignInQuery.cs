@@ -1,10 +1,10 @@
 namespace Doggo.Application.Requests.Queries.Authentication;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Results;
 using DTO.Authentication;
-using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -19,20 +19,22 @@ public record SignInQuery
     {
         private readonly UserManager<User> _userManager;
         private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserRepository _userRepository;
 
-        public Handler(UserManager<User> userManager, IJwtTokenGeneratorService jwtTokenGeneratorService, IUnitOfWork unitOfWork)
+
+        public Handler(
+            UserManager<User> userManager,
+            IJwtTokenGeneratorService jwtTokenGeneratorService,
+            IUserRepository userRepository)
         {
             _userManager = userManager;
             _jwtTokenGeneratorService = jwtTokenGeneratorService;
-            _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
         }
 
         public async Task<CommonResult<SignInDto>> Handle(SignInQuery request, CancellationToken cancellationToken)
         {
-            var userRepository = _unitOfWork.GetUserRepository();
-
-            var user = await userRepository.GetUserWithRoles(request.Email, cancellationToken);
+            var user = await _userRepository.GetUserWithRoles(request.Email, cancellationToken);
 
             if (user is null)
                 return Failure<SignInDto>(CommonErrors.EntityDoesNotExist);

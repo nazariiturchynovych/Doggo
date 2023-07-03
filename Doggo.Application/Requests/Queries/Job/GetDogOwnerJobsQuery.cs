@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Queries.Job;
 
+using Abstractions.Persistence.Read;
 using Domain.Results;
 using DTO;
 using DTO.Job;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
@@ -11,20 +11,19 @@ public record GetDogOwnerJobsQuery(Guid DogOwnerId) : IRequest<CommonResult<Page
 {
     public class Handler : IRequestHandler<GetDogOwnerJobsQuery, CommonResult<PageOfTDataDto<GetJobDto>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IJobRepository _jobRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+
+        public Handler(IJobRepository jobRepository)
         {
-            _unitOfWork = unitOfWork;
+            _jobRepository = jobRepository;
         }
 
         public async Task<CommonResult<PageOfTDataDto<GetJobDto>>> Handle(
             GetDogOwnerJobsQuery request,
             CancellationToken cancellationToken)
         {
-            var jobRepository = _unitOfWork.GetJobRepository();
-
-            var page = await jobRepository.GetDogOwnerJobsAsync(request.DogOwnerId, cancellationToken);
+            var page = await _jobRepository.GetDogOwnerJobsAsync(request.DogOwnerId, cancellationToken);
 
             return Success(page.MapJobCollectionToPageOJobDto());
         }

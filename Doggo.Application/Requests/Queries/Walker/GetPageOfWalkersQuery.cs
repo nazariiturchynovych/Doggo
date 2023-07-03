@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Queries.Walker;
 
+using Abstractions.Persistence.Read;
 using Domain.Results;
 using DTO;
 using DTO.Walker;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
@@ -18,20 +18,20 @@ public record GetPageOfWalkersQuery(
 {
     public class Handler : IRequestHandler<GetPageOfWalkersQuery, CommonResult<PageOfTDataDto<GetWalkerDto>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IWalkerRepository _walkerRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+
+        public Handler(IWalkerRepository walkerRepository)
         {
-            _unitOfWork = unitOfWork;
+            _walkerRepository = walkerRepository;
         }
 
         public async Task<CommonResult<PageOfTDataDto<GetWalkerDto>>> Handle(
             GetPageOfWalkersQuery request,
             CancellationToken cancellationToken)
         {
-            var walkerRepository = _unitOfWork.GetWalkerRepository();
 
-            var page = await walkerRepository.GetPageOfWalkersAsync(
+            var page = await _walkerRepository.GetPageOfWalkersAsync(
                 request.NameSearchTerm,
                 request.SkillSearchTerm,
                 request.SortColumn,

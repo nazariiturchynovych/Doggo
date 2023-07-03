@@ -1,26 +1,24 @@
 namespace Doggo.Application.Requests.Commands.Message;
 
+using Abstractions.Persistence.Read;
 using Domain.Entities.Chat;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
-public record CreateMessageCommand(Guid UserId,Guid ChatId,string Value) : IRequest<CommonResult>
+public record CreateMessageCommand(Guid UserId, Guid ChatId, string Value) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<CreateMessageCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMessageRepository _messageRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IMessageRepository messageRepository)
         {
-            _unitOfWork = unitOfWork;
+            _messageRepository = messageRepository;
         }
 
         public async Task<CommonResult> Handle(CreateMessageCommand request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetMessageRepository();
-
-            await repository.AddAsync(
+            await _messageRepository.AddAsync(
                 new Message
                 {
                     Value = request.Value,
@@ -28,9 +26,6 @@ public record CreateMessageCommand(Guid UserId,Guid ChatId,string Value) : IRequ
                     CreatedDate = DateTime.UtcNow,
                     ChatId = request.ChatId
                 });
-
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Success();
         }

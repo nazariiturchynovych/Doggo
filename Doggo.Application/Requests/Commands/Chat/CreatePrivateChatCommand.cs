@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Commands.Chat;
 
+using Abstractions.Persistence.Read;
 using Domain.Entities.Chat;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
 public record CreatePrivateChatCommand(
@@ -12,26 +12,24 @@ public record CreatePrivateChatCommand(
 {
     public class Handler : IRequestHandler<CreatePrivateChatCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IChatRepository _chatRepository;
+        private readonly IUserChatRepository _userChatRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IChatRepository chatRepository, IUserChatRepository userChatRepository)
         {
-            _unitOfWork = unitOfWork;
+            _chatRepository = chatRepository;
+            _userChatRepository = userChatRepository;
         }
 
         public async Task<CommonResult> Handle(CreatePrivateChatCommand request, CancellationToken cancellationToken)
         {
-            var chatRepository = _unitOfWork.GetChatRepository();
-
             var chat = new Chat
             {
                 Name = request.Name,
                 IsPrivate = true
             };
 
-            await chatRepository.AddAsync(chat);
-
-            var userChatRepository = _unitOfWork.GetUserChatRepository();
+            await _chatRepository.AddAsync(chat);
 
             var userChats = new List<UserChat>
             {
@@ -47,9 +45,7 @@ public record CreatePrivateChatCommand(
                 }
             };
 
-            await userChatRepository.AddRangeAsync(userChats);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _userChatRepository.AddRangeAsync(userChats);
 
             return Success();
         }

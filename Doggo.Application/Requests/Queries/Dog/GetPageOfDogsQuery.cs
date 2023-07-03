@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Queries.Dog;
 
+using Abstractions.Persistence.Read;
 using Domain.Results;
 using DTO;
 using DTO.Dog;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
@@ -17,20 +17,20 @@ public record GetPageOfDogsQuery(
 {
     public class Handler : IRequestHandler<GetPageOfDogsQuery, CommonResult<PageOfTDataDto<GetDogDto>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IDogRepository _dogRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+
+        public Handler(IDogRepository dogRepository)
         {
-            _unitOfWork = unitOfWork;
+            _dogRepository = dogRepository;
         }
 
         public async Task<CommonResult<PageOfTDataDto<GetDogDto>>> Handle(
             GetPageOfDogsQuery request,
             CancellationToken cancellationToken)
         {
-            var dogRepository = _unitOfWork.GetDogRepository();
 
-            var page = await dogRepository.GetPageOfDogsAsync(
+            var page = await _dogRepository.GetPageOfDogsAsync(
                 request.NameSearchTerm,
                 request.DescriptionSearchTerm,
                 request.SortColumn,

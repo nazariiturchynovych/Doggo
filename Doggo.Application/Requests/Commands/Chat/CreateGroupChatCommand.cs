@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Commands.Chat;
 
+using Abstractions.Persistence.Read;
 using Domain.Entities.Chat;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CurrentUserService;
 using MediatR;
 
@@ -12,33 +12,37 @@ public record CreateGroupChatCommand(
 {
     public class Handler : IRequestHandler<CreateGroupChatCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IChatRepository _chatRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IUserChatRepository _userChatRepository;
 
-        public Handler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
+        public Handler(
+            ICurrentUserService currentUserService,
+            IChatRepository chatRepository,
+            IUserRepository userRepository,
+            IUserChatRepository userChatRepository)
         {
-            _unitOfWork = unitOfWork;
             _currentUserService = currentUserService;
+            _chatRepository = chatRepository;
+            _userRepository = userRepository;
+            _userChatRepository = userChatRepository;
         }
 
         public async Task<CommonResult> Handle(CreateGroupChatCommand request, CancellationToken cancellationToken)
         {
-            var chatRepository = _unitOfWork.GetChatRepository();
-
             var chat = new Chat
             {
                 Name = request.Name,
             };
 
-            await chatRepository.AddAsync(chat);
-
-            var userRepository = _unitOfWork.GetUserRepository();
+            await _chatRepository.AddAsync(chat);
 
             var validUsers = new List<Guid>();
 
             foreach (var userId in request.UserIds)
             {
-                var user = await userRepository.GetWithPersonalIdentifierAsync(userId, cancellationToken);
+                var user = await _userRepository.GetWithPersonalIdentifierAsync(userId, cancellationToken);
                 if (user is not null)
                     validUsers.Add(userId);
             }
@@ -58,11 +62,7 @@ public record CreateGroupChatCommand(
                     UserId = _currentUserService.GetUserId()
                 });
 
-            var userChatRepository = _unitOfWork.GetUserChatRepository();
-
-            await userChatRepository.AddRangeAsync(userChats);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _userChatRepository.AddRangeAsync(userChats);
 
             return Success();
         }

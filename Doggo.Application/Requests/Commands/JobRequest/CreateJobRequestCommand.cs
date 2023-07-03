@@ -1,11 +1,11 @@
 namespace Doggo.Application.Requests.Commands.JobRequest;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.JobRequest;
 using Domain.Entities.JobRequest.Schedule;
 using Domain.Results;
 using DTO.JobRequest;
-using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
 public record CreateJobRequestCommand(
@@ -20,35 +20,41 @@ public record CreateJobRequestCommand(
 {
     public class Handler : IRequestHandler<CreateJobRequestCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IDogOwnerRepository _dogOwnerRepository;
+        private readonly IDogRepository _dogRepository;
+        private readonly IJobRequestRepository _jobRequestRepository;
+        private readonly IRequiredScheduleRepository _requiredScheduleRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(
+            IDogOwnerRepository dogOwnerRepository,
+            IDogRepository dogRepository,
+            IJobRequestRepository jobRequestRepository,
+            IRequiredScheduleRepository requiredScheduleRepository)
         {
-            _unitOfWork = unitOfWork;
+            _dogOwnerRepository = dogOwnerRepository;
+            _dogRepository = dogRepository;
+            _jobRequestRepository = jobRequestRepository;
+            _requiredScheduleRepository = requiredScheduleRepository;
         }
 
         public async Task<CommonResult> Handle(CreateJobRequestCommand request, CancellationToken cancellationToken)
         {
-            var dogOwnerRepository = _unitOfWork.GetDogOwnerRepository();
-
-            var dogOwner = await dogOwnerRepository.GetAsync(request.DogOwnerId, cancellationToken);
+            var dogOwner = await _dogOwnerRepository.GetAsync(request.DogOwnerId, cancellationToken);
 
             if (dogOwner is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
 
-            var dogRepository = _unitOfWork.GetDogRepository();
-
-            var dog = await dogRepository.GetAsync(request.DogId, cancellationToken);
+            var dog = await _dogRepository.GetAsync(request.DogId, cancellationToken);
 
             if (dog is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
 
-            var dogOwnerDogs = await dogRepository.GetDogOwnerDogsAsync(request.DogOwnerId, cancellationToken: cancellationToken);
+            var dogOwnerDogs = await _dogRepository.GetDogOwnerDogsAsync(
+                request.DogOwnerId,
+                cancellationToken: cancellationToken);
 
             if (dogOwnerDogs.Any(x => x.DogOwnerId != request.DogOwnerId))
                 return Failure(JobRequestErrors.DogOwnerIsNotOwnerOfThisDog);
-
-            var jobRequestRepository = _unitOfWork.GetJobRequestRepository();
 
             var entityToAdd = new JobRequest
             {
@@ -61,20 +67,16 @@ public record CreateJobRequestCommand(
                 IsPersonalIdentifierRequired = request.IsPersonalIdentifierRequired,
             };
 
-            await jobRequestRepository.AddAsync(entityToAdd);
+            await _jobRequestRepository.AddAsync(entityToAdd);
 
-            var requiredScheduleRepository = _unitOfWork.GetRequiredScheduleRepository();
-
-            await requiredScheduleRepository.AddAsync(
+            await _requiredScheduleRepository.AddAsync(
                 new RequiredSchedule()
                 {
                     From = request.GetRequiredScheduleDto.From,
                     To = request.GetRequiredScheduleDto.To,
                     IsRegular = request.GetRequiredScheduleDto.IsRegular,
                     JobRequestId = entityToAdd.Id
-                }); //TODO entity entry can be null
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+                });
 
             return Success();
         }

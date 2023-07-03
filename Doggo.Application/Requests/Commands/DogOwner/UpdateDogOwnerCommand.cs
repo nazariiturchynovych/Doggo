@@ -1,36 +1,32 @@
 namespace Doggo.Application.Requests.Commands.DogOwner;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record UpdateDogOwnerCommand(Guid DogOwnerId ,string? Address, string? District) : IRequest<CommonResult>
+public record UpdateDogOwnerCommand(Guid DogOwnerId, string? Address, string? District) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<UpdateDogOwnerCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IDogOwnerRepository _dogOwnerRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IDogOwnerRepository dogOwnerRepository)
         {
-            _unitOfWork = unitOfWork;
+            _dogOwnerRepository = dogOwnerRepository;
         }
 
         public async Task<CommonResult> Handle(UpdateDogOwnerCommand request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetDogOwnerRepository();
-
-            var currentDogOwner = await repository.GetAsync(request.DogOwnerId, cancellationToken);
+            var currentDogOwner = await _dogOwnerRepository.GetAsync(request.DogOwnerId, cancellationToken);
 
             if (currentDogOwner is null)
                 return Failure(CommonErrors.InnerError);
 
             var updatedDogOwner = request.MapDogOwnerUpdateCommandToDogOwner(currentDogOwner);
 
-            repository.Update(updatedDogOwner);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _dogOwnerRepository.Update(updatedDogOwner);
 
             return Success();
         }

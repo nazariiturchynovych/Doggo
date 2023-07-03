@@ -1,33 +1,29 @@
 namespace Doggo.Application.Requests.Commands.Job;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
 public record DeleteJobCommand(Guid JobId) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<DeleteJobCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IJobRepository _jobRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IJobRepository jobRepository)
         {
-            _unitOfWork = unitOfWork;
+            _jobRepository = jobRepository;
         }
 
         public async Task<CommonResult> Handle(DeleteJobCommand request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetJobRepository();
-
-            var job = await repository.GetAsync(request.JobId, cancellationToken);
+            var job = await _jobRepository.GetAsync(request.JobId, cancellationToken);
 
             if (job is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
 
-            repository.Remove(job);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _jobRepository.Remove(job);
 
             return Success();
         }

@@ -1,30 +1,32 @@
 namespace Doggo.Application.Requests.Queries.Walker.PossibleSchedule;
 
+using Abstractions.Persistence.Read;
 using Domain.Results;
 using DTO;
 using DTO.Walker.PossibleSchedule;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record GetPageOfPossibleSchedulesQuery(int PageCount, int Page) : IRequest<CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>>
+public record GetPageOfPossibleSchedulesQuery(int PageCount, int Page)
+    : IRequest<CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>>
 {
     public class Handler : IRequestHandler<GetPageOfPossibleSchedulesQuery, CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IPossibleScheduleRepository _possibleScheduleRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IPossibleScheduleRepository possibleScheduleRepository)
         {
-            _unitOfWork = unitOfWork;
+            _possibleScheduleRepository = possibleScheduleRepository;
         }
 
         public async Task<CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>> Handle(
             GetPageOfPossibleSchedulesQuery request,
             CancellationToken cancellationToken)
         {
-            var possibleScheduleRepository = _unitOfWork.GetPossibleScheduleRepository();
-
-            var page = await possibleScheduleRepository.GetPageOfPossibleSchedulesAsync(request.PageCount, request.Page, cancellationToken);
+            var page = await _possibleScheduleRepository.GetPageOfPossibleSchedulesAsync(
+                request.PageCount,
+                request.Page,
+                cancellationToken);
 
             return Success(page.MapPossibleScheduleCollectionToPageOPossibleSchedulesDto());
         }

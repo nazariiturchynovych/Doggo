@@ -5,6 +5,7 @@ using Amazon.S3;
 using Application.Abstractions;
 using Application.Abstractions.Persistence.Read;
 using Application.Abstractions.Persistence.SqlConnectionFactory;
+using Application.Abstractions.Repositories.UnitOfWork;
 using Application.Abstractions.Services;
 using Domain.Constants;
 using Microsoft.AspNetCore.Builder;
@@ -68,7 +69,6 @@ public static class DependencyInjection
             .AddScoped<IJwtTokenGeneratorService, JwtTokenGeneratorService>()
             .AddScoped<IEmailService, EmailService>()
             .AddScoped<ICurrentUserService, CurrenUserService>()
-            .AddScoped<IUnitOfWork, UnitOfWork>()
             .AddSingleton<ICacheService, CacheService>()
             .AddScoped<IFacebookAuthService, FacebookAuthService>()
             .AddSingleton<IImageService, ImageService>()

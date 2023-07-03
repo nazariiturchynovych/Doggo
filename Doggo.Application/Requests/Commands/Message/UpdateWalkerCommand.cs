@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Commands.Message;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
@@ -10,27 +10,24 @@ public record UpdateMessageCommand(Guid MessageId ,string Value) : IRequest<Comm
 {
     public class Handler : IRequestHandler<UpdateMessageCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMessageRepository _messageRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IMessageRepository messageRepository)
         {
-            _unitOfWork = unitOfWork;
+            _messageRepository = messageRepository;
         }
 
         public async Task<CommonResult> Handle(UpdateMessageCommand request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetMessageRepository();
 
-            var currentMessage = await repository.GetAsync(request.MessageId, cancellationToken);
+            var currentMessage = await _messageRepository.GetAsync(request.MessageId, cancellationToken);
 
             if (currentMessage is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
 
             var updatedMessage = request.MapMessageUpdateCommandToMessage(currentMessage);
 
-            repository.Update(updatedMessage);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _messageRepository.Update(updatedMessage);
 
             return Success();
         }

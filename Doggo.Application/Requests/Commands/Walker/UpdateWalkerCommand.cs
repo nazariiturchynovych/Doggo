@@ -1,36 +1,33 @@
 namespace Doggo.Application.Requests.Commands.Walker;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record UpdateWalkerCommand(Guid WalkerId ,string? Skills, string? About) : IRequest<CommonResult>
+public record UpdateWalkerCommand(Guid WalkerId, string? Skills, string? About) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<UpdateWalkerCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IWalkerRepository _walkerRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+
+        public Handler(IWalkerRepository walkerRepository)
         {
-            _unitOfWork = unitOfWork;
+            _walkerRepository = walkerRepository;
         }
 
         public async Task<CommonResult> Handle(UpdateWalkerCommand request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetWalkerRepository();
-
-            var currentWalker = await repository.GetAsync(request.WalkerId, cancellationToken);
+            var currentWalker = await _walkerRepository.GetAsync(request.WalkerId, cancellationToken);
 
             if (currentWalker is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
 
             var updatedWalker = request.MapWalkerUpdateCommandToWalker(currentWalker);
 
-            repository.Update(updatedWalker);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _walkerRepository.Update(updatedWalker);
 
             return Success();
         }

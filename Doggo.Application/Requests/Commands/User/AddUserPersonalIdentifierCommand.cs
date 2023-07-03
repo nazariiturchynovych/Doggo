@@ -1,11 +1,11 @@
 namespace Doggo.Application.Requests.Commands.User;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Entities.User.Documents;
 using Domain.Enums;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CurrentUserService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -18,13 +18,16 @@ public record AddUserPersonalIdentifierCommand(
     {
         private readonly UserManager<User> _userManager;
         private readonly ICurrentUserService _currentUserService;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IPersonalIdentifierRepository _personalIdentifierRepository;
 
-        public Handler(UserManager<User> userManager, ICurrentUserService currentUserService, IUnitOfWork unitOfWork)
+        public Handler(
+            UserManager<User> userManager,
+            ICurrentUserService currentUserService,
+            IPersonalIdentifierRepository personalIdentifierRepository)
         {
             _userManager = userManager;
             _currentUserService = currentUserService;
-            _unitOfWork = unitOfWork;
+            _personalIdentifierRepository = personalIdentifierRepository;
         }
 
         public async Task<CommonResult> Handle(AddUserPersonalIdentifierCommand request, CancellationToken cancellationToken)
@@ -34,9 +37,7 @@ public record AddUserPersonalIdentifierCommand(
             if (currentUser is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
 
-            var repository = _unitOfWork.GetPersonalIdentifierRepository();
-
-            await repository.AddAsync(
+            await _personalIdentifierRepository.AddAsync(
                 new PersonalIdentifier()
                 {
                     UserId = _currentUserService.GetUserId(),

@@ -1,6 +1,5 @@
 namespace Doggo.Presentation.Controllers;
 
-using Api.Application.Requests.Queries.Message;
 using Application.Requests.Commands.Message;
 using Application.Requests.Queries.Message;
 using MediatR;

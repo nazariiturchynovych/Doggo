@@ -1,10 +1,10 @@
 namespace Doggo.Application.Requests.Commands.Authentication;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,20 +13,19 @@ public record ConfirmEmailAndSetDefaultRoleCommand
 {
     public class Handler : IRequestHandler<ConfirmEmailAndSetDefaultRoleCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<User> _userManager;
+        private readonly IUserRepository _userRepository;
 
-        public Handler(IUnitOfWork unitOfWork, UserManager<User> userManager)
+        public Handler(UserManager<User> userManager, IUserRepository userRepository)
         {
-            _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _userRepository = userRepository;
         }
 
         public async Task<CommonResult> Handle(ConfirmEmailAndSetDefaultRoleCommand request, CancellationToken cancellationToken)
         {
-            var userRepository = _unitOfWork.GetUserRepository();
 
-            var user = await userRepository.GetUserWithRoles(request.UserId, cancellationToken);
+            var user = await _userRepository.GetUserWithRoles(request.UserId, cancellationToken);
 
             if (user is null)
                 return Failure(CommonErrors.EntityDoesNotExist);

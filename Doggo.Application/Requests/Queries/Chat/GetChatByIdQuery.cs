@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Queries.Chat;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
 using DTO.Chat;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
@@ -11,18 +11,16 @@ public record GetChatByIdQuery(Guid Id) : IRequest<CommonResult<GetChatDto>>
 {
     public class Handler : IRequestHandler<GetChatByIdQuery, CommonResult<GetChatDto>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IChatRepository _chatRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IChatRepository chatRepository)
         {
-            _unitOfWork = unitOfWork;
+            _chatRepository = chatRepository;
         }
 
         public async Task<CommonResult<GetChatDto>> Handle(GetChatByIdQuery request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetChatRepository();
-
-            var chat = await repository.GetWithMessages(request.Id, cancellationToken);
+            var chat = await _chatRepository.GetWithMessages(request.Id, cancellationToken);
 
             if (chat is null)
                 return Failure<GetChatDto>(CommonErrors.EntityDoesNotExist);

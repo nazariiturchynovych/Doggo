@@ -1,10 +1,10 @@
 namespace Doggo.Application.Requests.Commands.Chat;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.Chat;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
 using MediatR;
 
@@ -12,42 +12,44 @@ public record DeleteUsersFromChatCommand(Guid ChatId, ICollection<Guid> UsersId)
 {
     public class Handler : IRequestHandler<DeleteUsersFromChatCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService _cacheService;
+        private readonly IChatRepository _chatRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IUserChatRepository _userChatRepository;
 
-        public Handler(IUnitOfWork unitOfWork, ICacheService cacheService)
+        public Handler(
+            ICacheService cacheService,
+            IChatRepository chatRepository,
+            IUserRepository userRepository,
+            IUserChatRepository userChatRepository)
         {
-            _unitOfWork = unitOfWork;
             _cacheService = cacheService;
+            _chatRepository = chatRepository;
+            _userRepository = userRepository;
+            _userChatRepository = userChatRepository;
         }
 
         public async Task<CommonResult> Handle(DeleteUsersFromChatCommand request, CancellationToken cancellationToken)
         {
-            var chatRepository = _unitOfWork.GetChatRepository();
-
-            var chat = await chatRepository.GetAsync(request.ChatId, cancellationToken);
+            var chat = await _chatRepository.GetAsync(request.ChatId, cancellationToken);
 
             if (chat is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
-
-            var userRepository = _unitOfWork.GetUserRepository();
 
             var validUsers = new List<Guid>();
 
             foreach (var userId in request.UsersId)
             {
-                var user = await userRepository.GetWithPersonalIdentifierAsync(userId, cancellationToken);
+                var user = await _userRepository.GetWithPersonalIdentifierAsync(userId, cancellationToken);
                 if (user is not null)
                     validUsers.Add(userId);
             }
-
-            var userChatRepository = _unitOfWork.GetUserChatRepository();
 
             List<UserChat?> userChatsToDelete = new();
 
             foreach (var userId in validUsers)
             {
-                var userChatToDelete = await userChatRepository.GetAsync(request.ChatId, userId, cancellationToken);
+                var userChatToDelete = await _userChatRepository.GetAsync(request.ChatId, userId, cancellationToken);
                 if (userChatToDelete is null)
                     continue;
                 userChatsToDelete.Add(userChatToDelete);
@@ -56,11 +58,9 @@ public record DeleteUsersFromChatCommand(Guid ChatId, ICollection<Guid> UsersId)
             if (!userChatsToDelete.Any())
                 return Failure(CommonErrors.EntitiesDoesNotExist);
 
-            userChatRepository.RemoveRange(userChatsToDelete!);
+            _userChatRepository.RemoveRange(userChatsToDelete!);
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-           await _cacheService.RemoveDataAsync(CacheKeys.Chat + chat.Id, cancellationToken);
+            await _cacheService.RemoveDataAsync(CacheKeys.Chat + chat.Id, cancellationToken);
 
             return Success();
         }

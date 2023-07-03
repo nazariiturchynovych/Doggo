@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Queries.Chat;
 
+using Abstractions.Persistence.Read;
 using Domain.Results;
 using DTO;
 using DTO.Chat;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
@@ -16,20 +16,19 @@ public record GetPageOfChatsQuery(
 {
     public class Handler : IRequestHandler<GetPageOfChatsQuery, CommonResult<PageOfTDataDto<ChatDto>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IChatRepository _chatRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+
+        public Handler(IChatRepository chatRepository)
         {
-            _unitOfWork = unitOfWork;
+            _chatRepository = chatRepository;
         }
 
         public async Task<CommonResult<PageOfTDataDto<ChatDto>>> Handle(
             GetPageOfChatsQuery request,
             CancellationToken cancellationToken)
         {
-            var dogRepository = _unitOfWork.GetChatRepository();
-
-            var page = await dogRepository.GetPageOfChatsAsync(
+            var page = await _chatRepository.GetPageOfChatsAsync(
                 request.NameSearchTerm,
                 request.SortColumn,
                 request.SortOrder,

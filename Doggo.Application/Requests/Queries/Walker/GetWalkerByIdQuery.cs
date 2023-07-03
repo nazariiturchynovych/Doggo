@@ -1,10 +1,10 @@
 namespace Doggo.Application.Requests.Queries.Walker;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
 using DTO.Walker;
-using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
@@ -13,25 +13,24 @@ public record GetWalkerByIdQuery(Guid Id) : IRequest<CommonResult<GetWalkerDto>>
 {
     public class Handler : IRequestHandler<GetWalkerByIdQuery, CommonResult<GetWalkerDto>>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService _cacheService;
+        private readonly IWalkerRepository _walkerRepository;
 
-        public Handler(IUnitOfWork unitOfWork, ICacheService cacheService)
+
+        public Handler(ICacheService cacheService, IWalkerRepository walkerRepository)
         {
-            _unitOfWork = unitOfWork;
             _cacheService = cacheService;
+            _walkerRepository = walkerRepository;
         }
 
         public async Task<CommonResult<GetWalkerDto>> Handle(GetWalkerByIdQuery request, CancellationToken cancellationToken)
         {
-            var cachedEntity = await _cacheService.GetData<GetWalkerDto>(CacheKeys.Walker + request.Id);
+            var cachedEntity = await _cacheService.GetData<GetWalkerDto>(CacheKeys.Walker + request.Id, cancellationToken);
 
             if (cachedEntity is not null)
                 return Success(cachedEntity);
 
-            var repository = _unitOfWork.GetWalkerRepository();
-
-            var walker = await repository.GetAsync(request.Id, cancellationToken);
+            var walker = await _walkerRepository.GetAsync(request.Id, cancellationToken);
 
             if (walker is null)
                 return Failure<GetWalkerDto>(CommonErrors.EntityDoesNotExist);
@@ -40,7 +39,7 @@ public record GetWalkerByIdQuery(Guid Id) : IRequest<CommonResult<GetWalkerDto>>
 
             cachedEntity = entityDto;
 
-            await _cacheService.SetData(CacheKeys.DogOwner + walker.Id, entityDto);
+            await _cacheService.SetData(CacheKeys.DogOwner + walker.Id, entityDto, cancellationToken);
 
             return Success(cachedEntity);
         }

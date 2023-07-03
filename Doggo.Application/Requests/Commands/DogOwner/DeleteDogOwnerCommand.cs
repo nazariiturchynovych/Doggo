@@ -1,33 +1,30 @@
 namespace Doggo.Application.Requests.Commands.DogOwner;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
 public record DeleteDogOwnerCommand(Guid DogOwnerId) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<DeleteDogOwnerCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IDogOwnerRepository _dogOwnerRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+
+        public Handler(IDogOwnerRepository dogOwnerRepository)
         {
-            _unitOfWork = unitOfWork;
+            _dogOwnerRepository = dogOwnerRepository;
         }
 
         public async Task<CommonResult> Handle(DeleteDogOwnerCommand request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetDogOwnerRepository();
-
-            var dogOwner = await repository.GetAsync(request.DogOwnerId, cancellationToken);
+            var dogOwner = await _dogOwnerRepository.GetAsync(request.DogOwnerId, cancellationToken);
 
             if (dogOwner is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
 
-            repository.Remove(dogOwner);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _dogOwnerRepository.Remove(dogOwner);
 
             return Success();
         }

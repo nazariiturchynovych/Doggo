@@ -1,11 +1,11 @@
 namespace Doggo.Application.Requests.Commands.Walker;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.Walker;
 using Domain.Entities.User;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CurrentUserService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -14,27 +14,28 @@ public record CreateWalkerCommand(string Skills, string About) : IRequest<Common
 {
     public class Handler : IRequestHandler<CreateWalkerCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
         private readonly UserManager<User> _userManager;
+        private readonly IWalkerRepository _walkerRepository;
 
-        public Handler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, UserManager<User> userManager)
+        public Handler(
+            ICurrentUserService currentUserService,
+            UserManager<User> userManager,
+            IWalkerRepository walkerRepository)
         {
-            _unitOfWork = unitOfWork;
             _currentUserService = currentUserService;
             _userManager = userManager;
+            _walkerRepository = walkerRepository;
         }
 
         public async Task<CommonResult> Handle(CreateWalkerCommand request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetWalkerRepository();
-
-            var walker = await repository.GetAsync(_currentUserService.GetUserId(), cancellationToken);
+            var walker = await _walkerRepository.GetAsync(_currentUserService.GetUserId(), cancellationToken);
 
             if (walker is not null)
                 return Failure(CommonErrors.EntityAlreadyExist);
 
-            await repository.AddAsync(
+            await _walkerRepository.AddAsync(
                 new Walker()
                 {
                     Skills = request.Skills,
@@ -45,8 +46,6 @@ public record CreateWalkerCommand(string Skills, string About) : IRequest<Common
             await _userManager.AddToRoleAsync(
                 (await _userManager.FindByIdAsync(_currentUserService.GetUserId().ToString()))!,
                 RoleConstants.Walker);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Success();
         }

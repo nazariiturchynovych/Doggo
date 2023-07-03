@@ -1,35 +1,30 @@
 namespace Doggo.Application.Requests.Commands.Walker.PossibleSchedule;
 
+using Abstractions.Persistence.Read;
 using Domain.Entities.Walker.Schedule;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using MediatR;
 
-public record CreatePossibleScheduleCommand(Guid WalkerId ,DateTime From, DateTime To) : IRequest<CommonResult>
+public record CreatePossibleScheduleCommand(Guid WalkerId, DateTime From, DateTime To) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<CreatePossibleScheduleCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IPossibleScheduleRepository _possibleScheduleRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IPossibleScheduleRepository possibleScheduleRepository)
         {
-            _unitOfWork = unitOfWork;
+            _possibleScheduleRepository = possibleScheduleRepository;
         }
 
         public async Task<CommonResult> Handle(CreatePossibleScheduleCommand request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetPossibleScheduleRepository();
-
-            await repository.AddAsync(
+            await _possibleScheduleRepository.AddAsync(
                 new PossibleSchedule
                 {
                     From = request.From.ToUniversalTime(),
                     To = request.To.ToUniversalTime(),
                     WalkerId = request.WalkerId
                 });
-
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Success();
         }

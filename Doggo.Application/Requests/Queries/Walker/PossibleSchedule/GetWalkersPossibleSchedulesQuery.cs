@@ -1,10 +1,10 @@
 namespace Doggo.Application.Requests.Queries.Walker.PossibleSchedule;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
 using DTO;
 using DTO.Walker.PossibleSchedule;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
@@ -12,20 +12,19 @@ public record GetWalkersPossibleSchedulesQuery(Guid WalkerId) : IRequest<CommonR
 {
     public class Handler : IRequestHandler<GetWalkersPossibleSchedulesQuery, CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IPossibleScheduleRepository _possibleScheduleRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IPossibleScheduleRepository possibleScheduleRepository)
         {
-            _unitOfWork = unitOfWork;
+            _possibleScheduleRepository = possibleScheduleRepository;
         }
 
         public async Task<CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>> Handle(
             GetWalkersPossibleSchedulesQuery request,
             CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetPossibleScheduleRepository();
-
-            var possibleSchedules = await repository.GetWalkerPossibleSchedulesAsync(request.WalkerId, cancellationToken);
+            var possibleSchedules
+                = await _possibleScheduleRepository.GetWalkerPossibleSchedulesAsync(request.WalkerId, cancellationToken);
 
             if (!possibleSchedules.Any())
                 return Failure<PageOfTDataDto<GetPossibleScheduleDto>>(CommonErrors.EntityDoesNotExist);

@@ -1,10 +1,10 @@
 namespace Doggo.Application.Requests.Queries.Job;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
 using DTO.Job;
-using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
@@ -13,24 +13,23 @@ public record GetJobByIdQuery(Guid Id) : IRequest<CommonResult<GetJobDto>>
 {
     public class Handler : IRequestHandler<GetJobByIdQuery, CommonResult<GetJobDto>>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ICacheService _cacheService;
+        private readonly IJobRepository _jobRepository;
 
-        public Handler(IUnitOfWork unitOfWork, ICacheService cacheService)
+
+        public Handler(ICacheService cacheService, IJobRepository jobRepository)
         {
-            _unitOfWork = unitOfWork;
             _cacheService = cacheService;
+            _jobRepository = jobRepository;
         }
 
         public async Task<CommonResult<GetJobDto>> Handle(GetJobByIdQuery request, CancellationToken cancellationToken)
         {
-            var cachedEntity = await _cacheService.GetData<GetJobDto>(CacheKeys.Job + request.Id);
+            var cachedEntity = await _cacheService.GetData<GetJobDto>(CacheKeys.Job + request.Id, cancellationToken);
 
             if (cachedEntity is null)
             {
-                var repository = _unitOfWork.GetJobRepository();
-
-                var job = await repository.GetAsync(request.Id, cancellationToken);
+                var job = await _jobRepository.GetAsync(request.Id, cancellationToken);
 
                 if (job is null)
                     return Failure<GetJobDto>(CommonErrors.EntityDoesNotExist);
@@ -39,7 +38,7 @@ public record GetJobByIdQuery(Guid Id) : IRequest<CommonResult<GetJobDto>>
 
                 cachedEntity = entityDto;
 
-                await _cacheService.SetData(CacheKeys.DogOwner + job.Id, entityDto);
+                await _cacheService.SetData(CacheKeys.DogOwner + job.Id, entityDto, cancellationToken);
             }
 
             return Success(cachedEntity);

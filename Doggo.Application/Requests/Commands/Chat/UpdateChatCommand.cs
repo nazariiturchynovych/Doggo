@@ -1,36 +1,32 @@
 namespace Doggo.Application.Requests.Commands.Chat;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
-public record UpdateChatCommand(Guid ChatId ,string? Name) : IRequest<CommonResult>
+public record UpdateChatCommand(Guid ChatId, string? Name) : IRequest<CommonResult>
 {
     public class Handler : IRequestHandler<UpdateChatCommand, CommonResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IChatRepository _chatRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+        public Handler(IChatRepository chatRepository)
         {
-            _unitOfWork = unitOfWork;
+            _chatRepository = chatRepository;
         }
 
         public async Task<CommonResult> Handle(UpdateChatCommand request, CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetChatRepository();
-
-            var chat = await repository.GetAsync(request.ChatId, cancellationToken);
+            var chat = await _chatRepository.GetAsync(request.ChatId, cancellationToken);
 
             if (chat is null)
                 return Failure(CommonErrors.EntityDoesNotExist);
 
             var updatedChat = request.MapUpdateChatCommandToChat(chat);
 
-            repository.Update(updatedChat);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _chatRepository.Update(updatedChat);
 
             return Success();
         }

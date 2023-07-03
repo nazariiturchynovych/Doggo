@@ -1,10 +1,10 @@
 namespace Doggo.Application.Requests.Queries.Dog;
 
+using Abstractions.Persistence.Read;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
 using DTO;
 using DTO.Dog;
-using Infrastructure.Repositories.UnitOfWork;
 using Mappers;
 using MediatR;
 
@@ -12,20 +12,20 @@ public record GetDogOwnerDogsQuery(Guid DogOwnerId) : IRequest<CommonResult<Page
 {
     public class Handler : IRequestHandler<GetDogOwnerDogsQuery, CommonResult<PageOfTDataDto<GetDogDto>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IDogRepository _dogRepository;
 
-        public Handler(IUnitOfWork unitOfWork)
+
+        public Handler(IDogRepository dogRepository)
         {
-            _unitOfWork = unitOfWork;
+            _dogRepository = dogRepository;
         }
 
         public async Task<CommonResult<PageOfTDataDto<GetDogDto>>> Handle(
             GetDogOwnerDogsQuery request,
             CancellationToken cancellationToken)
         {
-            var repository = _unitOfWork.GetDogRepository();
 
-            var dogs = await repository.GetDogOwnerDogsAsync(request.DogOwnerId, cancellationToken);
+            var dogs = await _dogRepository.GetDogOwnerDogsAsync(request.DogOwnerId, cancellationToken);
 
             if (!dogs.Any())
                 return Failure<PageOfTDataDto<GetDogDto>>(CommonErrors.EntityDoesNotExist);
