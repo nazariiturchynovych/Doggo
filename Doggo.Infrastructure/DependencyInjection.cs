@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Options;
 using Persistence;
-using Persistence.Services.SqlConnectionFactory;
+using Persistence.SqlConnectionFactory;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
 using Repositories;

@@ -1,4 +1,4 @@
-namespace Doggo.Infrastructure.Persistence.Services.SqlConnectionFactory;
+namespace Doggo.Infrastructure.Persistence.SqlConnectionFactory;
 
 using Application.Abstractions.Persistence.SqlConnectionFactory;
 using Domain.Constants;
