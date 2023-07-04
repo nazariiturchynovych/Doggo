@@ -1,7 +1,16 @@
 namespace Doggo.Presentation.Controllers;
 
 using Application.Requests.Commands.Chat;
+using Application.Requests.Commands.Chat.AddUsersToChatCommand;
+using Application.Requests.Commands.Chat.CreateGroupChatCommand;
+using Application.Requests.Commands.Chat.CreatePrivateChatCommand;
+using Application.Requests.Commands.Chat.DeleteChatCommand;
+using Application.Requests.Commands.Chat.DeleteUsersFromChatCommand;
+using Application.Requests.Commands.Chat.UpdateChatCommand;
 using Application.Requests.Queries.Chat;
+using Application.Requests.Queries.Chat.GetChatByIdQuery;
+using Application.Requests.Queries.Chat.GetPageOfChatsQuery;
+using Application.Requests.Queries.Chat.GetUserChatsQuery;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

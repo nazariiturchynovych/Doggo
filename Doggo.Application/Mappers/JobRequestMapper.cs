@@ -4,6 +4,7 @@ using Domain.Entities.JobRequest;
 using DTO;
 using DTO.JobRequest;
 using Requests.Commands.JobRequest;
+using Requests.Commands.JobRequest.UpdateJobRequestCommand;
 
 public static class JobRequestMapper
 {

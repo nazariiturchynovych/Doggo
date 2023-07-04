@@ -22,10 +22,10 @@ public class SavingChangesPipeLineBehaviour<TRequest, TResponse> : IPipelineBeha
         CancellationToken cancellationToken)
 
     {
-
         var response = await next();
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        if (response.IsSuccess)
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return response;
     }

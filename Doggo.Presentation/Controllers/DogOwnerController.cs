@@ -1,8 +1,17 @@
 namespace Doggo.Presentation.Controllers;
 
 using Application.Requests.Commands.DogOwner;
+using Application.Requests.Commands.DogOwner.CreateDogOwnerCommand;
+using Application.Requests.Commands.DogOwner.DeleteDogOwnerCommand;
+using Application.Requests.Commands.DogOwner.UpdateDogOwnerCommand;
 using Application.Requests.Commands.Image;
+using Application.Requests.Commands.Image.DeleteImageCommand;
+using Application.Requests.Commands.Image.GetImageCommand;
+using Application.Requests.Commands.Image.UploadImageCommand;
 using Application.Requests.Queries.DogOwner;
+using Application.Requests.Queries.DogOwner.GetCurrentDogOwnerQuery;
+using Application.Requests.Queries.DogOwner.GetDogOwnerByIdQuery;
+using Application.Requests.Queries.DogOwner.GetPageOfDogOwnersQuery;
 using Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

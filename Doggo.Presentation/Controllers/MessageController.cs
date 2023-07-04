@@ -1,7 +1,12 @@
 namespace Doggo.Presentation.Controllers;
 
 using Application.Requests.Commands.Message;
+using Application.Requests.Commands.Message.CreateMessageCommand;
+using Application.Requests.Commands.Message.DeleteMessageCommand;
+using Application.Requests.Commands.Message.UpdateMessageCommand;
 using Application.Requests.Queries.Message;
+using Application.Requests.Queries.Message.GetChatMessagesQuery;
+using Application.Requests.Queries.Message.GetUserMessagesQuery;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

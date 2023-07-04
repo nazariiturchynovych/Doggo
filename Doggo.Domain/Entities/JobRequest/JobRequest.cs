@@ -19,6 +19,7 @@ public class JobRequest : AuditableDateEntity
 
     public Guid DogOwnerId { get; set; }
 
+    public bool IsJobApplied { get; set; }
     public DogOwner DogOwner { get; set; }
 
     public decimal Salary { get; set; }

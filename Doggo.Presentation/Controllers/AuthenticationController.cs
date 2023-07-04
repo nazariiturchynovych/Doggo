@@ -1,7 +1,17 @@
 namespace Doggo.Presentation.Controllers;
 
 using Application.Requests.Commands.Authentication;
+using Application.Requests.Commands.Authentication.ChangePasswordCommand;
+using Application.Requests.Commands.Authentication.ConfirmEmailAndSetDefaultRoleCommand;
+using Application.Requests.Commands.Authentication.ConfirmResetPasswordCommand;
+using Application.Requests.Commands.Authentication.FacebookSignUpCommand;
+using Application.Requests.Commands.Authentication.GoogleSignUpCommand;
+using Application.Requests.Commands.Authentication.SendEmailConfirmationTokenCommand;
+using Application.Requests.Commands.Authentication.SignUpCommand;
 using Application.Requests.Queries.Authentication;
+using Application.Requests.Queries.Authentication.FacebookSignInQuery;
+using Application.Requests.Queries.Authentication.GoogleSignInQuery;
+using Application.Requests.Queries.Authentication.SignInQuery;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

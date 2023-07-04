@@ -1,8 +1,17 @@
 namespace Doggo.Presentation.Controllers;
 
 using Application.Requests.Commands.Image;
+using Application.Requests.Commands.Image.DeleteImageCommand;
+using Application.Requests.Commands.Image.GetImageCommand;
+using Application.Requests.Commands.Image.UploadImageCommand;
 using Application.Requests.Commands.Walker;
+using Application.Requests.Commands.Walker.CreateWalkerCommand;
+using Application.Requests.Commands.Walker.DeleteWalkerCommand;
+using Application.Requests.Commands.Walker.UpdateWalkerCommand;
 using Application.Requests.Queries.Walker;
+using Application.Requests.Queries.Walker.GetCurrentWalkerQuery;
+using Application.Requests.Queries.Walker.GetPageOfWalkersQuery;
+using Application.Requests.Queries.Walker.GetWalkerByIdQuery;
 using Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

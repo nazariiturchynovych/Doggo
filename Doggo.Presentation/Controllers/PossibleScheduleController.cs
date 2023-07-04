@@ -1,7 +1,11 @@
 namespace Doggo.Presentation.Controllers;
 
-using Application.Requests.Commands.Walker.PossibleSchedule;
-using Application.Requests.Queries.Walker.PossibleSchedule;
+using Application.Requests.Commands.PossibleSchedule;
+using Application.Requests.Commands.PossibleSchedule.CreatePossibleScheduleCommand;
+using Application.Requests.Commands.PossibleSchedule.DeletePossibleScheduleCommand;
+using Application.Requests.Queries.PossibleSchedule.GetPageOfPossibleSchedulesQuery;
+using Application.Requests.Queries.PossibleSchedule.GetPossibleScheduleByIdQuery;
+using Application.Requests.Queries.PossibleSchedule.GetWalkersPossibleSchedulesQuery;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

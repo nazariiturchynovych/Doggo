@@ -6,6 +6,8 @@ using DTO;
 using DTO.User;
 using DTO.User.PersonalIdentifier;
 using Requests.Commands.User;
+using Requests.Commands.User.AddUserInformationCommand;
+using Requests.Commands.User.UpdateUserCommand;
 
 public static class UserRequestMapper
 {

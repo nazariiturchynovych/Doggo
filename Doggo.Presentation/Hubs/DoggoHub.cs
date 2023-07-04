@@ -5,6 +5,7 @@ using Application.Abstractions.Persistence.Read;
 using Application.DTO.Chat;
 using Application.Mappers;
 using Application.Requests.Commands.Message;
+using Application.Requests.Commands.Message.CreateMessageCommand;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.Chat;

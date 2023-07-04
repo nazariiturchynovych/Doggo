@@ -4,6 +4,7 @@ using Domain.Entities.Walker;
 using DTO;
 using DTO.Walker;
 using Requests.Commands.Walker;
+using Requests.Commands.Walker.UpdateWalkerCommand;
 
 public static class WalkerMapper
 {

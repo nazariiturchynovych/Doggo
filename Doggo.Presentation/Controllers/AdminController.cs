@@ -1,7 +1,11 @@
 namespace Doggo.Presentation.Controllers;
 
 using Application.Requests.Commands.User;
+using Application.Requests.Commands.User.DeleteUserCommand;
+using Application.Requests.Commands.User.UpdateUserCommand;
 using Application.Requests.Queries.User;
+using Application.Requests.Queries.User.GetPageOfUsersQuery;
+using Application.Requests.Queries.User.GetUserQuery;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

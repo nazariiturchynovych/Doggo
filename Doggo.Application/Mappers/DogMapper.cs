@@ -4,6 +4,7 @@ using Domain.Entities.Dog;
 using DTO;
 using DTO.Dog;
 using Requests.Commands.Dog;
+using Requests.Commands.Dog.UpdateDogCommand;
 
 public static class DogMapper
 {

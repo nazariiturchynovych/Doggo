@@ -4,6 +4,7 @@ using Domain.Entities.Chat;
 using DTO;
 using DTO.Chat.Message;
 using Requests.Commands.Message;
+using Requests.Commands.Message.UpdateMessageCommand;
 
 public static class MessageMapper
 {

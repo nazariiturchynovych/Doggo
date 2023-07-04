@@ -1,7 +1,17 @@
 namespace Doggo.Presentation.Controllers;
 
 using Application.Requests.Commands.Job;
+using Application.Requests.Commands.Job.ApplyJobCommand;
+using Application.Requests.Commands.Job.CreateJobCommand;
+using Application.Requests.Commands.Job.DeclineJobCommand;
+using Application.Requests.Commands.Job.DeleteJobCommand;
+using Application.Requests.Commands.Job.UpdateJobCommand;
 using Application.Requests.Queries.Job;
+using Application.Requests.Queries.Job.GetDogJobsQuery;
+using Application.Requests.Queries.Job.GetDogOwnerJobsQuery;
+using Application.Requests.Queries.Job.GetJobByIdQuery;
+using Application.Requests.Queries.Job.GetPageOfJobsQuery;
+using Application.Requests.Queries.Job.GetWalkerJobsQuery;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -6,6 +6,7 @@ using DTO.Chat;
 using DTO.Chat.Message;
 using DTO.UserChat;
 using Requests.Commands.Chat;
+using Requests.Commands.Chat.UpdateChatCommand;
 
 public static class ChatMapper
 {
