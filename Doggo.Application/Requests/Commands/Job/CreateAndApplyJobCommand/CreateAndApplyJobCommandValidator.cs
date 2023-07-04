@@ -1,10 +1,10 @@
-namespace Doggo.Application.Requests.Commands.Job.CreateJobCommand;
+namespace Doggo.Application.Requests.Commands.Job.CreateAndApplyJobCommand;
 
 using FluentValidation;
 
-public class CreateJobCommandValidator : AbstractValidator<CreateJobCommand>
+public class CreateAndApplyJobCommandValidator : AbstractValidator<CreateAndApplyJobCommand>
 {
-    public CreateJobCommandValidator()
+    public CreateAndApplyJobCommandValidator()
     {
         RuleFor(x => x.DogOwnerId).NotEmpty();
         RuleFor(x => x.DogId).NotEmpty();

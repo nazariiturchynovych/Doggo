@@ -1,9 +1,9 @@
-namespace Doggo.Application.Requests.Commands.Job.CreateJobCommand;
+namespace Doggo.Application.Requests.Commands.Job.CreateAndApplyJobCommand;
 
 using Domain.Results;
 using MediatR;
 
-public record CreateJobCommand(
+public record CreateAndApplyJobCommand(
     Guid DogId,
     Guid DogOwnerId,
     Guid JobRequestId,

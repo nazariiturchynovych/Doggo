@@ -6,7 +6,7 @@ public static class JobRequestErrors
 
     public const string JobRequestPaymentIsLessThanRequired = "JOB_REQUEST_PAYMENT_IS_LESS_THAN_REQUIRED";
 
-    public const string JobRequestAlreadyHAveAcceptedJob = "JOB_REQUEST_ALREADT_HAVE_ACCEPTED_JOB";
+    public const string JobRequestAlreadyHasAcceptedJob = "JOB_REQUEST_ALREADT_HAS_ACCEPTED_JOB";
 
     public const string CurrentDogOwnerIsNotOwnerOfThisJobRequest = "CURRENT_DOG_OWNER_IS_NOT_OWNER_OF_THIS_JOB_REQUEST";
 

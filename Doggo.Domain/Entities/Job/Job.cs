@@ -28,7 +28,7 @@ public class Job : AuditableDateEntity
 
     public string Comment { get; set; }
 
-    public decimal Salary { get; set; }
+    public decimal Payment { get; set; }
 
     public JobStatus Status { get; set; }
 }

@@ -218,8 +218,7 @@ namespace Doggo.Infrastructure.Migrations
 
                     b.HasIndex("DogOwnerId");
 
-                    b.HasIndex("JobRequestId")
-                        .IsUnique();
+                    b.HasIndex("JobRequestId");
 
                     b.HasIndex("WalkerId");
 
@@ -254,17 +253,21 @@ namespace Doggo.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("dog_owner_id");
 
+                    b.Property<bool>("HasAcceptedJob")
+                        .HasColumnType("boolean")
+                        .HasColumnName("has_accepted_job");
+
                     b.Property<bool>("IsPersonalIdentifierRequired")
                         .HasColumnType("boolean")
                         .HasColumnName("is_personal_identifier_required");
 
+                    b.Property<decimal>("PaymentTo")
+                        .HasColumnType("numeric")
+                        .HasColumnName("payment_to");
+
                     b.Property<int>("RequiredAge")
                         .HasColumnType("integer")
                         .HasColumnName("required_age");
-
-                    b.Property<decimal>("Salary")
-                        .HasColumnType("numeric")
-                        .HasColumnName("salary");
 
                     b.HasKey("Id");
 
@@ -275,7 +278,7 @@ namespace Doggo.Infrastructure.Migrations
                     b.ToTable("job_requests", (string)null);
                 });
 
-            modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.Schedules.RequiredSchedule", b =>
+            modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.Schedule.RequiredSchedule", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -422,6 +425,10 @@ namespace Doggo.Infrastructure.Migrations
                     b.Property<bool>("InstagramAuth")
                         .HasColumnType("boolean")
                         .HasColumnName("instagram_auth");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_approved");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -694,8 +701,8 @@ namespace Doggo.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Doggo.Domain.Entities.JobRequest.JobRequest", "JobRequest")
-                        .WithOne("Job")
-                        .HasForeignKey("Doggo.Domain.Entities.Job.Job", "JobRequestId")
+                        .WithMany("Jobs")
+                        .HasForeignKey("JobRequestId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -733,11 +740,11 @@ namespace Doggo.Infrastructure.Migrations
                     b.Navigation("DogOwner");
                 });
 
-            modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.Schedules.RequiredSchedule", b =>
+            modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.Schedule.RequiredSchedule", b =>
                 {
                     b.HasOne("Doggo.Domain.Entities.JobRequest.JobRequest", "JobRequest")
                         .WithOne("RequiredSchedule")
-                        .HasForeignKey("Doggo.Domain.Entities.JobRequest.Schedules.RequiredSchedule", "JobRequestId")
+                        .HasForeignKey("Doggo.Domain.Entities.JobRequest.Schedule.RequiredSchedule", "JobRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -819,8 +826,7 @@ namespace Doggo.Infrastructure.Migrations
 
             modelBuilder.Entity("Doggo.Domain.Entities.JobRequest.JobRequest", b =>
                 {
-                    b.Navigation("Job")
-                        .IsRequired();
+                    b.Navigation("Jobs");
 
                     b.Navigation("RequiredSchedule")
                         .IsRequired();

@@ -81,7 +81,7 @@ public async Task<IReadOnlyCollection<Job>> GetPageOfJobsAsync(
         Expression<Func<Job, object>> keySelector = sortColumn?.ToLower() switch
         {
             SortingConstants.Comment => job => job.Comment,
-            SortingConstants.Salary => job => job.Salary,
+            SortingConstants.Salary => job => job.Payment,
             _ => job => job.Id,
         };
 

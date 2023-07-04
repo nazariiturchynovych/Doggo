@@ -11,7 +11,8 @@ public static class JobMapper
     public static Job MapJobUpdateCommandToJob(this UpdateJobCommand command, Job job)
     {
         job.Comment = command.Comment ?? job.Comment;
-        job.Salary = command.Salary ?? job.Salary;
+        job.Payment = command.Salary ?? job.Payment;
+        job.ChangedDate = DateTime.UtcNow;
         return job;
     }
 
@@ -23,7 +24,7 @@ public static class JobMapper
             job.DogOwnerId,
             job.DogId,
             job.Comment,
-            job.Salary,
+            job.Payment,
             job.Status,
             job.Dog.MapDogToGetDogDto(),
             job.JobRequest.MapJobRequestToGetJobRequestDto());

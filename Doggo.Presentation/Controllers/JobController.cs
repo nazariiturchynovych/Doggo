@@ -2,7 +2,7 @@ namespace Doggo.Presentation.Controllers;
 
 using Application.Requests.Commands.Job;
 using Application.Requests.Commands.Job.ApplyJobCommand;
-using Application.Requests.Commands.Job.CreateJobCommand;
+using Application.Requests.Commands.Job.CreateAndApplyJobCommand;
 using Application.Requests.Commands.Job.DeclineJobCommand;
 using Application.Requests.Commands.Job.DeleteJobCommand;
 using Application.Requests.Commands.Job.UpdateJobCommand;
@@ -29,7 +29,7 @@ public class JobController : ControllerBase
     }
 
     [HttpPost("CreateJob")]
-    public async Task<IActionResult> CreateJob(CreateJobCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateJob(CreateAndApplyJobCommand command, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(command, cancellationToken));
     }

@@ -1,4 +1,4 @@
-namespace Doggo.Application.Requests.Commands.Job.CreateJobCommand;
+namespace Doggo.Application.Requests.Commands.Job.CreateAndApplyJobCommand;
 
 using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
@@ -9,7 +9,7 @@ using Domain.Results;
 using Infrastructure.Services.CurrentUserService;
 using MediatR;
 
-public class CreateJobCommandHandler : IRequestHandler<CreateJobCommand, CommonResult>
+public class CreateAndApplyJobCommandHandler : IRequestHandler<CreateAndApplyJobCommand, CommonResult>
 {
     private readonly IJobRepository _jobRepository;
     private readonly ICurrentUserService _currentUserService;
@@ -17,7 +17,7 @@ public class CreateJobCommandHandler : IRequestHandler<CreateJobCommand, CommonR
     private readonly IJobRequestRepository _jobRequestRepository;
     private readonly IDogOwnerRepository _dogOwnerRepository;
 
-    public CreateJobCommandHandler(
+    public CreateAndApplyJobCommandHandler(
         IJobRepository jobRepository,
         ICurrentUserService currentUserService,
         IWalkerRepository walkerRepository,
@@ -31,7 +31,7 @@ public class CreateJobCommandHandler : IRequestHandler<CreateJobCommand, CommonR
         _dogOwnerRepository = dogOwnerRepository;
     }
 
-    public async Task<CommonResult> Handle(CreateJobCommand request, CancellationToken cancellationToken)
+    public async Task<CommonResult> Handle(CreateAndApplyJobCommand request, CancellationToken cancellationToken)
     {
         var walker = await _walkerRepository.GetByUserIdAsync(_currentUserService.GetUserId(), cancellationToken);
 
@@ -51,16 +51,21 @@ public class CreateJobCommandHandler : IRequestHandler<CreateJobCommand, CommonR
         if (jobRequest is null)
             return Failure(JobRequestErrors.JobRequestDoesNotExist);
 
+        var dogOwnerJobRequests = await _jobRequestRepository.GetDogOwnerJobRequests(dogOwner.Id, cancellationToken);
+
+        if (!dogOwnerJobRequests.Any(x => x.Id == jobRequest.Id))
+            return Failure(JobRequestErrors.CurrentDogOwnerIsNotOwnerOfThisJobRequest);
+
         if (jobRequest.HasAcceptedJob)
-            return Failure(JobRequestErrors.JobRequestAlreadyHAveAcceptedJob);
+            return Failure(JobRequestErrors.JobRequestAlreadyHasAcceptedJob);
 
         if (request.Payment > jobRequest.PaymentTo)
             return Failure(JobRequestErrors.JobRequestPaymentIsLessThanRequired);
 
         await _jobRepository.AddAsync(
-            new Job()
+            new Job
             {
-                Salary = request.Payment,
+                Payment = request.Payment,
                 DogId = request.DogId,
                 WalkerId = walker.Id,
                 DogOwnerId = request.DogOwnerId,
