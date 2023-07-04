@@ -2,6 +2,14 @@ namespace Doggo.Domain.Constants.ErrorConstants;
 
 public static class UserErrors
 {
+    public const string UserDoesNotExist = "USER_DOES_NOT_EXIST";
+
+    public const string EmailIsNotConfirmed = "EMAIL_IS_NOT_CONFIRMED";
+
+    public const string UserIsAlreadyConfirmed = "USER_IS_ALREADY_CONFIRMED";
+
+    public const string UserIsNotConfirmed = "USER_IS_NOT_CONFIRMED";
+
     public const string UserCreateFailed = "USER_CREATE_FAILED";
 
     public const string UserEmailConfirmFailed = "USER_EMAIL_CONFIRM_FAILED";

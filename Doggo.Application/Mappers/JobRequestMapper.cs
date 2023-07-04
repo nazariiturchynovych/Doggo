@@ -13,7 +13,7 @@ public static class JobRequestMapper
         jobRequest.IsPersonalIdentifierRequired = command.IsPersonalIdentifierRequired ?? jobRequest.IsPersonalIdentifierRequired;
         jobRequest.RequiredAge = command.RequiredAge ?? jobRequest.RequiredAge;
         jobRequest.Description = command.Description ?? jobRequest.Description;
-        jobRequest.Salary = command.Salary ?? jobRequest.Salary;
+        jobRequest.PaymentTo = command.PaymentTo ?? jobRequest.PaymentTo;
 
         jobRequest.RequiredSchedule.From = command.RequiredScheduleDto!.From ?? jobRequest.RequiredSchedule.From;
         jobRequest.RequiredSchedule.To = command.RequiredScheduleDto!.To ?? jobRequest.RequiredSchedule.To;

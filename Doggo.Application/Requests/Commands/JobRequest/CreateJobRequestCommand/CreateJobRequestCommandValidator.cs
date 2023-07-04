@@ -6,14 +6,10 @@ public class CreateJobRequestCommandValidator : AbstractValidator<CreateJobReque
 
 {
     public CreateJobRequestCommandValidator()
-
-
     {
         RuleFor(x => x.DogId).NotEmpty();
 
-        RuleFor(x => x.DogOwnerId).NotEmpty();
-
-        RuleFor(x => x.Salary).NotEmpty().GreaterThan(5).LessThan(5000);
+        RuleFor(x => x.PaymentTo).NotEmpty().GreaterThan(5).LessThan(5000);
 
         RuleFor(x => x.Description).MinimumLength(5).MaximumLength(400);
 

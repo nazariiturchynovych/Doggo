@@ -2,9 +2,9 @@ namespace Doggo.Application.Requests.Commands.Job.DeclineJobCommand;
 
 using FluentValidation;
 
-public class DeclineJobCommandValidator : AbstractValidator<DeclineJobCommand>
+public class RejectJobCommandValidator : AbstractValidator<RejectJobCommand>
 {
-    public DeclineJobCommandValidator()
+    public RejectJobCommandValidator()
     {
         RuleFor(x => x.JobId).NotEmpty();
     }

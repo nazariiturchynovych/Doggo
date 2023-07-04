@@ -1,6 +1,5 @@
 namespace Doggo.Infrastructure.Persistence.EntityConfiguration;
 
-using Domain.Entities.Job;
 using Domain.Entities.JobRequest;
 using Domain.Entities.JobRequest.Schedule;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +15,9 @@ public class JobRequestConfiguration : IEntityTypeConfiguration<JobRequest>
             .WithOne(x => x.JobRequest)
             .HasForeignKey<RequiredSchedule>(x => x.JobRequestId);
 
-        builder.HasOne(x => x.Job)
+        builder.HasMany(x => x.Jobs)
             .WithOne(x => x.JobRequest)
-            .HasForeignKey<Job>(x => x.JobRequestId)
+            .HasForeignKey(x => x.JobRequestId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

@@ -59,7 +59,8 @@ public class JobRepository : AbstractRepository<Job>, IJobRepository
             .ToListAsync(cancellationToken: cancellationToken);
     }
 
-    public async Task<IReadOnlyCollection<Job>> GetPageOfJobsAsync(
+
+public async Task<IReadOnlyCollection<Job>> GetPageOfJobsAsync(
         string? commentSearchTerm,
         string? sortColumn,
         string? sortOrder,

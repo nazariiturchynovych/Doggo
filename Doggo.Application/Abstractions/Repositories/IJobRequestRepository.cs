@@ -1,11 +1,13 @@
-namespace Doggo.Application.Abstractions.Persistence.Read;
+namespace Doggo.Application.Abstractions.Repositories;
 
 using Domain.Entities.JobRequest;
+using Persistence.Read;
 
 public interface IJobRequestRepository : IAbstractRepository<JobRequest>
 {
     public Task<JobRequest?> GetAsync(Guid userId, CancellationToken cancellationToken = default);
 
+    public  Task<JobRequest?> GetJobRequestWithJobsAsync(Guid jobRequestId);
 
     public Task<IReadOnlyCollection<JobRequest>> GetDogOwnerJobRequests(
         Guid dogOwnerId,
@@ -18,4 +20,5 @@ public interface IJobRequestRepository : IAbstractRepository<JobRequest>
         int pageCount,
         int page,
         CancellationToken cancellationToken = default);
+
 }

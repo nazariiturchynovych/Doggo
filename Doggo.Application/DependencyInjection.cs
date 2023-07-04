@@ -15,7 +15,7 @@ public static class DependencyInjection
        builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
-       builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(SavingChangesPipeLineBehaviour<,>));
+       // builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(SavingChangesPipeLineBehaviour<,>));
 
         return builder.Services;
     }

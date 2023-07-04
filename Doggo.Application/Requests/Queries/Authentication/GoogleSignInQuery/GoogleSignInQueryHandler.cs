@@ -34,8 +34,12 @@ public class GoogleSignInQueryHandler : IRequestHandler<GoogleSignInQuery, Commo
 
         var user = await _userRepository.GetUserWithRoles(payload.Email, cancellationToken);
 
-        return user is null
-            ? Failure<SignInDto>(CommonErrors.EntityDoesNotExist)
-            : Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
+        if (user is null)
+            return Failure<SignInDto>(CommonErrors.EntityDoesNotExist);
+
+        if (!user.IsApproved)
+            return Failure<SignInDto>(UserErrors.UserIsNotConfirmed);
+
+        return Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
     }
 }

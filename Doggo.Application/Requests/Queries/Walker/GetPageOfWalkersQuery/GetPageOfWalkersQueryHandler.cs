@@ -1,6 +1,7 @@
 namespace Doggo.Application.Requests.Queries.Walker.GetPageOfWalkersQuery;
 
 using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Results;
 using DTO;
 using DTO.Walker;

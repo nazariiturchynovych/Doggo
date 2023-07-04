@@ -1,15 +1,14 @@
 namespace Doggo.Application.Requests.Commands.JobRequest.CreateJobRequestCommand;
 
+using Base;
 using Domain.Results;
 using DTO.JobRequest;
-using MediatR;
 
 public record CreateJobRequestCommand(
     Guid DogId,
-    Guid DogOwnerId,
     int RequiredAge,
     bool IsPersonalIdentifierRequired,
     string Description,
-    decimal Salary,
+    decimal PaymentTo,
     GetRequiredScheduleDto GetRequiredScheduleDto
-) : IRequest<CommonResult>;
+) : ICommand<CommonResult>;

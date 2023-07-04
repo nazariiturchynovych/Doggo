@@ -8,6 +8,6 @@ public record UpdateJobRequestCommand(
     Guid JobRequestId,
     int? RequiredAge,
     bool? IsPersonalIdentifierRequired,
-    decimal? Salary,
+    decimal? PaymentTo,
     string? Description,
     UpdateRequiredScheduleDto? RequiredScheduleDto) : IRequest<CommonResult>;

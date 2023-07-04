@@ -8,8 +8,8 @@ public class UpdateJobRequestCommandValidator : AbstractValidator<UpdateJobReque
     public UpdateJobRequestCommandValidator()
     {
         When(
-            x => x.Salary is not null,
-            () => RuleFor(x => x.Salary)
+            x => x.PaymentTo is not null,
+            () => RuleFor(x => x.PaymentTo)
                 .NotEmpty()
                 .GreaterThan(5)
                 .LessThan(5000));

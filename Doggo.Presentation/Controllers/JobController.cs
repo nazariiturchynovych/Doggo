@@ -83,13 +83,13 @@ public class JobController : ControllerBase
     }
 
     [HttpPost("ApplyJob")]
-    public async Task<IActionResult> ApplyJob(ApplyJobCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> ApplyJob(AcceptJobCommand command, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(command, cancellationToken));
     }
 
     [HttpPost("DeclineJob")]
-    public async Task<IActionResult> DeclineJob(DeclineJobCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeclineJob(RejectJobCommand command, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(command, cancellationToken));
     }

@@ -1,6 +1,7 @@
 namespace Doggo.Application.Requests.Queries.DogOwner.GetCurrentDogOwnerQuery;
 
 using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;

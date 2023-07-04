@@ -1,6 +1,7 @@
 namespace Doggo.Application.Requests.Queries.DogOwner.GetPageOfDogOwnersQuery;
 
 using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Results;
 using DTO;
 using DTO.DogOwner;

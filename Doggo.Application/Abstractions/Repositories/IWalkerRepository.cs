@@ -1,6 +1,7 @@
-namespace Doggo.Application.Abstractions.Persistence.Read;
+namespace Doggo.Application.Abstractions.Repositories;
 
 using Domain.Entities.Walker;
+using Persistence.Read;
 
 public interface IWalkerRepository : IAbstractRepository<Walker>
 {

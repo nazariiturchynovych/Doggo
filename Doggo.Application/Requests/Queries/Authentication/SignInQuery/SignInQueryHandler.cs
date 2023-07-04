@@ -38,6 +38,9 @@ public class SignInQueryHandler : IRequestHandler<SignInQuery, CommonResult<Sign
         if (!logInResult)
             return Failure<SignInDto>(UserErrors.PasswordDoesNotMatch);
 
+        if (!user.IsApproved)
+            return Failure<SignInDto>(UserErrors.UserIsNotConfirmed);
+
         return Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
     }
 }

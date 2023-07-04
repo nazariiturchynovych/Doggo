@@ -1,7 +1,7 @@
 namespace Doggo.Infrastructure.Repositories;
 
 using System.Linq.Expressions;
-using Application.Abstractions.Persistence.Read;
+using Application.Abstractions.Repositories;
 using Base;
 using Domain.Constants;
 using Domain.Entities.JobRequest;
@@ -35,6 +35,13 @@ public class JobRequestRepository : AbstractRepository<JobRequest>, IJobRequestR
             .ToListAsync(cancellationToken: cancellationToken);
     }
 
+    public async Task<JobRequest?> GetJobRequestWithJobsAsync(Guid jobRequestId)
+    {
+        return await _context.JobRequests
+            .Include(x => x.Jobs)
+            .FirstOrDefaultAsync(x => x.Id == jobRequestId);
+    }
+
     public async Task<IReadOnlyCollection<JobRequest>> GetPageOfJobRequestsAsync(
         string? descriptionSearchTerm,
         string? sortColumn,
@@ -55,7 +62,7 @@ public class JobRequestRepository : AbstractRepository<JobRequest>, IJobRequestR
         Expression<Func<JobRequest, object>> keySelector = sortColumn?.ToLower() switch
         {
             SortingConstants.Description => jobRequest => jobRequest.Description,
-            SortingConstants.Salary => jobRequest => jobRequest.Salary,
+            SortingConstants.Salary => jobRequest => jobRequest.PaymentTo,
             _ => jobRequest => jobRequest.Id,
         };
 

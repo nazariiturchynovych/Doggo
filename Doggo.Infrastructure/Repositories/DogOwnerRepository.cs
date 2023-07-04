@@ -2,6 +2,7 @@ namespace Doggo.Infrastructure.Repositories;
 
 using System.Linq.Expressions;
 using Application.Abstractions.Persistence.Read;
+using Application.Abstractions.Repositories;
 using Base;
 using Domain.Constants;
 using Domain.Entities.DogOwner;
@@ -22,6 +23,14 @@ public class DogOwnerRepository : AbstractRepository<DogOwner>, IDogOwnerReposit
     {
         return await _context.DogOwners.Where(x => x.Id == dogOwnerId)
             .Include(x => x.User)
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+    }
+
+    public async Task<DogOwner?> GetWithJobRequestAndJobsAsyncByUserId(Guid dogOwnerId, CancellationToken cancellationToken = default)
+    {
+        return await _context.DogOwners.Where(x => x.Id == dogOwnerId)
+            .Include(x => x.JobRequests)
+            .Include(x => x.Jobs)
             .FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 

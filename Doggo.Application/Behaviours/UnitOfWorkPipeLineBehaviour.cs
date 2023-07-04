@@ -5,13 +5,13 @@ using Domain.Results;
 using MediatR;
 using Requests.Base;
 
-public class SavingChangesPipeLineBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class UnitOfWorkPipeLineBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : ICommand<TResponse>
     where TResponse : CommonResult
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public SavingChangesPipeLineBehaviour(IUnitOfWork unitOfWork)
+    public UnitOfWorkPipeLineBehaviour(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
