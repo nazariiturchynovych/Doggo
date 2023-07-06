@@ -15,7 +15,6 @@ public static partial class Factory
                 Id = ValidRequiredSchedule.Id,
                 From = ValidRequiredSchedule.From,
                 To = ValidRequiredSchedule.To,
-                IsRegular = ValidRequiredSchedule.IsRegular,
                 JobRequestId = ValidJobRequest.Id,
             };
         }

@@ -26,6 +26,8 @@ public class Job : AuditableDateEntity
 
     public Dog Dog { get; set; }
 
+    public bool IsDone { get; set; }
+
     public string Comment { get; set; }
 
     public decimal Payment { get; set; }

@@ -71,7 +71,6 @@ public class CreateJobRequestCommandHandler : IRequestHandler<CreateJobRequestCo
             {
                 From = request.GetRequiredScheduleDto.From,
                 To = request.GetRequiredScheduleDto.To,
-                IsRegular = request.GetRequiredScheduleDto.IsRegular,
                 JobRequestId = entityToAdd.Id
             });
 

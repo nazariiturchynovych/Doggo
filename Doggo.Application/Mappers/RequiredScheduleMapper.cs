@@ -9,7 +9,6 @@ public static class RequiredScheduleMapper
     {
         return new GetRequiredScheduleDto(
             requiredSchedule.From,
-            requiredSchedule.To,
-            requiredSchedule.IsRegular);
+            requiredSchedule.To);
     }
 }

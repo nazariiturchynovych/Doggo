@@ -4,6 +4,7 @@ using Application.Requests.Commands.Job.ApplyJobCommand;
 using Application.Requests.Commands.Job.CreateAndApplyJobCommand;
 using Application.Requests.Commands.Job.DeclineJobCommand;
 using Application.Requests.Commands.Job.DeleteJobCommand;
+using Application.Requests.Commands.Job.DoneJobCommand;
 using Application.Requests.Commands.Job.UpdateJobCommand;
 using UnitTests.TestUtils.Constants;
 
@@ -37,6 +38,11 @@ public static class CreateJobCommandUtils
             JobId: Constants.ValidJob.Id);
     }
 
+    public static DoneJobCommand DoneJobCommand()
+    {
+        return new DoneJobCommand(
+            JobId: Constants.ValidJob.Id);
+    }
     public static UpdateJobCommand UpdateJobCommand()
     {
         return new UpdateJobCommand(

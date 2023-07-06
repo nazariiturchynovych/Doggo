@@ -10,5 +10,4 @@ public class RequiredSchedule : JobRequestOwnedEntity
 
     public DateTime To { get; set; }
 
-    public bool IsRegular { get; set; }
 }

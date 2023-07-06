@@ -18,7 +18,6 @@ public static class JobRequestMapper
 
         jobRequest.RequiredSchedule.From = command.RequiredScheduleDto!.From ?? jobRequest.RequiredSchedule.From;
         jobRequest.RequiredSchedule.To = command.RequiredScheduleDto!.To ?? jobRequest.RequiredSchedule.To;
-        jobRequest.RequiredSchedule.IsRegular = command.RequiredScheduleDto!.IsRegular ?? jobRequest.RequiredSchedule.IsRegular;
 
         return jobRequest;
     }

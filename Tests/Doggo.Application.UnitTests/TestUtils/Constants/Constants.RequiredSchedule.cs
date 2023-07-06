@@ -10,6 +10,5 @@ public static partial class Constants
 
         public static readonly DateTime To = From.AddHours(2);
 
-        public const bool IsRegular = true;
     }
 }
