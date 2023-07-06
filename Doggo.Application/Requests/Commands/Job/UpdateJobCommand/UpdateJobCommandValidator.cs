@@ -10,7 +10,7 @@ public class UpdateJobCommandValidator : AbstractValidator<UpdateJobCommand>
             x => x.Comment is not null,
             () => RuleFor(x => x.Comment).MinimumLength(5).MaximumLength(200));
 
-        When(x => x.Salary is not null,
-            () => RuleFor(x => x.Salary).GreaterThan(5).LessThan(5000));
+        When(x => x.Payment is not null,
+            () => RuleFor(x => x.Payment).GreaterThan(5).LessThan(5000));
     }
 }

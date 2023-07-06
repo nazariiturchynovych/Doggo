@@ -13,7 +13,7 @@ using FluentAssertions;
 using Infrastructure.Services.CurrentUserService;
 using Moq;
 using TestUtils;
-using UnitTests.TestUtils;
+using UnitTests.TestUtils.Constants;
 
 public class CreateAndApplyJobCommandHandlerTests
 {
@@ -94,12 +94,12 @@ public class CreateAndApplyJobCommandHandlerTests
         _dogOwnerRepositoryMock.Setup(
                 x =>
                     x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new DogOwner() {UserId = Constants.CurrentUser.Id});
+            .ReturnsAsync(() => new DogOwner() {UserId = Constants.ValidUser.Id});
 
         _currentUserServiceMock.Setup(
                 x =>
                     x.GetUserId())
-            .Returns(Constants.CurrentUser.Id);
+            .Returns(Constants.ValidUser.Id);
 
         var command = CreateJobCommandUtils.CreateAndApplyJobCommand();
 
@@ -128,7 +128,7 @@ public class CreateAndApplyJobCommandHandlerTests
         _dogOwnerRepositoryMock.Setup(
                 x =>
                     x.GetAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new DogOwner() {UserId = Constants.CurrentUser.Id});
+            .ReturnsAsync(() => new DogOwner() {UserId = Constants.ValidUser.Id});
 
         _currentUserServiceMock.Setup(
                 x =>
@@ -281,7 +281,7 @@ public class CreateAndApplyJobCommandHandlerTests
                 {
                     Id = command.JobRequestId,
                     HasAcceptedJob = false,
-                    PaymentTo = Constants.Job.Payment - 1
+                    PaymentTo = Constants.ValidJob.Payment - 1
                 });
 
         var handler = new CreateAndApplyJobCommandHandler(
@@ -305,7 +305,7 @@ public class CreateAndApplyJobCommandHandlerTests
         _walkerRepositoryMock.Setup(
                 x =>
                     x.GetByUserIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new Walker() {Id = Constants.Walker.Id});
+            .ReturnsAsync(() => new Walker() {Id = Constants.ValidWalker.Id});
 
         _dogOwnerRepositoryMock.Setup(
                 x =>
@@ -330,7 +330,7 @@ public class CreateAndApplyJobCommandHandlerTests
                 {
                     Id = command.JobRequestId,
                     HasAcceptedJob = false,
-                    PaymentTo = Constants.Job.Payment + 1
+                    PaymentTo = Constants.ValidJob.Payment + 1
                 });
 
         var handler = new CreateAndApplyJobCommandHandler(
@@ -352,7 +352,7 @@ public class CreateAndApplyJobCommandHandlerTests
                      && xx.JobRequestId == command.JobRequestId
                      && xx.Comment == command.Comment
                      && xx.Status == JobStatus.Applied
-                     && xx.WalkerId == Constants.Walker.Id)),
+                     && xx.WalkerId == Constants.ValidWalker.Id)),
             Times.Once);
         result.IsSuccess.Should().BeTrue();
         result.ErrorMessage.Should().Be(default);

@@ -33,7 +33,7 @@ public class DeleteJobCommandHandler : IRequestHandler<DeleteJobCommand, CommonR
         var job = await _jobRepository.GetAsync(request.JobId, cancellationToken);
 
         if (job is null)
-            return Failure(CommonErrors.EntityDoesNotExist);
+            return Failure(JobErrors.JobDoesNotExist);
 
         var walkerJobs = await _jobRepository.GetWalkerJobsAsync(walker.Id, cancellationToken);
 

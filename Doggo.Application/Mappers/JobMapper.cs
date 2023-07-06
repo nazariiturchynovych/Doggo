@@ -3,7 +3,6 @@ namespace Doggo.Application.Mappers;
 using Domain.Entities.Job;
 using DTO;
 using DTO.Job;
-using Requests.Commands.Job;
 using Requests.Commands.Job.UpdateJobCommand;
 
 public static class JobMapper
@@ -11,7 +10,7 @@ public static class JobMapper
     public static Job MapJobUpdateCommandToJob(this UpdateJobCommand command, Job job)
     {
         job.Comment = command.Comment ?? job.Comment;
-        job.Payment = command.Salary ?? job.Payment;
+        job.Payment = command.Payment ?? job.Payment;
         job.ChangedDate = DateTime.UtcNow;
         return job;
     }

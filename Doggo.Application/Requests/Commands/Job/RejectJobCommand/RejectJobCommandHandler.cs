@@ -37,13 +37,11 @@ public class RejectJobCommandHandler : IRequestHandler<RejectJobCommand, CommonR
         var job = await _jobRepository.GetAsync(request.JobId, cancellationToken);
 
         if (job is null)
-            return Failure(CommonErrors.EntityDoesNotExist);
+            return Failure(JobErrors.JobDoesNotExist);
 
         if (currentDogOwner.Jobs.All(x => x.Id != job.Id))
             return Failure(JobErrors.CurrenDogOwnerHasNotThisAppliedJob);
 
-        if (currentDogOwner.JobRequests.All(x => x.Id != job.Id))
-            return Failure(JobRequestErrors.CurrentDogOwnerIsNotOwnerOfThisJobRequest);
 
         job.Status = JobStatus.Rejected;
 

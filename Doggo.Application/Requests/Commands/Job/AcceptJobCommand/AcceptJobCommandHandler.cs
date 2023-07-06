@@ -48,11 +48,8 @@ public class AcceptJobCommandHandler : IRequestHandler<AcceptJobCommand, CommonR
         if (jobRequest is null)
             return Failure(JobRequestErrors.JobRequestDoesNotExist);
 
-        if (currentDogOwner.Jobs.All(x => x.Id != job.Id))
+        if (!currentDogOwner.Jobs.Any(x => x.Id == job.Id))
             return Failure(JobErrors.CurrenDogOwnerHasNotThisAppliedJob);
-
-        if (currentDogOwner.JobRequests.All(x => x.Id != job.Id))
-            return Failure(JobRequestErrors.CurrentDogOwnerIsNotOwnerOfThisJobRequest);
 
         job.Status = JobStatus.Accepted;
 

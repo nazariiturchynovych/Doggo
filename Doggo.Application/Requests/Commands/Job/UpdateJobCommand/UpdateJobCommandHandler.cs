@@ -34,11 +34,11 @@ public class UpdateJobCommandHandler : IRequestHandler<UpdateJobCommand, CommonR
         var job = await _jobRepository.GetAsync(request.JobId, cancellationToken);
 
         if (job is null)
-            return Failure(CommonErrors.EntityDoesNotExist);
+            return Failure(JobErrors.JobDoesNotExist);
 
         var walkerJobs = await _jobRepository.GetWalkerJobsAsync(walker.Id, cancellationToken);
 
-        if (walkerJobs.Any(x => x.Id == job.Id))
+        if (!walkerJobs.Any(x => x.Id == job.Id))
             return Failure(WalkerErrors.WalkerIsNotOwnerOfThisJob);
 
         var updatedJob = request.MapJobUpdateCommandToJob(job);
