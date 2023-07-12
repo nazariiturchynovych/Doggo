@@ -1,26 +1,35 @@
 namespace Doggo.Application.Mappers;
 
 using Domain.Entities.Walker.Schedule;
-using DTO;
-using DTO.Walker.PossibleSchedule;
+using Responses;
+using Responses.Walker.PossibleSchedule;
 
 public static class PossibleScheduleMapper
 {
-    public static GetPossibleScheduleDto MapPossibleScheduleToGetPossibleScheduleDto(this PossibleSchedule possibleSchedule)
+    public static PossibleScheduleResponse MapPossibleScheduleToPossibleScheduleResponse(this PossibleSchedule possibleSchedule)
     {
-        return new GetPossibleScheduleDto(
+        return new PossibleScheduleResponse(
             possibleSchedule.Id,
             possibleSchedule.From,
             possibleSchedule.To);
     }
 
-    public static PageOfTDataDto<GetPossibleScheduleDto> MapPossibleScheduleCollectionToPageOPossibleSchedulesDto(
+    public static PageOf<PossibleScheduleResponse> MapPossibleScheduleCollectionToPageOPossibleSchedulesResponse(
         this IReadOnlyCollection<PossibleSchedule> collection)
     {
         var collectionDto = collection
-            .Select(possibleSchedule => possibleSchedule.MapPossibleScheduleToGetPossibleScheduleDto())
+            .Select(possibleSchedule => possibleSchedule.MapPossibleScheduleToPossibleScheduleResponse())
             .ToList();
 
-        return new PageOfTDataDto<GetPossibleScheduleDto>(collectionDto);
+        return new PageOf<PossibleScheduleResponse>(collectionDto);
+    }
+
+    public static List<PossibleScheduleResponse> MapPossibleScheduleCollectionToListOPossibleSchedulesResponse(
+        this IReadOnlyCollection<PossibleSchedule> collection)
+    {
+        return collection
+            .Select(possibleSchedule => possibleSchedule.MapPossibleScheduleToPossibleScheduleResponse())
+            .ToList();
+
     }
 }

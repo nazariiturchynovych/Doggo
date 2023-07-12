@@ -1,13 +1,13 @@
 namespace Doggo.Application.Requests.Queries.Dog.GetPageOfDogsQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Results;
-using DTO;
-using DTO.Dog;
 using Mappers;
 using MediatR;
+using Responses;
+using Responses.Dog;
 
-public class GetPageOfDogsQueryHandler : IRequestHandler<GetPageOfDogsQuery, CommonResult<PageOfTDataDto<GetDogDto>>>
+public class GetPageOfDogsQueryHandler : IRequestHandler<GetPageOfDogsQuery, CommonResult<PageOf<DogResponse>>>
 {
     private readonly IDogRepository _dogRepository;
 
@@ -16,7 +16,7 @@ public class GetPageOfDogsQueryHandler : IRequestHandler<GetPageOfDogsQuery, Com
         _dogRepository = dogRepository;
     }
 
-    public async Task<CommonResult<PageOfTDataDto<GetDogDto>>> Handle(
+    public async Task<CommonResult<PageOf<DogResponse>>> Handle(
         GetPageOfDogsQuery request,
         CancellationToken cancellationToken)
     {
@@ -29,6 +29,6 @@ public class GetPageOfDogsQueryHandler : IRequestHandler<GetPageOfDogsQuery, Com
             request.Page,
             cancellationToken);
 
-        return Success(page.MapDogCollectionToPageOfDogDto());
+        return Success(page.MapDogCollectionToPageOfDogResponse());
     }
 };

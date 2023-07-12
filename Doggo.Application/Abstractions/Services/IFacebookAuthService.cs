@@ -1,4 +1,4 @@
-namespace Doggo.Infrastructure.Services.FacebookAuthService;
+namespace Doggo.Application.Abstractions.Services;
 
 using Domain.Results.External;
 

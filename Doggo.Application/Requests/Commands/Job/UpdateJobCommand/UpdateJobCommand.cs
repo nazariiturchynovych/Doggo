@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Job.UpdateJobCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record UpdateJobCommand(Guid JobId, string Comment, decimal? Payment) : IRequest<CommonResult>;
+public record UpdateJobCommand(Guid JobId, string Comment, decimal? Payment) : ICommand<CommonResult>;

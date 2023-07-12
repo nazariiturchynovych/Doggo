@@ -1,10 +1,10 @@
 namespace Doggo.Application.UnitTests.Requests.Commands.TestUtils;
 
-using Application.Requests.Commands.Job.ApplyJobCommand;
+using Application.Requests.Commands.Job.AcceptJobCommand;
 using Application.Requests.Commands.Job.CreateAndApplyJobCommand;
-using Application.Requests.Commands.Job.DeclineJobCommand;
 using Application.Requests.Commands.Job.DeleteJobCommand;
 using Application.Requests.Commands.Job.DoneJobCommand;
+using Application.Requests.Commands.Job.RejectJobCommand;
 using Application.Requests.Commands.Job.UpdateJobCommand;
 using UnitTests.TestUtils.Constants;
 

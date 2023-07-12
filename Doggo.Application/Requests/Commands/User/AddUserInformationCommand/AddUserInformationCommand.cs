@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Commands.User.AddUserInformationCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
 public record AddUserInformationCommand
 (
@@ -9,4 +9,4 @@ public record AddUserInformationCommand
     string LastName,
     int Age,
     string PhoneNumber
-) : IRequest<CommonResult>;
+) : ICommand<CommonResult>;

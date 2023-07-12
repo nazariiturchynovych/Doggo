@@ -1,10 +1,9 @@
 namespace Doggo.Application.Mappers;
 
 using Domain.Entities.Walker;
-using DTO;
-using DTO.Walker;
-using Requests.Commands.Walker;
 using Requests.Commands.Walker.UpdateWalkerCommand;
+using Responses;
+using Responses.Walker;
 
 public static class WalkerMapper
 {
@@ -15,9 +14,9 @@ public static class WalkerMapper
         return walker;
     }
 
-    public static GetWalkerDto MapWalkerToGetWalkerDto(this Walker walker)
+    public static WalkerResponse MapWalkerToWalkerResponse(this Walker walker)
     {
-        return new GetWalkerDto(
+        return new WalkerResponse(
             walker.Id,
             walker.UserId,
             walker.Skills,
@@ -29,10 +28,10 @@ public static class WalkerMapper
     }
 
 
-    public static PageOfTDataDto<GetWalkerDto> MapWalkerCollectionToPageOWalkersDto(this IReadOnlyCollection<Walker> collection)
+    public static PageOf<WalkerResponse> MapWalkerCollectionToPageOWalkersResponse(this IReadOnlyCollection<Walker> collection)
     {
-        var collectionDto = collection.Select(walker => walker.MapWalkerToGetWalkerDto()).ToList();
+        var collectionDto = collection.Select(walker => walker.MapWalkerToWalkerResponse()).ToList();
 
-        return new PageOfTDataDto<GetWalkerDto>(collectionDto);
+        return new PageOf<WalkerResponse>(collectionDto);
     }
 }

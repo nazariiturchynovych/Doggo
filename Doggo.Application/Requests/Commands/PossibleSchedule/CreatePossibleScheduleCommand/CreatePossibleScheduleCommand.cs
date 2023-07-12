@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.PossibleSchedule.CreatePossibleScheduleCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record CreatePossibleScheduleCommand(Guid WalkerId, DateTime From, DateTime To) : IRequest<CommonResult>;
+public record CreatePossibleScheduleCommand(Guid WalkerId, DateTime From, DateTime To) : ICommand<CommonResult>;

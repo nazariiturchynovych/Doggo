@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Queries.Walker.GetCurrentWalkerQuery;
 
 using Domain.Results;
-using DTO.Walker;
 using MediatR;
+using Responses.Walker;
 
-public record GetCurrentWalkerQuery(Guid UserId) : IRequest<CommonResult<GetWalkerDto>>;
+public record GetCurrentWalkerQuery(Guid UserId) : IRequest<CommonResult<WalkerResponse>>;

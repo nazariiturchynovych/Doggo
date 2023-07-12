@@ -2,7 +2,7 @@ namespace Doggo.Application.Requests.Commands.JobRequest.CreateJobRequestCommand
 
 using Base;
 using Domain.Results;
-using DTO.JobRequest;
+using Responses.JobRequest;
 
 public record CreateJobRequestCommand(
     Guid DogId,
@@ -10,5 +10,5 @@ public record CreateJobRequestCommand(
     bool IsPersonalIdentifierRequired,
     string Description,
     decimal PaymentTo,
-    GetRequiredScheduleDto GetRequiredScheduleDto
+    RequiredScheduleResponse RequiredScheduleResponse
 ) : ICommand<CommonResult>;

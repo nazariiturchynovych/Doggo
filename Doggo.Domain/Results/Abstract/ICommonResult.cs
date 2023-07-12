@@ -6,7 +6,7 @@ public interface ICommonResult
 
     bool IsFailure { get; }
 
-    Exception? Exception { get; }
+    string? ExceptionMessage { get; }
 
     string ErrorMessage { get; }
 }

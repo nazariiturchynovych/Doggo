@@ -26,7 +26,7 @@ public class ApproveUserCommandHandler : IRequestHandler<ApproveUserCommand, Com
             return Failure(UserErrors.EmailIsNotConfirmed);
 
         if (user.IsApproved)
-            return Failure(UserErrors.UserIsAlreadyConfirmed);
+            return Failure(UserErrors.UserIsAlreadyApproved);
 
         user.IsApproved = true;
 

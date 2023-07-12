@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Message.CreateMessageCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record CreateMessageCommand(Guid UserId, Guid ChatId, string Value) : IRequest<CommonResult>;
+public record CreateMessageCommand(Guid UserId, Guid ChatId, string Value) : ICommand<CommonResult>;

@@ -1,6 +1,6 @@
 namespace Doggo.Infrastructure.Persistence.SqlConnectionFactory;
 
-using Application.Abstractions.Persistence.SqlConnectionFactory;
+using Application.Abstractions.SqlConnectionFactory;
 using Domain.Constants;
 using Microsoft.Extensions.Configuration;
 using Npgsql;

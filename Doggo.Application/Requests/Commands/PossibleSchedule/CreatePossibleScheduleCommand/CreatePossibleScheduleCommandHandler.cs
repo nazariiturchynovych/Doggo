@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.PossibleSchedule.CreatePossibleScheduleCommand;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Entities.Walker.Schedule;
 using Domain.Results;
 using MediatR;

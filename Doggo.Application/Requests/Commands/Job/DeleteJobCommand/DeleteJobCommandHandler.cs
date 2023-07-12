@@ -1,10 +1,9 @@
 namespace Doggo.Application.Requests.Commands.Job.DeleteJobCommand;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using Infrastructure.Services.CurrentUserService;
 using MediatR;
 
 public class DeleteJobCommandHandler : IRequestHandler<DeleteJobCommand, CommonResult>

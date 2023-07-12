@@ -1,10 +1,9 @@
 namespace Doggo.Application.Mappers;
 
 using Domain.Entities.JobRequest;
-using DTO;
-using DTO.JobRequest;
-using Requests.Commands.JobRequest;
 using Requests.Commands.JobRequest.UpdateJobRequestCommand;
+using Responses;
+using Responses.JobRequest;
 
 public static class JobRequestMapper
 {
@@ -22,25 +21,37 @@ public static class JobRequestMapper
         return jobRequest;
     }
 
-    public static GetJobRequestDto MapJobRequestToGetJobRequestDto(this JobRequest jobRequest)
+    public static JobRequestResponse MapJobRequestToJobRequestResponse(this JobRequest jobRequest)
     {
-        return new GetJobRequestDto(
+        return new JobRequestResponse(
             jobRequest.Id,
             jobRequest.IsPersonalIdentifierRequired,
             jobRequest.Description,
             jobRequest.RequiredAge,
-            jobRequest.RequiredSchedule.MapRequiredScheduleToGetRequiredScheduleDto());
+            jobRequest.RequiredSchedule.MapRequiredScheduleToRequiredScheduleResponse());
     }
 
 
-    public static PageOfTDataDto<GetJobRequestDto> MapJobRequestCollectionToPageOJobRequestsDto(this IReadOnlyCollection<JobRequest> collection)
+    public static PageOf<JobRequestResponse> MapJobRequestCollectionToPageOJobRequestsResponse(this IReadOnlyCollection<JobRequest> collection)
     {
-        var collectionDto = new List<GetJobRequestDto>();
+        var collectionDto = new List<JobRequestResponse>();
 
         foreach (var jobRequest in collection)
         {
-            collectionDto.Add(jobRequest.MapJobRequestToGetJobRequestDto());
+            collectionDto.Add(jobRequest.MapJobRequestToJobRequestResponse());
         }
-        return new PageOfTDataDto<GetJobRequestDto>(collectionDto);
+        return new PageOf<JobRequestResponse>(collectionDto);
+    }
+
+    public static List<JobRequestResponse> MapJobRequestCollectionToListOJobRequestsResponse(this IReadOnlyCollection<JobRequest> collection)
+    {
+        var collectionDto = new List<JobRequestResponse>();
+
+        foreach (var jobRequest in collection)
+        {
+            collectionDto.Add(jobRequest.MapJobRequestToJobRequestResponse());
+        }
+
+        return collectionDto;
     }
 }

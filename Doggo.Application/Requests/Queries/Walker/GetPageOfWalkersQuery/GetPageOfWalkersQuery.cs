@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Queries.Walker.GetPageOfWalkersQuery;
 
 using Domain.Results;
-using DTO;
-using DTO.Walker;
 using MediatR;
+using Responses;
+using Responses.Walker;
 
 public record GetPageOfWalkersQuery(
     string? NameSearchTerm,
@@ -12,4 +12,4 @@ public record GetPageOfWalkersQuery(
     string? SortOrder,
     int Page,
     int PageCount
-) : IRequest<CommonResult<PageOfTDataDto<GetWalkerDto>>>;
+) : IRequest<CommonResult<PageOf<WalkerResponse>>>;

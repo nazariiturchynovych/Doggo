@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Commands.Chat.CreateGroupChatCommand;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Entities.Chat;
 using Domain.Results;
-using Infrastructure.Services.CurrentUserService;
 using MediatR;
 
 public class CreateGroupChatCommandHandler : IRequestHandler<CreateGroupChatCommand, CommonResult>

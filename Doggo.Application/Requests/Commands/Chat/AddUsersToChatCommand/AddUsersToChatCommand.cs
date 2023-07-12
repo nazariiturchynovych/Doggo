@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Chat.AddUsersToChatCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : IRequest<CommonResult>;
+public record AddUsersToChatCommand(Guid ChatId, ICollection<Guid> UsersId) : ICommand<CommonResult>;

@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Walker.DeleteWalkerCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record DeleteWalkerCommand(Guid WalkerId) : IRequest<CommonResult>;
+public record DeleteWalkerCommand(Guid WalkerId) : ICommand<CommonResult>;

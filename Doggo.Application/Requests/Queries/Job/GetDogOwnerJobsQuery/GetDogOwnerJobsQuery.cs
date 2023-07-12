@@ -1,8 +1,7 @@
 namespace Doggo.Application.Requests.Queries.Job.GetDogOwnerJobsQuery;
 
 using Domain.Results;
-using DTO;
-using DTO.Job;
 using MediatR;
+using Responses.Job;
 
-public record GetDogOwnerJobsQuery(Guid DogOwnerId) : IRequest<CommonResult<PageOfTDataDto<GetJobDto>>>;
+public record GetDogOwnerJobsQuery(Guid DogOwnerId) : IRequest<CommonResult<List<JobResponse>>>;

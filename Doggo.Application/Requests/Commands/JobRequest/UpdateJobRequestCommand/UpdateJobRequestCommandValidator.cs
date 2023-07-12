@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Commands.JobRequest.UpdateJobRequestCommand;
 
-using Doggo.Application.DTO.JobRequest;
 using FluentValidation;
+using Responses.JobRequest;
 
 public class UpdateJobRequestCommandValidator : AbstractValidator<UpdateJobRequestCommand>
 {
@@ -28,7 +28,7 @@ public class UpdateJobRequestCommandValidator : AbstractValidator<UpdateJobReque
     }
 }
 
-public class UpdateRequiredScheduleDtoValidator : AbstractValidator<UpdateRequiredScheduleDto>
+public class UpdateRequiredScheduleDtoValidator : AbstractValidator<UpdateRequiredScheduleResponse>
 {
     public UpdateRequiredScheduleDtoValidator()
     {

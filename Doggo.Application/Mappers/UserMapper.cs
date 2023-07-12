@@ -1,13 +1,11 @@
 namespace Doggo.Application.Mappers;
 
-using Domain.Entities.Chat;
 using Domain.Entities.User;
-using DTO;
-using DTO.User;
-using DTO.User.PersonalIdentifier;
-using Requests.Commands.User;
 using Requests.Commands.User.AddUserInformationCommand;
 using Requests.Commands.User.UpdateUserCommand;
+using Responses;
+using Responses.User;
+using Responses.User.PersonalIdentifier;
 
 public static class UserRequestMapper
 {
@@ -30,18 +28,9 @@ public static class UserRequestMapper
     }
 
 
-    public static UserChats MapUserToUserChatDto(this ICollection<Chat> chats)
+    public static UserResponse MapUserToUserResponse(this User user)
     {
-        return new UserChats()
-        {
-            Chats = chats.ToList()
-        };
-    }
-
-
-    public static GetUserDto MapUserToGetUserDto(this User user)
-    {
-        return new GetUserDto(
+        return new UserResponse(
             Id: user.Id,
             FirstName: user.FirstName,
             LastName: user.LastName,
@@ -49,13 +38,13 @@ public static class UserRequestMapper
             Email: user.Email!,
             PersonalIdentifier: user.PersonalIdentifier?.PersonalIdentifierType is null
                 ? null
-                : new GetPersonalIdentifierDto(user.PersonalIdentifier.PersonalIdentifierType));
+                : new PersonalIdentifierResponse(user.PersonalIdentifier.PersonalIdentifierType));
     }
 
-    public static PageOfTDataDto<GetUserDto> MapUserCollectionToPageOfUsersDto(this IReadOnlyCollection<User> collection)
+    public static PageOf<UserResponse> MapUserCollectionToPageOfUsersResponse(this IReadOnlyCollection<User> collection)
     {
-        var collectionDto = collection.Select(user => user.MapUserToGetUserDto()).ToList();
+        var collectionDto = collection.Select(user => user.MapUserToUserResponse()).ToList();
 
-        return new PageOfTDataDto<GetUserDto>(collectionDto);
+        return new PageOf<UserResponse>(collectionDto);
     }
 }

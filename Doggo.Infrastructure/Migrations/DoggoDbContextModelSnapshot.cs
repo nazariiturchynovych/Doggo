@@ -196,13 +196,17 @@ namespace Doggo.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("dog_owner_id");
 
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_done");
+
                     b.Property<Guid>("JobRequestId")
                         .HasColumnType("uuid")
                         .HasColumnName("job_request_id");
 
-                    b.Property<decimal>("Salary")
+                    b.Property<decimal>("Payment")
                         .HasColumnType("numeric")
-                        .HasColumnName("salary");
+                        .HasColumnName("payment");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer")
@@ -288,10 +292,6 @@ namespace Doggo.Infrastructure.Migrations
                     b.Property<DateTime>("From")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("from");
-
-                    b.Property<bool>("IsRegular")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_regular");
 
                     b.Property<Guid>("JobRequestId")
                         .HasColumnType("uuid")

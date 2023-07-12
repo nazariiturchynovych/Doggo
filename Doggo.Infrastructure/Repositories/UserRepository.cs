@@ -1,7 +1,7 @@
 namespace Doggo.Infrastructure.Repositories;
 
 using System.Linq.Expressions;
-using Application.Abstractions.Persistence.Read;
+using Application.Abstractions.Repositories;
 using Domain.Constants;
 using Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;

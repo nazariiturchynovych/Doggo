@@ -1,13 +1,12 @@
 namespace Doggo.Application.Requests.Commands.Walker.CreateWalkerCommand;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Entities.Walker;
 using Domain.Results;
-using Infrastructure.Services.CurrentUserService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 

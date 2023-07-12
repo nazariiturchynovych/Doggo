@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Queries.PossibleSchedule.GetPossibleScheduleByIdQuery;
 
 using Domain.Results;
-using DTO.Walker.PossibleSchedule;
 using MediatR;
+using Responses.Walker.PossibleSchedule;
 
-public record GetPossibleScheduleByIdQuery(Guid Id) : IRequest<CommonResult<GetPossibleScheduleDto>>;
+public record GetPossibleScheduleByIdQuery(Guid Id) : IRequest<CommonResult<PossibleScheduleResponse>>;

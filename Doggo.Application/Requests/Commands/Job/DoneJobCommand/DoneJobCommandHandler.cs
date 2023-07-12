@@ -1,10 +1,9 @@
 namespace Doggo.Application.Requests.Commands.Job.DoneJobCommand;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using Infrastructure.Services.CurrentUserService;
 using MediatR;
 
 public class DoneJobCommandHandler : IRequestHandler<DoneJobCommand, CommonResult>

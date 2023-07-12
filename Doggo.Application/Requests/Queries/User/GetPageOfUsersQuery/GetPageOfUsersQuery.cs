@@ -1,13 +1,13 @@
 namespace Doggo.Application.Requests.Queries.User.GetPageOfUsersQuery;
 
 using Domain.Results;
-using DTO;
-using DTO.User;
 using MediatR;
+using Responses;
+using Responses.User;
 
 public record GetPageOfUsersQuery(
     string? NameSearchTerm,
     string? SortColumn,
     string? SortOrder,
     int Page,
-    int PageCount) : IRequest<CommonResult<PageOfTDataDto<GetUserDto>>>;
+    int PageCount) : IRequest<CommonResult<PageOf<UserResponse>>>;

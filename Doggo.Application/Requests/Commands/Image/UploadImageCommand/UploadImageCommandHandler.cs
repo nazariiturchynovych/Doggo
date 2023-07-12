@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Commands.Image.UploadImageCommand;
 
 using System.Net;
+using Abstractions.Services;
 using Domain.Results;
-using Infrastructure.Services.ImageService;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Message.UpdateMessageCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record UpdateMessageCommand(Guid MessageId ,string Value) : IRequest<CommonResult>;
+public record UpdateMessageCommand(Guid MessageId ,string Value) : ICommand<CommonResult>;

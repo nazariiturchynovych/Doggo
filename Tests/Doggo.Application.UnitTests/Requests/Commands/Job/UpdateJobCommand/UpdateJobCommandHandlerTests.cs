@@ -1,13 +1,12 @@
 namespace Doggo.Application.UnitTests.Requests.Commands.Job.UpdateJobCommand;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
+using Abstractions.Services;
 using Application.Requests.Commands.Job.UpdateJobCommand;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.Job;
 using Domain.Entities.Walker;
 using FluentAssertions;
-using Infrastructure.Services.CurrentUserService;
 using Moq;
 using TestUtils;
 using UnitTests.TestUtils.Factory;

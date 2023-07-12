@@ -1,14 +1,13 @@
 namespace Doggo.Application.Requests.Queries.Chat.GetUserChatsQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using DTO;
-using DTO.Chat;
 using Mappers;
 using MediatR;
+using Responses.Chat;
 
-public class GetUserChatsQueryHandler : IRequestHandler<GetUserChatsQuery, CommonResult<PageOfTDataDto<ChatDto>>>
+public class GetUserChatsQueryHandler : IRequestHandler<GetUserChatsQuery, CommonResult<List<ChatResponse>>>
 {
     private readonly IChatRepository _chatRepository;
 
@@ -18,7 +17,7 @@ public class GetUserChatsQueryHandler : IRequestHandler<GetUserChatsQuery, Commo
         _chatRepository = chatRepository;
     }
 
-    public async Task<CommonResult<PageOfTDataDto<ChatDto>>> Handle(
+    public async Task<CommonResult<List<ChatResponse>>> Handle(
         GetUserChatsQuery request,
         CancellationToken cancellationToken)
     {
@@ -26,8 +25,13 @@ public class GetUserChatsQueryHandler : IRequestHandler<GetUserChatsQuery, Commo
         var chats = await _chatRepository.GetUserChatsAsync(request.ChatOwnerId, cancellationToken);
 
         if (chats is null || !chats.Any())
-            return Failure<PageOfTDataDto<ChatDto>>(CommonErrors.EntityDoesNotExist);
+            return Failure<List<ChatResponse>>(CommonErrors.EntityDoesNotExist);
 
-        return Success(chats.MapChatCollectionToPageOfChatDto());
+        foreach (var chat in chats)
+        {
+            var a = chat.MapChatToChatResponse();
+        }
+
+        return Success(chats.MapChatCollectionToListOfChatResponse());
     }
 }

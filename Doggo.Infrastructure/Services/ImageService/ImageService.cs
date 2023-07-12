@@ -2,6 +2,7 @@ namespace Doggo.Infrastructure.Services.ImageService;
 
 using Amazon.S3;
 using Amazon.S3.Model;
+using Application.Abstractions.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Options;

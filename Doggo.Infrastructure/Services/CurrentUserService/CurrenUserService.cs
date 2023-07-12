@@ -1,6 +1,7 @@
 namespace Doggo.Infrastructure.Services.CurrentUserService;
 
 using System.Security.Claims;
+using Application.Abstractions.Services;
 using Microsoft.AspNetCore.Http;
 
 public class CurrenUserService : ICurrentUserService

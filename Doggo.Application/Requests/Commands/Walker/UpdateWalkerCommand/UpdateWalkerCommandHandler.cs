@@ -1,6 +1,5 @@
 namespace Doggo.Application.Requests.Commands.Walker.UpdateWalkerCommand;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;

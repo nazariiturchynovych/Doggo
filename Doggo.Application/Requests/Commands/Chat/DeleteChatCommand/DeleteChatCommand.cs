@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Chat.DeleteChatCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record DeleteChatCommand(Guid ChatId) : IRequest<CommonResult>;
+public record DeleteChatCommand(Guid ChatId) : ICommand<CommonResult>;

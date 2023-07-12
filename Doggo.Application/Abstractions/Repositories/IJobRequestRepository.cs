@@ -1,7 +1,7 @@
 namespace Doggo.Application.Abstractions.Repositories;
 
+using Base;
 using Domain.Entities.JobRequest;
-using Persistence.Read;
 
 public interface IJobRequestRepository : IAbstractRepository<JobRequest>
 {

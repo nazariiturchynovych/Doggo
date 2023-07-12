@@ -1,13 +1,13 @@
 namespace Doggo.Application.Requests.Queries.PossibleSchedule.GetPageOfPossibleSchedulesQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Results;
-using DTO;
-using DTO.Walker.PossibleSchedule;
 using Mappers;
 using MediatR;
+using Responses;
+using Responses.Walker.PossibleSchedule;
 
-public class GetPageOfPossibleSchedulesQueryHandler : IRequestHandler<GetPageOfPossibleSchedulesQuery, CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>>
+public class GetPageOfPossibleSchedulesQueryHandler : IRequestHandler<GetPageOfPossibleSchedulesQuery, CommonResult<PageOf<PossibleScheduleResponse>>>
 {
     private readonly IPossibleScheduleRepository _possibleScheduleRepository;
 
@@ -16,7 +16,7 @@ public class GetPageOfPossibleSchedulesQueryHandler : IRequestHandler<GetPageOfP
         _possibleScheduleRepository = possibleScheduleRepository;
     }
 
-    public async Task<CommonResult<PageOfTDataDto<GetPossibleScheduleDto>>> Handle(
+    public async Task<CommonResult<PageOf<PossibleScheduleResponse>>> Handle(
         GetPageOfPossibleSchedulesQuery request,
         CancellationToken cancellationToken)
     {
@@ -25,6 +25,6 @@ public class GetPageOfPossibleSchedulesQueryHandler : IRequestHandler<GetPageOfP
             request.Page,
             cancellationToken);
 
-        return Success(page.MapPossibleScheduleCollectionToPageOPossibleSchedulesDto());
+        return Success(page.MapPossibleScheduleCollectionToPageOPossibleSchedulesResponse());
     }
 }

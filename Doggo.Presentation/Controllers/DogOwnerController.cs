@@ -1,17 +1,17 @@
 namespace Doggo.Presentation.Controllers;
 
-using Application.Requests.Commands.DogOwner;
 using Application.Requests.Commands.DogOwner.CreateDogOwnerCommand;
 using Application.Requests.Commands.DogOwner.DeleteDogOwnerCommand;
 using Application.Requests.Commands.DogOwner.UpdateDogOwnerCommand;
-using Application.Requests.Commands.Image;
 using Application.Requests.Commands.Image.DeleteImageCommand;
 using Application.Requests.Commands.Image.GetImageCommand;
 using Application.Requests.Commands.Image.UploadImageCommand;
-using Application.Requests.Queries.DogOwner;
 using Application.Requests.Queries.DogOwner.GetCurrentDogOwnerQuery;
 using Application.Requests.Queries.DogOwner.GetDogOwnerByIdQuery;
 using Application.Requests.Queries.DogOwner.GetPageOfDogOwnersQuery;
+using Application.Responses;
+using Application.Responses.DogOwner;
+using Domain.Results;
 using Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -32,24 +32,32 @@ public class DogOwnerController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("CreateDogOwner")]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateDogOwner(CreateDogOwnerCommand command, CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(command, cancellationToken));
+        return (await _mediator.Send(command, cancellationToken)).ToActionResult();
     }
 
     [HttpGet("GetDogOwner/{id:Guid}")]
+    [ProducesResponseType(typeof(CommonResult<DogOwnerResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetDogOwner(Guid id, CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetDogOwnerByIdQuery(id), cancellationToken));
+        return (await _mediator.Send(new GetDogOwnerByIdQuery(id), cancellationToken)).ToActionResult();
     }
 
     [HttpGet("GetCurrentDogOwner")]
+    [ProducesResponseType(typeof(CommonResult<DogOwnerResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetCurrentDogOwner(CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new GetCurrentDogOwnerQuery(User.GetUserId()), cancellationToken));
+        return (await _mediator.Send(new GetCurrentDogOwnerQuery(User.GetUserId()), cancellationToken)).ToActionResult();
     }
 
     [HttpGet("GetPageOfDogOwners")]
+    [ProducesResponseType(typeof(CommonResult<PageOf<DogOwnerResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetPageOfDogOwners(
         string? nameSearchTerm,
         string? sortColumn,
@@ -58,7 +66,7 @@ public class DogOwnerController : ControllerBase
         int page,
         CancellationToken cancellationToken)
     {
-        return Ok(
+        return (
             await _mediator.Send(
                 new GetPageOfDogOwnersQuery(
                     nameSearchTerm,
@@ -66,30 +74,38 @@ public class DogOwnerController : ControllerBase
                     sortOrder,
                     page,
                     pageCount),
-                cancellationToken));
+                cancellationToken)).ToActionResult();
     }
 
     [HttpPut("UpdateDogOwner")]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateDogOwner(
         UpdateDogOwnerCommand command,
         CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(command, cancellationToken));
+        return (await _mediator.Send(command, cancellationToken)).ToActionResult();
     }
 
     [HttpDelete("DeleteDogOwner/{id:Guid}")]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteDogOwner(Guid id, CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new DeleteDogOwnerCommand(id), cancellationToken));
+        return (await _mediator.Send(new DeleteDogOwnerCommand(id), cancellationToken)).ToActionResult();
     }
     
     [HttpPost("DogOwner/{id:Guid}/Image")]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UploadDogOwnerImage(Guid id, IFormFile file, CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new UploadImageCommand(id, file), cancellationToken));
+        return (await _mediator.Send(new UploadImageCommand(id, file), cancellationToken)).ToActionResult();
     }
 
     [HttpGet("DogOwner/{id:Guid}/Image")]
+    [ProducesResponseType(typeof(CommonResult<FileStreamResult>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetDogOwnerImage(Guid id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetImageCommand(id), cancellationToken);
@@ -98,8 +114,10 @@ public class DogOwnerController : ControllerBase
     }
 
     [HttpDelete("DogOwner/{id:Guid}/Image")]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteDogOwnerImage(Guid id, CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new DeleteImageCommand(id), cancellationToken));
+        return (await _mediator.Send(new DeleteImageCommand(id), cancellationToken)).ToActionResult();
     }
 }

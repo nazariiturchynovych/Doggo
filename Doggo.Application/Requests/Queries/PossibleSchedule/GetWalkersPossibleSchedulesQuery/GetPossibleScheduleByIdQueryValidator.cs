@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Queries.PossibleSchedule.GetWalkersPossibleSchedulesQuery;
 
-using GetPossibleScheduleByIdQuery;
 using FluentValidation;
+using GetPossibleScheduleByIdQuery;
 
 public class GetPossibleScheduleByIdQueryValidator : AbstractValidator<GetPossibleScheduleByIdQuery>
 {

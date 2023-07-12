@@ -1,6 +1,6 @@
 namespace Doggo.Infrastructure.Services.EmailService;
 
-using Application.Abstractions;
+using Application.Abstractions.Services;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;

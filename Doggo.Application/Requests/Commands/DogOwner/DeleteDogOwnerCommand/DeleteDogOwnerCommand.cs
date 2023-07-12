@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.DogOwner.DeleteDogOwnerCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record DeleteDogOwnerCommand(Guid DogOwnerId) : IRequest<CommonResult>;
+public record DeleteDogOwnerCommand(Guid DogOwnerId) : ICommand<CommonResult>;

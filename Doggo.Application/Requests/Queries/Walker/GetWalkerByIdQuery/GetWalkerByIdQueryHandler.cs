@@ -1,16 +1,15 @@
 namespace Doggo.Application.Requests.Queries.Walker.GetWalkerByIdQuery;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using DTO.Walker;
-using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
+using Responses.Walker;
 
-public class GetWalkerByIdQueryHandler : IRequestHandler<GetWalkerByIdQuery, CommonResult<GetWalkerDto>>
+public class GetWalkerByIdQueryHandler : IRequestHandler<GetWalkerByIdQuery, CommonResult<WalkerResponse>>
 {
     private readonly ICacheService _cacheService;
     private readonly IWalkerRepository _walkerRepository;
@@ -22,9 +21,9 @@ public class GetWalkerByIdQueryHandler : IRequestHandler<GetWalkerByIdQuery, Com
         _walkerRepository = walkerRepository;
     }
 
-    public async Task<CommonResult<GetWalkerDto>> Handle(GetWalkerByIdQuery request, CancellationToken cancellationToken)
+    public async Task<CommonResult<WalkerResponse>> Handle(GetWalkerByIdQuery request, CancellationToken cancellationToken)
     {
-        var cachedEntity = await _cacheService.GetData<GetWalkerDto>(CacheKeys.Walker + request.Id, cancellationToken);
+        var cachedEntity = await _cacheService.GetData<WalkerResponse>(CacheKeys.Walker + request.Id, cancellationToken);
 
         if (cachedEntity is not null)
             return Success(cachedEntity);
@@ -32,9 +31,9 @@ public class GetWalkerByIdQueryHandler : IRequestHandler<GetWalkerByIdQuery, Com
         var walker = await _walkerRepository.GetAsync(request.Id, cancellationToken);
 
         if (walker is null)
-            return Failure<GetWalkerDto>(CommonErrors.EntityDoesNotExist);
+            return Failure<WalkerResponse>(CommonErrors.EntityDoesNotExist);
 
-        var entityDto = walker.MapWalkerToGetWalkerDto();
+        var entityDto = walker.MapWalkerToWalkerResponse();
 
         cachedEntity = entityDto;
 

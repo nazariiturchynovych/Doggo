@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Commands.Chat.CreateGroupChatCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
 public record CreateGroupChatCommand(
     string Name,
-    List<Guid> UserIds) : IRequest<CommonResult>;
+    List<Guid> UserIds) : ICommand<CommonResult>;

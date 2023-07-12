@@ -1,16 +1,15 @@
 namespace Doggo.Application.Requests.Queries.DogOwner.GetCurrentDogOwnerQuery;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using DTO.DogOwner;
-using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
+using Responses.DogOwner;
 
-public class GetCurrentDogOwnerQueryHandler : IRequestHandler<GetCurrentDogOwnerQuery, CommonResult<GetDogOwnerDto>>
+public class GetCurrentDogOwnerQueryHandler : IRequestHandler<GetCurrentDogOwnerQuery, CommonResult<DogOwnerResponse>>
 {
     private readonly ICacheService _cacheService;
     private readonly IDogOwnerRepository _dogOwnerRepository;
@@ -21,10 +20,10 @@ public class GetCurrentDogOwnerQueryHandler : IRequestHandler<GetCurrentDogOwner
         _dogOwnerRepository = dogOwnerRepository;
     }
 
-    public async Task<CommonResult<GetDogOwnerDto>> Handle(GetCurrentDogOwnerQuery request, CancellationToken cancellationToken)
+    public async Task<CommonResult<DogOwnerResponse>> Handle(GetCurrentDogOwnerQuery request, CancellationToken cancellationToken)
     {
 
-        var cachedEntity = await _cacheService.GetData<GetDogOwnerDto>(CacheKeys.DogOwner + request.UserId, cancellationToken);
+        var cachedEntity = await _cacheService.GetData<DogOwnerResponse>(CacheKeys.DogOwner + request.UserId, cancellationToken);
 
         if (cachedEntity is null)
         {
@@ -32,9 +31,9 @@ public class GetCurrentDogOwnerQueryHandler : IRequestHandler<GetCurrentDogOwner
             var dogOwner = await _dogOwnerRepository.GetByUserIdAsync(request.UserId, cancellationToken);
 
             if (dogOwner is null)
-                return Failure<GetDogOwnerDto>(CommonErrors.EntityDoesNotExist);
+                return Failure<DogOwnerResponse>(CommonErrors.EntityDoesNotExist);
 
-            var entityDto = dogOwner.MapDogOwnerToGetDogOwnerDto();
+            var entityDto = dogOwner.MapDogOwnerToDogOwnerResponse();
 
             cachedEntity = entityDto;
 

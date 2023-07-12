@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Queries.DogOwner.GetDogOwnerByIdQuery;
 
 using Domain.Results;
-using DTO.DogOwner;
 using MediatR;
+using Responses.DogOwner;
 
-public record GetDogOwnerByIdQuery(Guid Id) : IRequest<CommonResult<GetDogOwnerDto>>;
+public record GetDogOwnerByIdQuery(Guid Id) : IRequest<CommonResult<DogOwnerResponse>>;

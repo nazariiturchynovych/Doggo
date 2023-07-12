@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Queries.Authentication.FacebookSignInQuery;
 
 using Domain.Results;
-using DTO.Authentication;
 using MediatR;
+using Responses.Authentication;
 
-public record FacebookSignInQuery(string AccessToken) : IRequest<CommonResult<SignInDto>>;
+public record FacebookSignInQuery(string AccessToken) : IRequest<CommonResult<SignInResponse>>;

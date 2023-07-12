@@ -1,13 +1,12 @@
 namespace Doggo.Application.Requests.Queries.Job.GetDogJobsQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Results;
-using DTO;
-using DTO.Job;
 using Mappers;
 using MediatR;
+using Responses.Job;
 
-public class GetDogJobsQueryHandler : IRequestHandler<GetDogJobsQuery, CommonResult<PageOfTDataDto<GetJobDto>>>
+public class GetDogJobsQueryHandler : IRequestHandler<GetDogJobsQuery, CommonResult<List<JobResponse>>>
 {
     private readonly IJobRepository _jobRepository;
 
@@ -16,12 +15,12 @@ public class GetDogJobsQueryHandler : IRequestHandler<GetDogJobsQuery, CommonRes
         _jobRepository = jobRepository;
     }
 
-    public async Task<CommonResult<PageOfTDataDto<GetJobDto>>> Handle(
+    public async Task<CommonResult<List<JobResponse>>> Handle(
         GetDogJobsQuery request,
         CancellationToken cancellationToken)
     {
         var page = await _jobRepository.GetDogJobsAsync(request.DogId, cancellationToken);
 
-        return Success(page.MapJobCollectionToPageOJobDto());
+        return Success(page.MapJobCollectionToListJobResponse());
     }
 }

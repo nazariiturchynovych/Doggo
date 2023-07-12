@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Queries.JobRequest.GetJobRequestByIdQuery;
 
 using Domain.Results;
-using DTO.JobRequest;
 using MediatR;
+using Responses.JobRequest;
 
-public record GetJobRequestByIdQuery(Guid Id) : IRequest<CommonResult<GetJobRequestDto>>;
+public record GetJobRequestByIdQuery(Guid Id) : IRequest<CommonResult<JobRequestResponse>>;

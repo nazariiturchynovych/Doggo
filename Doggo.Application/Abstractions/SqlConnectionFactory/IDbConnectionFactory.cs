@@ -1,4 +1,4 @@
-namespace Doggo.Application.Abstractions.Persistence.SqlConnectionFactory;
+namespace Doggo.Application.Abstractions.SqlConnectionFactory;
 
 using Npgsql;
 

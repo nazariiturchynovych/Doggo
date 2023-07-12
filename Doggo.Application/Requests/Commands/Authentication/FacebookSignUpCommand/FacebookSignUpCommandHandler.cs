@@ -1,10 +1,10 @@
 namespace Doggo.Application.Requests.Commands.Authentication.FacebookSignUpCommand;
 
+using Abstractions.Services;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Results;
-using Infrastructure.Services.FacebookAuthService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 

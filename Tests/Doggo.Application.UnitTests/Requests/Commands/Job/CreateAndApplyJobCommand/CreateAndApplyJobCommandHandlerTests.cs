@@ -1,7 +1,7 @@
 namespace Doggo.Application.UnitTests.Requests.Commands.Job.CreateAndApplyJobCommand;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
+using Abstractions.Services;
 using Application.Requests.Commands.Job.CreateAndApplyJobCommand;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.DogOwner;
@@ -10,7 +10,6 @@ using Domain.Entities.JobRequest;
 using Domain.Entities.Walker;
 using Domain.Enums;
 using FluentAssertions;
-using Infrastructure.Services.CurrentUserService;
 using Moq;
 using TestUtils;
 using UnitTests.TestUtils.Constants;

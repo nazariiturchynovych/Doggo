@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Message.DeleteMessageCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record DeleteMessageCommand(Guid MessageId) : IRequest<CommonResult>;
+public record DeleteMessageCommand(Guid MessageId) : ICommand<CommonResult>;

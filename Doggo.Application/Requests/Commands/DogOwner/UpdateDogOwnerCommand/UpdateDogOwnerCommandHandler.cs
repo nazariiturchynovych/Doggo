@@ -1,6 +1,5 @@
 namespace Doggo.Application.Requests.Commands.DogOwner.UpdateDogOwnerCommand;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;

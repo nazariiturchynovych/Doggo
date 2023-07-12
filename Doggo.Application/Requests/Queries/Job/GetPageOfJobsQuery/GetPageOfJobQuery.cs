@@ -1,13 +1,13 @@
 namespace Doggo.Application.Requests.Queries.Job.GetPageOfJobsQuery;
 
 using Domain.Results;
-using DTO;
-using DTO.Job;
 using MediatR;
+using Responses;
+using Responses.Job;
 
 public record GetPageOfJobsQuery(
     string? CommentSearchTerm,
     string? SortColumn,
     string? SortOrder,
     int Page,
-    int PageCount) : IRequest<CommonResult<PageOfTDataDto<GetJobDto>>>;
+    int PageCount) : IRequest<CommonResult<PageOf<JobResponse>>>;

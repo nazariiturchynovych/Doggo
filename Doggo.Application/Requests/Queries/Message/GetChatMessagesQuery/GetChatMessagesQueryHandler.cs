@@ -1,13 +1,13 @@
 namespace Doggo.Application.Requests.Queries.Message.GetChatMessagesQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Results;
-using DTO;
-using DTO.Chat.Message;
 using Mappers;
 using MediatR;
+using Responses;
+using Responses.Chat.Message;
 
-public class GetChatMessagesQueryHandler : IRequestHandler<GetChatMessagesQuery, CommonResult<PageOfTDataDto<GetMessageDto>>>
+public class GetChatMessagesQueryHandler : IRequestHandler<GetChatMessagesQuery, CommonResult<List<MessageResponse>>>
 {
     private readonly IMessageRepository _messageRepository;
 
@@ -16,7 +16,7 @@ public class GetChatMessagesQueryHandler : IRequestHandler<GetChatMessagesQuery,
         _messageRepository = messageRepository;
     }
 
-    public async Task<CommonResult<PageOfTDataDto<GetMessageDto>>> Handle(
+    public async Task<CommonResult<List<MessageResponse>>> Handle(
         GetChatMessagesQuery request,
         CancellationToken cancellationToken)
     {
@@ -25,6 +25,6 @@ public class GetChatMessagesQueryHandler : IRequestHandler<GetChatMessagesQuery,
             request.Count,
             cancellationToken);
 
-        return Success(page.MapMessageCollectionToPageOfMessageDto());
+        return Success(page.MapMessageCollectionToListOfMessageResponse());
     }
 }

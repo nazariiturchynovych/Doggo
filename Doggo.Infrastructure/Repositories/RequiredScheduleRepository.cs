@@ -1,6 +1,6 @@
 namespace Doggo.Infrastructure.Repositories;
 
-using Application.Abstractions.Persistence.Read;
+using Application.Abstractions.Repositories;
 using Base;
 using Domain.Entities.JobRequest.Schedule;
 using Microsoft.EntityFrameworkCore;

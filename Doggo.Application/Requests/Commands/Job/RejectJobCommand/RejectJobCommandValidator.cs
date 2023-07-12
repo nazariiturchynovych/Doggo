@@ -1,4 +1,4 @@
-namespace Doggo.Application.Requests.Commands.Job.DeclineJobCommand;
+namespace Doggo.Application.Requests.Commands.Job.RejectJobCommand;
 
 using FluentValidation;
 

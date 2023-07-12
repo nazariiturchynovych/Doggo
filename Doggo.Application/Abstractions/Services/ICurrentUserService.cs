@@ -1,4 +1,4 @@
-namespace Doggo.Infrastructure.Services.CurrentUserService;
+namespace Doggo.Application.Abstractions.Services;
 
 public interface ICurrentUserService
 {

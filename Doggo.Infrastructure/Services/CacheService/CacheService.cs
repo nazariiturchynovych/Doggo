@@ -2,6 +2,7 @@ namespace Doggo.Infrastructure.Services.CacheService;
 
 using System.Collections.Concurrent;
 using System.Text.Json;
+using Application.Abstractions.Services;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Tokens;
 

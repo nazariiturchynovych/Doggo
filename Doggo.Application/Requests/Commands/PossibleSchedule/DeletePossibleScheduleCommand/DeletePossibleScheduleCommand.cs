@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.PossibleSchedule.DeletePossibleScheduleCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record DeletePossibleScheduleCommand(Guid PossibleScheduleId) : IRequest<CommonResult>;
+public record DeletePossibleScheduleCommand(Guid PossibleScheduleId) : ICommand<CommonResult>;

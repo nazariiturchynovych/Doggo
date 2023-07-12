@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.DogOwner.CreateDogOwnerCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record CreateDogOwnerCommand(string Address, string District) : IRequest<CommonResult>;
+public record CreateDogOwnerCommand(string Address, string District) : ICommand<CommonResult>;

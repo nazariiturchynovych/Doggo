@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Commands.Image.GetImageCommand;
 
 using System.Net;
+using Abstractions.Services;
 using Amazon.S3.Model;
 using Domain.Results;
-using Infrastructure.Services.ImageService;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

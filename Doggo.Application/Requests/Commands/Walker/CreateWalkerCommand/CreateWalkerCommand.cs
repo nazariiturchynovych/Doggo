@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Walker.CreateWalkerCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record CreateWalkerCommand(string Skills, string About) : IRequest<CommonResult>;
+public record CreateWalkerCommand(string Skills, string About) : ICommand<CommonResult>;

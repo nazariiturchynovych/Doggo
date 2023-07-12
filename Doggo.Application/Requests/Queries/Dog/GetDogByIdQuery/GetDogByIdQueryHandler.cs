@@ -1,15 +1,15 @@
 namespace Doggo.Application.Requests.Queries.Dog.GetDogByIdQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using DTO.Dog;
-using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
+using Responses.Dog;
 
-public class GetDogByIdQueryHandler : IRequestHandler<GetDogByIdQuery, CommonResult<GetDogDto>>
+public class GetDogByIdQueryHandler : IRequestHandler<GetDogByIdQuery, CommonResult<DogResponse>>
 {
     private readonly ICacheService _cacheService;
     private readonly IDogRepository _dogRepository;
@@ -20,9 +20,9 @@ public class GetDogByIdQueryHandler : IRequestHandler<GetDogByIdQuery, CommonRes
         _dogRepository = dogRepository;
     }
 
-    public async Task<CommonResult<GetDogDto>> Handle(GetDogByIdQuery request, CancellationToken cancellationToken)
+    public async Task<CommonResult<DogResponse>> Handle(GetDogByIdQuery request, CancellationToken cancellationToken)
     {
-        var cachedEntity = await _cacheService.GetData<GetDogDto>(CacheKeys.Dog + request.Id, cancellationToken);
+        var cachedEntity = await _cacheService.GetData<DogResponse>(CacheKeys.Dog + request.Id, cancellationToken);
 
         if (cachedEntity is null)
         {
@@ -30,9 +30,9 @@ public class GetDogByIdQueryHandler : IRequestHandler<GetDogByIdQuery, CommonRes
             var dog = await _dogRepository.GetAsync(request.Id, cancellationToken);
 
             if (dog is null)
-                return Failure<GetDogDto>(CommonErrors.EntityDoesNotExist);
+                return Failure<DogResponse>(CommonErrors.EntityDoesNotExist);
 
-            var entityDto = dog.MapDogToGetDogDto();
+            var entityDto = dog.MapDogToDogResponse();
 
             cachedEntity = entityDto;
 

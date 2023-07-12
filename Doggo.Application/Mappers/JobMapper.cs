@@ -1,9 +1,9 @@
 namespace Doggo.Application.Mappers;
 
 using Domain.Entities.Job;
-using DTO;
-using DTO.Job;
 using Requests.Commands.Job.UpdateJobCommand;
+using Responses;
+using Responses.Job;
 
 public static class JobMapper
 {
@@ -15,9 +15,9 @@ public static class JobMapper
         return job;
     }
 
-    public static GetJobDto MapJobToGetJobDto(this Job job)
+    public static JobResponse MapJobToJobResponse(this Job job)
     {
-        return new GetJobDto(
+        return new JobResponse(
             job.Id,
             job.WalkerId,
             job.DogOwnerId,
@@ -25,14 +25,19 @@ public static class JobMapper
             job.Comment,
             job.Payment,
             job.Status,
-            job.Dog.MapDogToGetDogDto(),
-            job.JobRequest.MapJobRequestToGetJobRequestDto());
+            job.Dog.MapDogToDogResponse(),
+            job.JobRequest.MapJobRequestToJobRequestResponse());
     }
 
-    public static PageOfTDataDto<GetJobDto> MapJobCollectionToPageOJobDto(this IReadOnlyCollection<Job> collection)
+    public static PageOf<JobResponse> MapJobCollectionToPageOfJobResponse(this IReadOnlyCollection<Job> collection)
     {
-        var collectionDto = collection.Select(job => job.MapJobToGetJobDto()).ToList();
+        var collectionDto = collection.Select(job => job.MapJobToJobResponse()).ToList();
 
-        return new PageOfTDataDto<GetJobDto>(collectionDto);
+        return new PageOf<JobResponse>(collectionDto);
+    }
+
+    public static List<JobResponse> MapJobCollectionToListJobResponse(this IReadOnlyCollection<Job> collection)
+    {
+        return collection.Select(job => job.MapJobToJobResponse()).ToList();
     }
 }

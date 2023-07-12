@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.JobRequest.DeleteJobRequestCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
-public record DeleteJobRequestCommand(Guid JobRequestId) : IRequest<CommonResult>;
+public record DeleteJobRequestCommand(Guid JobRequestId) : ICommand<CommonResult>;

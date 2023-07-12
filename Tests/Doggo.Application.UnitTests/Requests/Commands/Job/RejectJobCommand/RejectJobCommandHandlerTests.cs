@@ -1,14 +1,13 @@
 namespace Doggo.Application.UnitTests.Requests.Commands.Job.RejectJobCommand;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
+using Abstractions.Services;
 using Application.Requests.Commands.Job.RejectJobCommand;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.DogOwner;
 using Domain.Entities.Job;
 using Domain.Enums;
 using FluentAssertions;
-using Infrastructure.Services.CurrentUserService;
 using Moq;
 using TestUtils;
 using UnitTests.TestUtils.Constants;
@@ -74,6 +73,7 @@ public class RejectJobCommandHandlerTests
         result.ErrorMessage.Should().Be(JobErrors.JobDoesNotExist);
     }
 
+    [Fact]
     public async Task HandleRejectJobCommand_WhenCurrentDogOwnerHasNoJobFromRequest_ShouldReturnFailureResult()
     {
         var command = CreateJobCommandUtils.RejectJobCommand();

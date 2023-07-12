@@ -1,13 +1,13 @@
 namespace Doggo.Application.Mappers;
 
 using Domain.Entities.JobRequest.Schedule;
-using DTO.JobRequest;
+using Responses.JobRequest;
 
 public static class RequiredScheduleMapper
 {
-    public static GetRequiredScheduleDto MapRequiredScheduleToGetRequiredScheduleDto(this RequiredSchedule requiredSchedule)
+    public static RequiredScheduleResponse MapRequiredScheduleToRequiredScheduleResponse(this RequiredSchedule requiredSchedule)
     {
-        return new GetRequiredScheduleDto(
+        return new RequiredScheduleResponse(
             requiredSchedule.From,
             requiredSchedule.To);
     }

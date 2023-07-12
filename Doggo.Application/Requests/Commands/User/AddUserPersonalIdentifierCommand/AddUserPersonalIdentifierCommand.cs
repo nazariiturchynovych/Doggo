@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Commands.User.AddUserPersonalIdentifierCommand;
 
+using Base;
 using Domain.Enums;
 using Domain.Results;
-using MediatR;
 
 public record AddUserPersonalIdentifierCommand(
     PersonalIdentifierType IdentifierType
-) : IRequest<CommonResult>;
+) : ICommand<CommonResult>;

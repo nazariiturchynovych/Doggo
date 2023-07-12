@@ -1,9 +1,9 @@
 namespace Doggo.Application.Requests.Commands.User.UpdateUserCommand;
 
+using Abstractions.Services;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Results;
-using Infrastructure.Services.CurrentUserService;
 using Mappers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

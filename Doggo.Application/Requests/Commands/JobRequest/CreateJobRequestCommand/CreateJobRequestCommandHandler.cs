@@ -1,12 +1,11 @@
 namespace Doggo.Application.Requests.Commands.JobRequest.CreateJobRequestCommand;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.JobRequest;
 using Domain.Entities.JobRequest.Schedule;
 using Domain.Results;
-using Infrastructure.Services.CurrentUserService;
 using MediatR;
 
 public class CreateJobRequestCommandHandler : IRequestHandler<CreateJobRequestCommand, CommonResult>
@@ -69,8 +68,8 @@ public class CreateJobRequestCommandHandler : IRequestHandler<CreateJobRequestCo
         await _requiredScheduleRepository.AddAsync(
             new RequiredSchedule()
             {
-                From = request.GetRequiredScheduleDto.From,
-                To = request.GetRequiredScheduleDto.To,
+                From = request.RequiredScheduleResponse.From,
+                To = request.RequiredScheduleResponse.To,
                 JobRequestId = entityToAdd.Id
             });
 

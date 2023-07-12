@@ -1,13 +1,13 @@
 namespace Doggo.Application.Requests.Queries.Chat.GetPageOfChatsQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Results;
-using DTO;
-using DTO.Chat;
 using Mappers;
 using MediatR;
+using Responses;
+using Responses.Chat;
 
-public class GetPageOfChatsQueryHandler : IRequestHandler<GetPageOfChatsQuery, CommonResult<PageOfTDataDto<ChatDto>>>
+public class GetPageOfChatsQueryHandler : IRequestHandler<GetPageOfChatsQuery, CommonResult<PageOf<ChatResponse>>>
 {
     private readonly IChatRepository _chatRepository;
 
@@ -17,7 +17,7 @@ public class GetPageOfChatsQueryHandler : IRequestHandler<GetPageOfChatsQuery, C
         _chatRepository = chatRepository;
     }
 
-    public async Task<CommonResult<PageOfTDataDto<ChatDto>>> Handle(
+    public async Task<CommonResult<PageOf<ChatResponse>>> Handle(
         GetPageOfChatsQuery request,
         CancellationToken cancellationToken)
     {
@@ -29,6 +29,6 @@ public class GetPageOfChatsQueryHandler : IRequestHandler<GetPageOfChatsQuery, C
             request.Page,
             cancellationToken);
 
-        return Success(page.MapChatCollectionToPageOfChatDto());
+        return Success(page.MapChatCollectionToPageOfChatResponse());
     }
 };

@@ -1,4 +1,4 @@
-namespace Doggo.Application.Abstractions;
+namespace Doggo.Application.Abstractions.Services;
 
 public interface IEmailService
 {

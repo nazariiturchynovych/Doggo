@@ -1,10 +1,10 @@
 namespace Doggo.Application.Requests.Commands.Chat.DeleteChatCommand;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using Infrastructure.Services.CacheService;
 using MediatR;
 
 public class DeleteChatCommandHandler : IRequestHandler<DeleteChatCommand, CommonResult>

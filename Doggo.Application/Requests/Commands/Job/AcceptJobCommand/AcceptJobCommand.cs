@@ -1,7 +1,7 @@
-namespace Doggo.Application.Requests.Commands.Job.ApplyJobCommand;
+namespace Doggo.Application.Requests.Commands.Job.AcceptJobCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
 public record AcceptJobCommand(
-    Guid JobId) : IRequest<CommonResult>;
+    Guid JobId) : ICommand<CommonResult>;

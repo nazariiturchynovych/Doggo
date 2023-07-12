@@ -1,11 +1,11 @@
 namespace Doggo.Application.Requests.Commands.Dog.UpdateDogCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
 public record UpdateDogCommand(
     Guid DogId,
     double? Weight,
     string? Description,
     double? Age,
-    string? Name) : IRequest<CommonResult>;
+    string? Name) : ICommand<CommonResult>;

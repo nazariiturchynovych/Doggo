@@ -2,12 +2,10 @@ namespace Doggo.Infrastructure;
 
 using Amazon.Runtime;
 using Amazon.S3;
-using Application.Abstractions;
-using Application.Abstractions.Persistence.Read;
-using Application.Abstractions.Persistence.SqlConnectionFactory;
 using Application.Abstractions.Repositories;
 using Application.Abstractions.Repositories.UnitOfWork;
 using Application.Abstractions.Services;
+using Application.Abstractions.SqlConnectionFactory;
 using Domain.Constants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;

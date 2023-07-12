@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.PossibleSchedule.DeletePossibleScheduleCommand;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
 using MediatR;

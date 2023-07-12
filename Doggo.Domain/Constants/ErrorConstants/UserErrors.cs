@@ -6,9 +6,9 @@ public static class UserErrors
 
     public const string EmailIsNotConfirmed = "EMAIL_IS_NOT_CONFIRMED";
 
-    public const string UserIsAlreadyConfirmed = "USER_IS_ALREADY_CONFIRMED";
+    public const string UserIsNotApproved = "USER_IS_NOT_APPROVED";
 
-    public const string UserIsNotConfirmed = "USER_IS_NOT_CONFIRMED";
+    public const string UserIsAlreadyApproved = "USER_IS_ALREADY_APPROVED";
 
     public const string UserCreateFailed = "USER_CREATE_FAILED";
 

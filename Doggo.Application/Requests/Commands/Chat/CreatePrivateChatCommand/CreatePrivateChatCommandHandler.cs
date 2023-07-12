@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Chat.CreatePrivateChatCommand;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Entities.Chat;
 using Domain.Results;
 using MediatR;

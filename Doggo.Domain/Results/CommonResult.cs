@@ -8,14 +8,14 @@ public record CommonResult : ICommonResult
     {
         IsSuccess = true;
         ErrorMessage = default!;
-        Exception = null;
+        ExceptionMessage = null;
     }
 
     public CommonResult(string errorMessage, Exception? exception = null)
     {
         IsSuccess = false;
         ErrorMessage = errorMessage;
-        Exception = exception;
+        ExceptionMessage = exception?.Message;
     }
 
     public bool IsSuccess { get; }
@@ -24,6 +24,6 @@ public record CommonResult : ICommonResult
 
     public string ErrorMessage { get; }
 
-    public Exception? Exception { get; }
+    public string? ExceptionMessage { get; }
     
 }

@@ -1,11 +1,11 @@
 namespace Doggo.Application.Requests.Commands.User.AddUserPersonalIdentifierCommand;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Entities.User.Documents;
 using Domain.Results;
-using Infrastructure.Services.CurrentUserService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 

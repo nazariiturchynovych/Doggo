@@ -1,15 +1,15 @@
 namespace Doggo.Application.Requests.Queries.Authentication.SignInQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;
 using Domain.Results;
-using DTO.Authentication;
-using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Responses.Authentication;
 
-public class SignInQueryHandler : IRequestHandler<SignInQuery, CommonResult<SignInDto>>
+public class SignInQueryHandler : IRequestHandler<SignInQuery, CommonResult<SignInResponse>>
 {
     private readonly UserManager<User> _userManager;
     private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
@@ -26,21 +26,21 @@ public class SignInQueryHandler : IRequestHandler<SignInQuery, CommonResult<Sign
         _userRepository = userRepository;
     }
 
-    public async Task<CommonResult<SignInDto>> Handle(SignInQuery request, CancellationToken cancellationToken)
+    public async Task<CommonResult<SignInResponse>> Handle(SignInQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetUserWithRoles(request.Email, cancellationToken);
 
         if (user is null)
-            return Failure<SignInDto>(CommonErrors.EntityDoesNotExist);
+            return Failure<SignInResponse>(CommonErrors.EntityDoesNotExist);
 
         var logInResult = await _userManager.CheckPasswordAsync(user, request.Password);
 
         if (!logInResult)
-            return Failure<SignInDto>(UserErrors.PasswordDoesNotMatch);
+            return Failure<SignInResponse>(UserErrors.UserDoesNotExist);
 
         if (!user.IsApproved)
-            return Failure<SignInDto>(UserErrors.UserIsNotConfirmed);
+            return Failure<SignInResponse>(UserErrors.UserIsNotApproved);
 
-        return Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
+        return Success(new SignInResponse(_jwtTokenGeneratorService.GenerateToken(user)));
     }
 }

@@ -3,6 +3,7 @@ namespace Doggo.Infrastructure.Services.JWTTokenGeneratorService;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Application.Abstractions.Services;
 using Domain.Entities.User;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

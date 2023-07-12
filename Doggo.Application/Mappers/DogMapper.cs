@@ -1,10 +1,9 @@
 namespace Doggo.Application.Mappers;
 
 using Domain.Entities.Dog;
-using DTO;
-using DTO.Dog;
-using Requests.Commands.Dog;
 using Requests.Commands.Dog.UpdateDogCommand;
+using Responses;
+using Responses.Dog;
 
 public static class DogMapper
 {
@@ -17,9 +16,9 @@ public static class DogMapper
         return dog;
     }
 
-    public static GetDogDto MapDogToGetDogDto(this Dog dog)
+    public static DogResponse MapDogToDogResponse(this Dog dog)
     {
-        return new GetDogDto(
+        return new DogResponse(
             dog.Id,
             dog.DogOwnerId,
             dog.Name,
@@ -28,10 +27,15 @@ public static class DogMapper
             dog.Description);
     }
 
-    public static PageOfTDataDto<GetDogDto> MapDogCollectionToPageOfDogDto(this IReadOnlyCollection<Dog> collection)
+    public static PageOf<DogResponse> MapDogCollectionToPageOfDogResponse(this IReadOnlyCollection<Dog> collection)
     {
-        var collectionDto = collection.Select(dogOwner => dogOwner.MapDogToGetDogDto()).ToList();
+        var collectionDto = collection.Select(dogOwner => dogOwner.MapDogToDogResponse()).ToList();
 
-        return new PageOfTDataDto<GetDogDto>(collectionDto);
+        return new PageOf<DogResponse>(collectionDto);
+    }
+
+    public static List<DogResponse> MapDogCollectionToListOfDogResponse(this IReadOnlyCollection<Dog> collection)
+    {
+        return collection.Select(dogOwner => dogOwner.MapDogToDogResponse()).ToList();
     }
 }

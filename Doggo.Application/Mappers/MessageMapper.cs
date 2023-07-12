@@ -1,16 +1,15 @@
 namespace Doggo.Application.Mappers;
 
 using Domain.Entities.Chat;
-using DTO;
-using DTO.Chat.Message;
-using Requests.Commands.Message;
 using Requests.Commands.Message.UpdateMessageCommand;
+using Responses;
+using Responses.Chat.Message;
 
 public static class MessageMapper
 {
-    public static GetMessageDto MapMessageToGetMessageDto(this Message message)
+    public static MessageResponse MapMessageToMessageResponse(this Message message)
     {
-        return new GetMessageDto(
+        return new MessageResponse(
             message.Value,
             message.UserId,
             message.User.FirstName,
@@ -25,11 +24,17 @@ public static class MessageMapper
         return message;
     }
 
-    public static PageOfTDataDto<GetMessageDto> MapMessageCollectionToPageOfMessageDto(
+    public static PageOf<MessageResponse> MapMessageCollectionToPageOfMessageResponse(
         this IReadOnlyCollection<Message> collection)
     {
-        var collectionDto = collection.Select(message => message.MapMessageToGetMessageDto()).ToList();
+        var collectionDto = collection.Select(message => message.MapMessageToMessageResponse()).ToList();
 
-        return new PageOfTDataDto<GetMessageDto>(collectionDto);
+        return new PageOf<MessageResponse>(collectionDto);
+    }
+
+    public static List<MessageResponse> MapMessageCollectionToListOfMessageResponse(
+        this IReadOnlyCollection<Message> collection)
+    {
+        return collection.Select(message => message.MapMessageToMessageResponse()).ToList();
     }
 }

@@ -1,7 +1,7 @@
 namespace Doggo.Application.Abstractions.Repositories;
 
+using Base;
 using Domain.Entities.DogOwner;
-using Persistence.Read;
 
 public interface IDogOwnerRepository : IAbstractRepository<DogOwner>
 {

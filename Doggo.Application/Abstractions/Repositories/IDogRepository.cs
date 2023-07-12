@@ -1,5 +1,6 @@
-namespace Doggo.Application.Abstractions.Persistence.Read;
+namespace Doggo.Application.Abstractions.Repositories;
 
+using Base;
 using Domain.Entities.Dog;
 
 public interface IDogRepository : IAbstractRepository<Dog>

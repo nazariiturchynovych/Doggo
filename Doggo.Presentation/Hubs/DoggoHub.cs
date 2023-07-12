@@ -1,16 +1,14 @@
 namespace Doggo.Presentation.Hubs;
 
 using System.Collections.Concurrent;
-using Application.Abstractions.Persistence.Read;
-using Application.DTO.Chat;
+using Application.Abstractions.Repositories;
+using Application.Abstractions.Services;
 using Application.Mappers;
-using Application.Requests.Commands.Message;
 using Application.Requests.Commands.Message.CreateMessageCommand;
+using Application.Responses.Chat;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.Chat;
-using Infrastructure.Services.CacheService;
-using Infrastructure.Services.CurrentUserService;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
@@ -39,7 +37,7 @@ public sealed class DoggoHub : Hub<IDoggoHub>
 
     public async Task JoinChat(Guid chatId)
     {
-        var cachedChat = await _cacheService.GetData<GetChatDto>(CacheKeys.Chat + chatId);
+        var cachedChat = await _cacheService.GetData<ChatResponse>(CacheKeys.Chat + chatId);
 
         if (cachedChat is null)
         {
@@ -51,7 +49,7 @@ public sealed class DoggoHub : Hub<IDoggoHub>
                 return;
             }
 
-            cachedChat = chat.MapChatToGetChatDto();
+            cachedChat = chat.MapChatToChatResponse();
 
             await _cacheService.SetData(CacheKeys.Chat + chat.Id, cachedChat);
 
@@ -69,7 +67,7 @@ public sealed class DoggoHub : Hub<IDoggoHub>
 
     public async Task SendMessage(Guid chatId, string message)
     {
-        var cachedChat = await _cacheService.GetData<GetChatDto>(CacheKeys.Chat + chatId);
+        var cachedChat = await _cacheService.GetData<ChatResponse>(CacheKeys.Chat + chatId);
 
         if (cachedChat is null)
         {
@@ -104,7 +102,7 @@ public sealed class DoggoHub : Hub<IDoggoHub>
         }
     }
 
-    public static async Task UpdateChat(Guid chatToUpdateId, GetChatDto chat, ICacheService cacheService)
+    public static async Task UpdateChat(Guid chatToUpdateId, ChatResponse chat, ICacheService cacheService)
     {
       var chatToUpdate =  await cacheService.GetData<Chat>(CacheKeys.Chat + chatToUpdateId);
         if (chatToUpdate is not null)

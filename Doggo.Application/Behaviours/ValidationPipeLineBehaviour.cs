@@ -1,6 +1,7 @@
 namespace Doggo.Application.Behaviours;
-using Domain.Results;
+
 using Domain.Constants.ErrorConstants;
+using Domain.Results;
 using FluentValidation;
 using MediatR;
 

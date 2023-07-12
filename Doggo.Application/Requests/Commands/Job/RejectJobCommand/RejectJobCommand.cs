@@ -1,7 +1,7 @@
-namespace Doggo.Application.Requests.Commands.Job.DeclineJobCommand;
+namespace Doggo.Application.Requests.Commands.Job.RejectJobCommand;
 
+using Base;
 using Domain.Results;
-using MediatR;
 
 public record RejectJobCommand(
-    Guid JobId) : IRequest<CommonResult>;
+    Guid JobId) : ICommand<CommonResult>;

@@ -1,12 +1,10 @@
 namespace Doggo.Application.Requests.Commands.Job.RejectJobCommand;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
-using DeclineJobCommand;
+using Abstractions.Services;
 using Domain.Constants.ErrorConstants;
 using Domain.Enums;
 using Domain.Results;
-using Infrastructure.Services.CurrentUserService;
 using MediatR;
 
 public class RejectJobCommandHandler : IRequestHandler<RejectJobCommand, CommonResult>

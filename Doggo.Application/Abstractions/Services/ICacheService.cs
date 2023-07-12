@@ -1,4 +1,4 @@
-namespace Doggo.Infrastructure.Services.CacheService;
+namespace Doggo.Application.Abstractions.Services;
 
 public interface ICacheService
 {

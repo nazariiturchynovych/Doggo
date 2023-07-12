@@ -1,14 +1,13 @@
 namespace Doggo.Application.Requests.Queries.Authentication.FacebookSignInQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using DTO.Authentication;
-using Infrastructure.Services.FacebookAuthService;
-using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
+using Responses.Authentication;
 
-public class FacebookSignInQueryHandler : IRequestHandler<FacebookSignInQuery, CommonResult<SignInDto>>
+public class FacebookSignInQueryHandler : IRequestHandler<FacebookSignInQuery, CommonResult<SignInResponse>>
 {
     private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
     private readonly IFacebookAuthService _facebookAuthService;
@@ -24,18 +23,18 @@ public class FacebookSignInQueryHandler : IRequestHandler<FacebookSignInQuery, C
         _userRepository = userRepository;
     }
 
-    public async Task<CommonResult<SignInDto>> Handle(FacebookSignInQuery request, CancellationToken cancellationToken)
+    public async Task<CommonResult<SignInResponse>> Handle(FacebookSignInQuery request, CancellationToken cancellationToken)
     {
         var result = await _facebookAuthService.AuthenticateTokenAsync(request.AccessToken);
 
         if (result is null)
         {
-            return Failure<SignInDto>(UserErrors.UserFacebookAuthorizationFailed);
+            return Failure<SignInResponse>(UserErrors.UserFacebookAuthorizationFailed);
         }
 
         if (!result.Data.IsValid)
         {
-            return Failure<SignInDto>(UserErrors.UserFacebookAuthorizationFailed);
+            return Failure<SignInResponse>(UserErrors.UserFacebookAuthorizationFailed);
         }
 
         var userInfoResult = await _facebookAuthService.GetUserInfoAsync(request.AccessToken);
@@ -43,11 +42,11 @@ public class FacebookSignInQueryHandler : IRequestHandler<FacebookSignInQuery, C
         var user = await _userRepository.GetUserWithRoles(userInfoResult.Email, cancellationToken);
 
         if (user is null)
-            return Failure<SignInDto>(CommonErrors.EntityDoesNotExist);
+            return Failure<SignInResponse>(UserErrors.UserDoesNotExist);
 
         if (!user.IsApproved)
-            return Failure<SignInDto>(UserErrors.UserIsNotConfirmed);
+            return Failure<SignInResponse>(UserErrors.UserIsNotApproved);
 
-        return Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
+        return Success(new SignInResponse(_jwtTokenGeneratorService.GenerateToken(user)));
     }
 }

@@ -1,15 +1,15 @@
 namespace Doggo.Application.Requests.Queries.Job.GetJobByIdQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using DTO.Job;
-using Infrastructure.Services.CacheService;
 using Mappers;
 using MediatR;
+using Responses.Job;
 
-public class GetJobByIdQueryHandler : IRequestHandler<GetJobByIdQuery, CommonResult<GetJobDto>>
+public class GetJobByIdQueryHandler : IRequestHandler<GetJobByIdQuery, CommonResult<JobResponse>>
 {
     private readonly ICacheService _cacheService;
     private readonly IJobRepository _jobRepository;
@@ -21,18 +21,18 @@ public class GetJobByIdQueryHandler : IRequestHandler<GetJobByIdQuery, CommonRes
         _jobRepository = jobRepository;
     }
 
-    public async Task<CommonResult<GetJobDto>> Handle(GetJobByIdQuery request, CancellationToken cancellationToken)
+    public async Task<CommonResult<JobResponse>> Handle(GetJobByIdQuery request, CancellationToken cancellationToken)
     {
-        var cachedEntity = await _cacheService.GetData<GetJobDto>(CacheKeys.Job + request.Id, cancellationToken);
+        var cachedEntity = await _cacheService.GetData<JobResponse>(CacheKeys.Job + request.Id, cancellationToken);
 
         if (cachedEntity is null)
         {
             var job = await _jobRepository.GetAsync(request.Id, cancellationToken);
 
             if (job is null)
-                return Failure<GetJobDto>(CommonErrors.EntityDoesNotExist);
+                return Failure<JobResponse>(CommonErrors.EntityDoesNotExist);
 
-            var entityDto = job.MapJobToGetJobDto();
+            var entityDto = job.MapJobToJobResponse();
 
             cachedEntity = entityDto;
 

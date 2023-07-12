@@ -1,14 +1,13 @@
 namespace Doggo.Application.Requests.Queries.Dog.GetDogOwnerDogsQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using DTO;
-using DTO.Dog;
 using Mappers;
 using MediatR;
+using Responses.Dog;
 
-public class GetDogOwnerDogsQueryHandler : IRequestHandler<GetDogOwnerDogsQuery, CommonResult<PageOfTDataDto<GetDogDto>>>
+public class GetDogOwnerDogsQueryHandler : IRequestHandler<GetDogOwnerDogsQuery, CommonResult<List<DogResponse>>>
 {
     private readonly IDogRepository _dogRepository;
 
@@ -18,7 +17,7 @@ public class GetDogOwnerDogsQueryHandler : IRequestHandler<GetDogOwnerDogsQuery,
         _dogRepository = dogRepository;
     }
 
-    public async Task<CommonResult<PageOfTDataDto<GetDogDto>>> Handle(
+    public async Task<CommonResult<List<DogResponse>>> Handle(
         GetDogOwnerDogsQuery request,
         CancellationToken cancellationToken)
     {
@@ -26,8 +25,8 @@ public class GetDogOwnerDogsQueryHandler : IRequestHandler<GetDogOwnerDogsQuery,
         var dogs = await _dogRepository.GetDogOwnerDogsAsync(request.DogOwnerId, cancellationToken);
 
         if (!dogs.Any())
-            return Failure<PageOfTDataDto<GetDogDto>>(CommonErrors.EntityDoesNotExist);
+            return Failure<List<DogResponse>>(CommonErrors.EntityDoesNotExist);
 
-        return Success(dogs.MapDogCollectionToPageOfDogDto());
+        return Success(dogs.MapDogCollectionToListOfDogResponse());
     }
 }

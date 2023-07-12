@@ -1,14 +1,13 @@
 namespace Doggo.Application.Requests.Queries.Authentication.GoogleSignInQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Abstractions.Services;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using DTO.Authentication;
-using Infrastructure.Services.JWTTokenGeneratorService;
 using MediatR;
+using Responses.Authentication;
 
-public class GoogleSignInQueryHandler : IRequestHandler<GoogleSignInQuery, CommonResult<SignInDto>>
+public class GoogleSignInQueryHandler : IRequestHandler<GoogleSignInQuery, CommonResult<SignInResponse>>
 {
     private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
     private readonly IGoogleAuthService _googleAuthService;
@@ -25,21 +24,21 @@ public class GoogleSignInQueryHandler : IRequestHandler<GoogleSignInQuery, Commo
         _userRepository = userRepository;
     }
 
-    public async Task<CommonResult<SignInDto>> Handle(GoogleSignInQuery request, CancellationToken cancellationToken)
+    public async Task<CommonResult<SignInResponse>> Handle(GoogleSignInQuery request, CancellationToken cancellationToken)
     {
         var payload = await _googleAuthService.AuthenticateTokenAsync(request.Credential);
 
         if (payload is null)
-            return Failure<SignInDto>(UserErrors.UserGoogleAuthorizationFailed);
+            return Failure<SignInResponse>(UserErrors.UserGoogleAuthorizationFailed);
 
         var user = await _userRepository.GetUserWithRoles(payload.Email, cancellationToken);
 
         if (user is null)
-            return Failure<SignInDto>(CommonErrors.EntityDoesNotExist);
+            return Failure<SignInResponse>(UserErrors.UserDoesNotExist);
 
         if (!user.IsApproved)
-            return Failure<SignInDto>(UserErrors.UserIsNotConfirmed);
+            return Failure<SignInResponse>(UserErrors.UserIsNotApproved);
 
-        return Success(new SignInDto(_jwtTokenGeneratorService.GenerateToken(user)));
+        return Success(new SignInResponse(_jwtTokenGeneratorService.GenerateToken(user)));
     }
 }

@@ -1,4 +1,4 @@
-namespace Doggo.Application.Abstractions.Persistence.Read;
+namespace Doggo.Application.Abstractions.Repositories.Base;
 
 public interface IAbstractRepository<TEntity> where TEntity : class
 {

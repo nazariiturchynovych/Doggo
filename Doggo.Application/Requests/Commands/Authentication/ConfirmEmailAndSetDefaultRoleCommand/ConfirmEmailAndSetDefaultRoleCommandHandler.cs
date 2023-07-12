@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Authentication.ConfirmEmailAndSetDefaultRoleCommand;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
 using Domain.Entities.User;

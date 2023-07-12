@@ -1,14 +1,13 @@
 namespace Doggo.Application.Requests.Queries.Message.GetUserMessagesQuery;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using DTO;
-using DTO.Chat.Message;
 using Mappers;
 using MediatR;
+using Responses.Chat.Message;
 
-public class GetUserMessagesQueryHandler : IRequestHandler<GetUserMessagesQuery, CommonResult<PageOfTDataDto<GetMessageDto>>>
+public class GetUserMessagesQueryHandler : IRequestHandler<GetUserMessagesQuery, CommonResult<List<MessageResponse>>>
 {
     private readonly IMessageRepository _messageRepository;
 
@@ -17,7 +16,7 @@ public class GetUserMessagesQueryHandler : IRequestHandler<GetUserMessagesQuery,
         _messageRepository = messageRepository;
     }
 
-    public async Task<CommonResult<PageOfTDataDto<GetMessageDto>>> Handle(
+    public async Task<CommonResult<List<MessageResponse>>> Handle(
         GetUserMessagesQuery request,
         CancellationToken cancellationToken)
     {
@@ -25,8 +24,8 @@ public class GetUserMessagesQueryHandler : IRequestHandler<GetUserMessagesQuery,
         var dogs = await _messageRepository.GetUserMessagesAsync(request.UserId, cancellationToken);
 
         if (dogs is null || !dogs.Any())
-            return Failure<PageOfTDataDto<GetMessageDto>>(CommonErrors.EntityDoesNotExist);
+            return Failure<List<MessageResponse>>(CommonErrors.EntityDoesNotExist);
 
-        return Success(dogs.MapMessageCollectionToPageOfMessageDto());
+        return Success(dogs.MapMessageCollectionToListOfMessageResponse());
     }
 }

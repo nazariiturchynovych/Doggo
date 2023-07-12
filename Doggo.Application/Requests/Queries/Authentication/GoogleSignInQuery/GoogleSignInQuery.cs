@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Queries.Authentication.GoogleSignInQuery;
 
 using Domain.Results;
-using DTO.Authentication;
 using MediatR;
+using Responses.Authentication;
 
-public record GoogleSignInQuery(string Credential) : IRequest<CommonResult<SignInDto>>;
+public record GoogleSignInQuery(string Credential) : IRequest<CommonResult<SignInResponse>>;

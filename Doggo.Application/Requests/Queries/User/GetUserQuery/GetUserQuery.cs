@@ -1,7 +1,7 @@
 namespace Doggo.Application.Requests.Queries.User.GetUserQuery;
 
 using Domain.Results;
-using DTO.User;
 using MediatR;
+using Responses.User;
 
-public record GetUserQuery(Guid UserId) : IRequest<CommonResult<GetUserDto>>;
+public record GetUserQuery(Guid UserId) : IRequest<CommonResult<UserResponse>>;

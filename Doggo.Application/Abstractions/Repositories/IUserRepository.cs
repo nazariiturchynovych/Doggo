@@ -1,6 +1,6 @@
-namespace Doggo.Application.Abstractions.Persistence.Read;
+namespace Doggo.Application.Abstractions.Repositories;
 
-using Doggo.Domain.Entities.User;
+using Domain.Entities.User;
 
 public interface IUserRepository
 {

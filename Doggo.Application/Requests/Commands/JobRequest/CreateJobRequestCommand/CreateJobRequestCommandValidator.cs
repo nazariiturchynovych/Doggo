@@ -15,7 +15,7 @@ public class CreateJobRequestCommandValidator : AbstractValidator<CreateJobReque
 
         RuleFor(x => x.RequiredAge).GreaterThan(13).LessThan(73);
 
-        RuleFor(x => x.GetRequiredScheduleDto)
+        RuleFor(x => x.RequiredScheduleResponse)
             .ChildRules(
                 x =>
                 {

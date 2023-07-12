@@ -1,8 +1,8 @@
 namespace Doggo.Application.Requests.Commands.JobRequest.UpdateJobRequestCommand;
 
+using Base;
 using Domain.Results;
-using DTO.JobRequest;
-using MediatR;
+using Responses.JobRequest;
 
 public record UpdateJobRequestCommand(
     Guid JobRequestId,
@@ -10,4 +10,4 @@ public record UpdateJobRequestCommand(
     bool? IsPersonalIdentifierRequired,
     decimal? PaymentTo,
     string? Description,
-    UpdateRequiredScheduleDto? RequiredScheduleDto) : IRequest<CommonResult>;
+    UpdateRequiredScheduleResponse? RequiredScheduleDto) : ICommand<CommonResult>;

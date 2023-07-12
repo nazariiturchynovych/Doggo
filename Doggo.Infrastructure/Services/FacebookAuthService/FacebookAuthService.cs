@@ -1,5 +1,6 @@
 namespace Doggo.Infrastructure.Services.FacebookAuthService;
 
+using Application.Abstractions.Services;
 using Domain.Constants;
 using Domain.Results.External;
 using Microsoft.Extensions.Options;

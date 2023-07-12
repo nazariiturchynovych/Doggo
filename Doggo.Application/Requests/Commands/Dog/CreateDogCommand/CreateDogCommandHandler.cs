@@ -1,6 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Dog.CreateDogCommand;
 
-using Abstractions.Persistence.Read;
+using Abstractions.Repositories;
 using Domain.Entities.Dog;
 using Domain.Results;
 using MediatR;

@@ -1,10 +1,9 @@
 namespace Doggo.Application.Requests.Commands.JobRequest.UpdateJobRequestCommand;
 
-using Abstractions.Persistence.Read;
 using Abstractions.Repositories;
+using Abstractions.Services;
 using Domain.Constants.ErrorConstants;
 using Domain.Results;
-using Infrastructure.Services.CurrentUserService;
 using Mappers;
 using MediatR;
 
