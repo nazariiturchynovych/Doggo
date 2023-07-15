@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
+[Obsolete]
 public static class MutableEntityExtensions
 {
     public static void PropertyNameToSnakeCase(this IMutableEntityType entity)

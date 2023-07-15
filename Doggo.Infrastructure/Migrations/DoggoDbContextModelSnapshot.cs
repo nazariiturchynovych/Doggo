@@ -117,10 +117,6 @@ namespace Doggo.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("dog_owner_id");
 
-                    b.Property<Guid?>("JobRequestId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("job_request_id");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")

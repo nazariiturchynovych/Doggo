@@ -128,7 +128,8 @@ public static class DependencyInjection
         services.AddDbContext<DoggoDbContext>(
             options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString(ConnectionConstants.Postgres));
+                options.UseNpgsql(configuration.GetConnectionString(ConnectionConstants.Postgres))
+                    .UseSnakeCaseNamingConvention();
             });
         return services;
     }

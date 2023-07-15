@@ -20,7 +20,5 @@ public class Dog : Entity
 
     public DogOwner? DogOwner { get; set; }
 
-    public Guid? JobRequestId { get; set; }
-
     public ICollection<JobRequest> JobRequests { get; set; }
 }

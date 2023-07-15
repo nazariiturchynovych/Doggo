@@ -19,7 +19,6 @@ public static partial class Factory
                 Name = ValidDog.Name,
                 Description = ValidDog.Description,
                 DogOwnerId = ValidDogOwner.Id,
-                JobRequestId = ValidJobRequest.Id,
             };
         }
 
