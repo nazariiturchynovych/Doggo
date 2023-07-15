@@ -1,5 +1,5 @@
 # Doggo
-> API to find prson for a walk with a dog
+> API to find person for a walk with a dog
 
 ## Table of Contents
 * [General Info](#general-information)
