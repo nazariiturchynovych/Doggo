@@ -18,9 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doggo.Application.UnitTests", "Tests\Doggo.Application.UnitTests\Doggo.Application.UnitTests.csproj", "{6812EDBE-D692-4A00-9E1E-4792EE8588AB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Img", "Img", "{366BF945-22EA-42D2-893D-3C59B82B8BA4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{28AF1875-1DAF-401B-B1BC-B2E6D2FDC110}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\Desktop\DB Diagram.png = ..\..\Desktop\DB Diagram.png
+		DbDiagram.png = DbDiagram.png
 	EndProjectSection
 EndProject
 Global
