@@ -40,7 +40,7 @@
 
 
 ## Screenshots
-![DaraBase diagram](./img/DbDiagram.png)
+![DataBase diagram](./DbDiagram.png)
 
 ## Setup
 
