@@ -13,8 +13,6 @@ public static class CreateJobCommandUtils
     public static CreateAndApplyJobCommand CreateAndApplyJobCommand()
     {
         return new CreateAndApplyJobCommand(
-            DogId: Constants.ValidDog.Id,
-            DogOwnerId: Guid.NewGuid(),
             JobRequestId: Guid.NewGuid(),
             Comment: Constants.ValidJob.Comment,
             Payment: Constants.ValidJob.Payment);

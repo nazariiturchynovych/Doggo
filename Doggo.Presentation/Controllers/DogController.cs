@@ -14,11 +14,13 @@ using Application.Responses.Dog;
 using Domain.Results;
 using Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[Controller]")]
+[AllowAnonymous]
 public class DogController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -44,7 +46,7 @@ public class DogController : ControllerBase
         return (await _mediator.Send(new GetDogByIdQuery(id), cancellationToken)).ToActionResult();
     }
 
-    [HttpGet("GetDogOwnersDogs")]
+    [HttpGet("GetDogOwnersDogs/{dogOwnerId:Guid}")]
     [ProducesResponseType(typeof(CommonResult<List<DogResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetDogOwnersDogs(

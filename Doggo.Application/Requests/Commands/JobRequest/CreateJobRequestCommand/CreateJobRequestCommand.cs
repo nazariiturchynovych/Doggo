@@ -11,4 +11,4 @@ public record CreateJobRequestCommand(
     string Description,
     decimal PaymentTo,
     RequiredScheduleResponse RequiredScheduleResponse
-) : ICommand<CommonResult>;
+) : ICommand<CommonResult>; //TODO change required schedule frm which time and how much time

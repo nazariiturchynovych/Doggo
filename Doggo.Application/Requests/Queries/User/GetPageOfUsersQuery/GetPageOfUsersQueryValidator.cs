@@ -6,7 +6,7 @@ public class GetPageOfUsersQueryValidator : AbstractValidator<GetPageOfUsersQuer
 {
     public GetPageOfUsersQueryValidator()
     {
-        RuleFor(x => x.Page).InclusiveBetween(9, 51);
+        RuleFor(x => x.Page).NotEmpty();
         RuleFor(x => x.PageCount).NotEmpty();
     }
 }

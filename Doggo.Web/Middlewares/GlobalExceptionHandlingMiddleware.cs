@@ -2,6 +2,7 @@ namespace Doggo.Api.Middlewares;
 
 using System.Net;
 using System.Text.Json;
+using Domain.Results;
 using Microsoft.AspNetCore.Mvc;
 
 public class GlobalExceptionHandlingMiddleware : IMiddleware
@@ -25,14 +26,21 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
 
             context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
 
-            ProblemDetails problemDetails = new ProblemDetails()
+            var options = new JsonSerializerOptions
             {
-                Status = (int) HttpStatusCode.InternalServerError,
-                Type = "Server Error",
-                Title = "Server Error",
-                Detail = "An internal server has occured",
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
-            var json = JsonSerializer.Serialize(problemDetails);
+
+            var result = new CommonResult("An internal server error has occured", e);
+
+            // ProblemDetails problemDetails = new ProblemDetails()
+            // {
+            //     Status = (int) HttpStatusCode.InternalServerError,
+            //     Type = "Server Error",
+            //     Title = "Server Error",
+            //     Detail = "An internal server has occured",
+            // }; //TODO delete it
+            var json = JsonSerializer.Serialize(result, options);
 
             context.Response.ContentType = "application/json";
 

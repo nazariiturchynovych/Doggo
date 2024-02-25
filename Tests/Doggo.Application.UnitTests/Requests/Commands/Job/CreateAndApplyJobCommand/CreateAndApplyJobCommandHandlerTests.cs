@@ -346,8 +346,6 @@ public class CreateAndApplyJobCommandHandlerTests
                 It.Is<Job>(
                     xx =>
                         xx.Payment == command.Payment
-                     && xx.DogId == command.DogId
-                     && xx.DogOwnerId == command.DogOwnerId
                      && xx.JobRequestId == command.JobRequestId
                      && xx.Comment == command.Comment
                      && xx.Status == JobStatus.Applied

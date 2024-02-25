@@ -1,5 +1,6 @@
 namespace Doggo.Infrastructure.Persistence;
 
+using System.Reflection;
 using Domain.Entities.Chat;
 using Domain.Entities.Dog;
 using Domain.Entities.DogOwner;
@@ -18,10 +19,19 @@ public class DoggoDbContext : IdentityDbContext<User, Role, Guid, UserClaim, Use
     public DoggoDbContext(DbContextOptions<DoggoDbContext> options)
         : base(options)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .LogTo(Console.WriteLine);
+        // .EnableSensitiveDataLogging();
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         // builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         //
         // foreach(var entity in builder.Model.GetEntityTypes())
@@ -51,5 +61,6 @@ public class DoggoDbContext : IdentityDbContext<User, Role, Guid, UserClaim, Use
     public DbSet<Chat> Chats { get; set; }
 
     public DbSet<UserChat> UserChats { get; set; }
-}
 
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+}

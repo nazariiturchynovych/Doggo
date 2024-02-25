@@ -19,7 +19,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Authorize(Roles = "DogOwner, Admin")]
 [Route("api/[Controller]")]
 public class DogOwnerController : ControllerBase
 {
@@ -39,6 +38,7 @@ public class DogOwnerController : ControllerBase
         return (await _mediator.Send(command, cancellationToken)).ToActionResult();
     }
 
+    [Authorize(Roles = "DogOwner, Admin, User")]
     [HttpGet("GetDogOwner/{id:Guid}")]
     [ProducesResponseType(typeof(CommonResult<DogOwnerResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
@@ -47,6 +47,7 @@ public class DogOwnerController : ControllerBase
         return (await _mediator.Send(new GetDogOwnerByIdQuery(id), cancellationToken)).ToActionResult();
     }
 
+    [Authorize(Roles = "DogOwner, Admin, User")]
     [HttpGet("GetCurrentDogOwner")]
     [ProducesResponseType(typeof(CommonResult<DogOwnerResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
@@ -55,6 +56,7 @@ public class DogOwnerController : ControllerBase
         return (await _mediator.Send(new GetCurrentDogOwnerQuery(User.GetUserId()), cancellationToken)).ToActionResult();
     }
 
+    [Authorize(Roles = "DogOwner, Admin, User")]
     [HttpGet("GetPageOfDogOwners")]
     [ProducesResponseType(typeof(CommonResult<PageOf<DogOwnerResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
@@ -77,6 +79,8 @@ public class DogOwnerController : ControllerBase
                 cancellationToken)).ToActionResult();
     }
 
+
+    [Authorize(Roles = "DogOwner, Admin")]
     [HttpPut("UpdateDogOwner")]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
@@ -87,6 +91,7 @@ public class DogOwnerController : ControllerBase
         return (await _mediator.Send(command, cancellationToken)).ToActionResult();
     }
 
+    [Authorize(Roles = "DogOwner, Admin")]
     [HttpDelete("DeleteDogOwner/{id:Guid}")]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
@@ -94,7 +99,8 @@ public class DogOwnerController : ControllerBase
     {
         return (await _mediator.Send(new DeleteDogOwnerCommand(id), cancellationToken)).ToActionResult();
     }
-    
+
+    [Authorize(Roles = "DogOwner, Admin, User")]
     [HttpPost("DogOwner/{id:Guid}/Image")]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
@@ -103,6 +109,7 @@ public class DogOwnerController : ControllerBase
         return (await _mediator.Send(new UploadImageCommand(id, file), cancellationToken)).ToActionResult();
     }
 
+    [Authorize(Roles = "DogOwner, Admin, User")]
     [HttpGet("DogOwner/{id:Guid}/Image")]
     [ProducesResponseType(typeof(CommonResult<FileStreamResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
@@ -113,6 +120,7 @@ public class DogOwnerController : ControllerBase
         return File(result.Data.ResponseStream, result.Data.Headers.ContentType);
     }
 
+    [Authorize(Roles = "DogOwner, Admin, User")]
     [HttpDelete("DogOwner/{id:Guid}/Image")]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]

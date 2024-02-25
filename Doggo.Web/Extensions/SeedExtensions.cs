@@ -3,9 +3,27 @@ namespace Doggo.Api.Extensions;
 using Domain.Constants;
 using Domain.Entities.User;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
+
+public class Some
+{
+    public int Age { get; set; }
+
+    public string Name { get; set; }
+}
 
 public static class SeedExtensions
 {
+    public static async Task SeedAllData(this IApplicationBuilder applicationBuilder)
+    {
+        List<User> users = new List<User>();
+        string allText = System.IO.File.ReadAllText("/Users/turchynovychnazarii/RiderProjects/Doggo/Doggo.Web/Extensions/users.json");
+
+        var a = JsonConvert.DeserializeObject<Some[]>(allText);
+
+        Console.WriteLine(a);
+    }
+
     public static async Task SeedUsersAndRolesAsync(this IApplicationBuilder applicationBuilder)
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())

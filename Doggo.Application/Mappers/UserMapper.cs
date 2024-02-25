@@ -24,6 +24,7 @@ public static class UserRequestMapper
         user.FirstName = addUserInformationCommand.FirstName;
         user.LastName = addUserInformationCommand.LastName;
         user.PhoneNumber = addUserInformationCommand.PhoneNumber;
+        user.IsApproved = true;
         return user;
     }
 
@@ -36,6 +37,8 @@ public static class UserRequestMapper
             LastName: user.LastName,
             Age: user.Age,
             Email: user.Email!,
+            DogOwnerId: user.DogOwner is null ? null : user.DogOwner.Id == Guid.Empty ? null : user.DogOwner.Id ,
+            WalkerId: user.Walker is null ? null : user.Walker.Id == Guid.Empty ? null : user.Walker.Id ,
             PersonalIdentifier: user.PersonalIdentifier?.PersonalIdentifierType is null
                 ? null
                 : new PersonalIdentifierResponse(user.PersonalIdentifier.PersonalIdentifierType));

@@ -19,14 +19,15 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Host.UseSerilog((hb, lc) => lc
-        .WriteTo.Console().MinimumLevel.Information()
-        .ReadFrom.Configuration(hb.Configuration));
+    builder.Host.UseSerilog(
+        (hb, lc) => lc
+            .WriteTo.Console()
+            .MinimumLevel.Information()
+            .ReadFrom.Configuration(hb.Configuration));
 
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGenWithJwt();
-
 
     builder.RegisterAndConfigureIdentity();
     builder.RegisterCors();
@@ -34,11 +35,9 @@ try
     builder.RegisterHealthCheckServices();
     builder.RegisterMiddlewares();
 
-
     builder.RegisterApplication();
     builder.RegisterInfrastructure();
     builder.RegisterPresentation();
-
 
     var app = builder.Build();
 
@@ -48,7 +47,11 @@ try
         app.UseSwaggerUI();
     }
 
-    app.MapHealthChecks("/_health", new HealthCheckOptions(){ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse});
+    // app.SeedAllData().Wait();
+
+    app.SeedUsersAndRolesAsync().Wait();
+
+    app.MapHealthChecks("/_health", new HealthCheckOptions() {ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse});
 
     app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 

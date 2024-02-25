@@ -6,8 +6,6 @@ public class CreateAndApplyJobCommandValidator : AbstractValidator<CreateAndAppl
 {
     public CreateAndApplyJobCommandValidator()
     {
-        RuleFor(x => x.DogOwnerId).NotEmpty();
-        RuleFor(x => x.DogId).NotEmpty();
         RuleFor(x => x.Payment).NotEmpty();
         RuleFor(x => x.JobRequestId).NotEmpty();
         RuleFor(x => x.Payment).GreaterThan(5).LessThan(5000);

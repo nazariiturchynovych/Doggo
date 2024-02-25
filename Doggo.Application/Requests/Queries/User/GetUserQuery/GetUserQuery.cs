@@ -4,4 +4,4 @@ using Domain.Results;
 using MediatR;
 using Responses.User;
 
-public record GetUserQuery(Guid UserId) : IRequest<CommonResult<UserResponse>>;
+public record GetUserQuery(Guid Id) : IRequest<CommonResult<UserResponse>>;

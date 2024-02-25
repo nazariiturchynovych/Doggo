@@ -28,8 +28,9 @@ public class SignUpCommandHandler : IRequestHandler<SignUpCommand, CommonResult<
         {
             Email = request.Email,
             UserName = request.Email,
-            FirstName = "",
-            LastName = ""
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            PhoneNumber = request.PhoneNumber
         };
 
         var result = await _userManager.CreateAsync(userToAdd, request.Password);
@@ -37,6 +38,6 @@ public class SignUpCommandHandler : IRequestHandler<SignUpCommand, CommonResult<
         if (!result.Succeeded)
             return Failure<Guid>(UserErrors.UserCreateFailed);
 
-        return Success(user!.Id);
+        return Success(userToAdd!.Id);
     }
 }

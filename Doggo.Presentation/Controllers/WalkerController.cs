@@ -11,6 +11,7 @@ using Application.Requests.Queries.Walker.GetPageOfWalkersQuery;
 using Application.Requests.Queries.Walker.GetWalkerByIdQuery;
 using Application.Responses;
 using Application.Responses.Walker;
+using Domain.Constants;
 using Domain.Results;
 using Extensions;
 using MediatR;
@@ -19,7 +20,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Authorize(Roles = "Walker, Admin")]
+[Authorize (Roles = $"{RoleConstants.User}, {RoleConstants.Admin}, {RoleConstants.Walker}")]
 [Route("api/[Controller]")]
 public class WalkerController : ControllerBase
 {
@@ -36,7 +37,7 @@ public class WalkerController : ControllerBase
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateWalker(CreateWalkerCommand command, CancellationToken cancellationToken)
     {
-        return (await _mediator.Send(command, cancellationToken)).ToActionResult();
+        return (await _mediator.Send(command, cancellationToken)).ToActionResult(); //TODO somehow i can add 2 walkers for 1 user
     }
 
     [HttpGet("GetWalker/{id:Guid}")]
@@ -47,7 +48,7 @@ public class WalkerController : ControllerBase
         return (await _mediator.Send(new GetWalkerByIdQuery(id), cancellationToken)).ToActionResult();
     }
 
-    [HttpGet("GetCurrentWalker")]
+    [HttpGet("GetWalker")]
     [ProducesResponseType(typeof(CommonResult<WalkerResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetCurrentWalker(CancellationToken cancellationToken)

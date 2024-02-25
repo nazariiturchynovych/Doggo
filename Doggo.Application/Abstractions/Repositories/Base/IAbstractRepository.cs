@@ -11,4 +11,6 @@ public interface IAbstractRepository<TEntity> where TEntity : class
     void Remove(TEntity entity);
 
     void RemoveRange(ICollection<TEntity> collection);
+
+    Task SaveChangesAsync();
 }

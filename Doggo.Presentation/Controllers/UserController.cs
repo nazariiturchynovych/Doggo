@@ -1,6 +1,6 @@
 namespace Doggo.Presentation.Controllers;
 
-using Application.Requests.Commands.User.AddUserInformationCommand;
+using Application.Requests.Commands.Authentication.ChangePasswordCommand;
 using Application.Requests.Commands.User.AddUserPersonalIdentifierCommand;
 using Application.Requests.Commands.User.DeleteUserCommand;
 using Application.Requests.Commands.User.UpdateUserCommand;
@@ -8,14 +8,17 @@ using Application.Requests.Queries.User.GetPageOfUsersQuery;
 using Application.Requests.Queries.User.GetUserQuery;
 using Application.Responses;
 using Application.Responses.User;
+using Domain.Constants;
 using Domain.Results;
 using Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[Controller]")]
+[Authorize(Roles = $"{RoleConstants.User}")]
 public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -25,23 +28,23 @@ public class UserController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("GetUser/{id:Guid}")]
+    [HttpGet("user/{id:Guid}")]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetUser(Guid id,CancellationToken cancellationToken)
+    public async Task<IActionResult> GetUser(Guid? id,CancellationToken cancellationToken)
     {
-        return (await _mediator.Send(new GetUserQuery(id), cancellationToken)).ToActionResult();
+        return (await _mediator.Send(new GetUserQuery(id ?? User.GetUserId()), cancellationToken)).ToActionResult();
     }
 
-    [HttpGet("GetUser")]
-    [ProducesResponseType(typeof(CommonResult<UserResponse>), StatusCodes.Status200OK)]
+    [HttpGet("user")]
+    [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetUser(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
     {
         return (await _mediator.Send(new GetUserQuery(User.GetUserId()), cancellationToken)).ToActionResult();
     }
 
-    [HttpGet("GetPageOfUsers")]
+    [HttpGet("users")]
     [ProducesResponseType(typeof(CommonResult<PageOf<UserResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetPageOfUsers(
@@ -63,7 +66,7 @@ public class UserController : ControllerBase
                 cancellationToken)).ToActionResult();
     }
 
-    [HttpPut("UpdateUser")]
+    [HttpPut("user")]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateUser(
@@ -73,25 +76,27 @@ public class UserController : ControllerBase
         return (await _mediator.Send(command, cancellationToken)).ToActionResult();
     }
 
-    [HttpPost("AddUserInformation")]
+    [Authorize(Roles = $"{RoleConstants.User}, {RoleConstants.Admin}")]
+    [HttpPut("password")]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddUserInformation(
-        AddUserInformationCommand command,
+    public async Task<IActionResult> ChangePassword(
+        ChangePasswordCommand changePasswordCommand,
         CancellationToken cancellationToken)
     {
-        return (await _mediator.Send(command, cancellationToken)).ToActionResult();
+        return (await _mediator.Send(changePasswordCommand, cancellationToken)).ToActionResult();
     }
 
-    [HttpDelete("DeleteUser")]
+
+    [HttpDelete("user")]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DeleteUser(CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteUser( CancellationToken cancellationToken)
     {
         return (await _mediator.Send(new DeleteUserCommand(User.GetUserId()), cancellationToken)).ToActionResult();
     }
 
-    [HttpPost("AddPersonalIdentifier")]
+    [HttpPost("user/personal-identifier")]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(CommonResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddUserPersonalIdentifier(

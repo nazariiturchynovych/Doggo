@@ -4,7 +4,7 @@ namespace Doggo.Domain.Entities.JobRequest.Schedule;
 
 using Base.JobRequestEntity;
 
-public class RequiredSchedule : JobRequestOwnedEntity
+public class RequiredSchedule : JobRequestOwnedEntity //TODO make this Owned property
 {
     public DateTime From { get; set; }
 

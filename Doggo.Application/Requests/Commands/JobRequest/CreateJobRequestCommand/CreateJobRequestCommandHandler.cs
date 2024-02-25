@@ -48,7 +48,7 @@ public class CreateJobRequestCommandHandler : IRequestHandler<CreateJobRequestCo
             dogOwner.Id,
             cancellationToken: cancellationToken);
 
-        if (dogOwnerDogs.Any(x => x.Id != dog.Id))
+        if (dogOwnerDogs.All(x => x.Id != dog.Id))
             return Failure(DogErrors.DogOwnerIsNotOwnerOfThisDog);
 
         var entityToAdd = new JobRequest
@@ -72,6 +72,8 @@ public class CreateJobRequestCommandHandler : IRequestHandler<CreateJobRequestCo
                 To = request.RequiredScheduleResponse.To,
                 JobRequestId = entityToAdd.Id
             });
+
+        await _jobRequestRepository.SaveChangesAsync();
 
         return Success();
     }

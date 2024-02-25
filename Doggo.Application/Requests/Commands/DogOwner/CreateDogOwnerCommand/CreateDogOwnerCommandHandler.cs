@@ -15,26 +15,19 @@ public class CreateDogOwnerCommandHandler : IRequestHandler<CreateDogOwnerComman
     private readonly ICurrentUserService _currentUserService;
     private readonly UserManager<User> _userManager;
     private readonly IDogOwnerRepository _dogOwnerRepository;
-    private readonly IWalkerRepository _walkerRepository;
 
     public CreateDogOwnerCommandHandler(
         ICurrentUserService currentUserService,
         UserManager<User> userManager,
-        IDogOwnerRepository dogOwnerRepository,
-        IWalkerRepository walkerRepository)
+        IDogOwnerRepository dogOwnerRepository)
     {
         _currentUserService = currentUserService;
         _userManager = userManager;
         _dogOwnerRepository = dogOwnerRepository;
-        _walkerRepository = walkerRepository;
     }
 
     public async Task<CommonResult> Handle(CreateDogOwnerCommand request, CancellationToken cancellationToken)
     {
-        var walker = _walkerRepository.GetByUserIdAsync(_currentUserService.GetUserId(), cancellationToken);
-        if (walker is not null)
-            return Failure(DogOwnerErrors.UserIsAlreadyWalker);
-
         var dogOwner = await _dogOwnerRepository.GetAsync(_currentUserService.GetUserId(), cancellationToken);
 
         if (dogOwner is not null)
@@ -52,6 +45,7 @@ public class CreateDogOwnerCommandHandler : IRequestHandler<CreateDogOwnerComman
             (await _userManager.FindByIdAsync(_currentUserService.GetUserId().ToString()))!,
             RoleConstants.DogOwner);
 
+         await _dogOwnerRepository.SaveChangesAsync();
         return Success();
     }
 }

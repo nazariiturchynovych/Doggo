@@ -6,6 +6,6 @@ public class SendEmailConfirmationTokenCommandValidator : AbstractValidator<Send
 {
     public SendEmailConfirmationTokenCommandValidator()
     {
-        RuleFor(x => x.UserEmail).EmailAddress();
+
     }
 }

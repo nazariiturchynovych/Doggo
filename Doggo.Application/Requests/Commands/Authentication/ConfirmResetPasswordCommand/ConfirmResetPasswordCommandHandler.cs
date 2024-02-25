@@ -18,14 +18,12 @@ public class ConfirmResetPasswordCommandHandler : IRequestHandler<ConfirmResetPa
 
     public async Task<CommonResult> Handle(ConfirmResetPasswordCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+        var user = await _userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
             return Failure(CommonErrors.EntityDoesNotExist);
 
-        var token = WebUtility.UrlDecode(request.Token);
-
-        var result = await _userManager.ResetPasswordAsync(user, token, request.NewPassword);
+        var result = await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
 
         if (!result.Succeeded)
             return Failure(UserErrors.ResetPasswordFailed);

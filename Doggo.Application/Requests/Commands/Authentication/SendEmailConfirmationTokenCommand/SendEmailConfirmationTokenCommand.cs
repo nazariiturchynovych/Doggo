@@ -3,4 +3,4 @@ namespace Doggo.Application.Requests.Commands.Authentication.SendEmailConfirmati
 using Domain.Results;
 using MediatR;
 
-public record SendEmailConfirmationTokenCommand(string UserEmail) : IRequest<CommonResult>;
+public record SendEmailConfirmationTokenCommand(string Email) : IRequest<CommonResult>;

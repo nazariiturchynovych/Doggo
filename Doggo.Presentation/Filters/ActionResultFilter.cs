@@ -19,7 +19,7 @@ public class ActionResultFilter : ResultFilterAttribute
                 return;
             }
 
-            context.Result = new OkObjectResult(result.Result);
+            context.Result = new OkObjectResult(result.Result); //TODO maybe delete this because is easier to manipulate with data and not with exceptions on client
         }
     }
 }

@@ -24,10 +24,12 @@ public static class AuthenticationExtensions
                         = builder.Configuration.GetSection("JwtSettingsOptions").Get<JwtSettingsOptions>();
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
+                        ClockSkew = TimeSpan.FromSeconds(15),
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
+                        // ValidIssuer = "some issuer",
                         ValidIssuer = configurationSettingsOptions!.Issuer,
                         ValidAudience = configurationSettingsOptions.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configurationSettingsOptions.Secret)),

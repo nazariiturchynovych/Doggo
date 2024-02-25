@@ -13,6 +13,7 @@ using Application.Requests.Queries.Job.GetPageOfJobsQuery;
 using Application.Requests.Queries.Job.GetWalkerJobsQuery;
 using Application.Responses;
 using Application.Responses.Job;
+using Domain.Constants;
 using Domain.Results;
 using Extensions;
 using MediatR;
@@ -21,7 +22,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Authorize(Roles = "DogOwner, Admin")]
+[Authorize(Roles = $"{RoleConstants.Admin}, {RoleConstants.DogOwner}, {RoleConstants.Walker}")]
 [Route("api/[Controller]")]
 public class JobController : ControllerBase
 {

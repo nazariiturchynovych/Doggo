@@ -1,5 +1,6 @@
 namespace Doggo.Application.Requests.Commands.Authentication.SendEmailConfirmationTokenCommand;
 
+using System.Web;
 using Abstractions.Services;
 using Domain.Constants;
 using Domain.Constants.ErrorConstants;
@@ -21,16 +22,18 @@ public class SendEmailConfirmationTokenCommandHandler : IRequestHandler<SendEmai
 
     public async Task<CommonResult> Handle(SendEmailConfirmationTokenCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.UserEmail);
+        var user = await _userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
             return Failure(CommonErrors.EntityDoesNotExist);
 
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-        var link = string.Format(RoutesConstants.ConfirmEmail, user.Id, token);
+        string encodedString = Uri.EscapeDataString(token);
 
-        var body = string.Format(EmailMessageConstants.MyClass.ValidateEmail, link);
+        var link = string.Format(RoutesConstants.ConfirmEmail, user.Id, encodedString);
+
+        var body = MyClassSome.FormatHtmlBody(link);
 
         await _emailService.SendAsync(user.Email!, EmailMessageConstants.Subject.ValidateEmail, body);
 

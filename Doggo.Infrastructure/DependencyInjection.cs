@@ -56,7 +56,8 @@ public static class DependencyInjection
             .AddScoped<IPersonalIdentifierRepository, PersonalIdentifierRepository>()
             .AddScoped<IChatRepository, ChatRepository>()
             .AddScoped<IMessageRepository, MessageRepository>()
-            .AddScoped<IUserChatRepository, UserChatRepository>();
+            .AddScoped<IUserChatRepository, UserChatRepository>()
+            .AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         return services;
     }
@@ -71,7 +72,7 @@ public static class DependencyInjection
             .AddSingleton<ICacheService, CacheService>()
             .AddScoped<IFacebookAuthService, FacebookAuthService>()
             .AddSingleton<IImageService, ImageService>()
-            .AddScoped<IDbConnectionFactory, DbConnectionFactory>();
+            .AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
 
         services.AddHttpContextAccessor()
             .AddStackExchangeRedisCache(
@@ -89,7 +90,8 @@ public static class DependencyInjection
             .Configure<S3Options>(configuration.GetSection("AWS:S3"))
             .Configure<JwtSettingsOptions>(configuration.GetSection(nameof(JwtSettingsOptions)))
             .Configure<SMTPOptions>(configuration.GetSection(nameof(SMTPOptions)))
-            .Configure<FacebookAuthenticationOptions>(configuration.GetSection(nameof(FacebookAuthenticationOptions)));
+            .Configure<FacebookAuthenticationOptions>(configuration.GetSection(nameof(FacebookAuthenticationOptions)))
+            .Configure<GoogleAuthenticationOptions>(configuration.GetSection(nameof(GoogleAuthenticationOptions)));
 
         return services;
     }

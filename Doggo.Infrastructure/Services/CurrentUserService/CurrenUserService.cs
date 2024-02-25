@@ -8,7 +8,7 @@ public class CurrenUserService : ICurrentUserService
 {
     private readonly IHttpContextAccessor _contextAccessor;
 
-    private readonly Exception _exception = new Exception("Something goes wrong while trying get user claims");
+    private readonly Exception _exception = new Exception("Something went wrong while trying get user claims");
 
     public CurrenUserService(IHttpContextAccessor contextAccessor)
     {

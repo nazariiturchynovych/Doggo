@@ -8,7 +8,7 @@ using Domain.Enums;
 using Domain.Results;
 using MediatR;
 
-public class CreateAndApplyJobCommandHandler : IRequestHandler<CreateAndApplyJobCommand, CommonResult>
+public class CreateAndApplyJobCommandHandler : IRequestHandler<CreateAndApplyJobCommand, CommonResult> //TODO go through all queries and delete all unnecessary checks
 {
     private readonly IJobRepository _jobRepository;
     private readonly ICurrentUserService _currentUserService;
@@ -37,26 +37,25 @@ public class CreateAndApplyJobCommandHandler : IRequestHandler<CreateAndApplyJob
         if (walker is null)
             return Failure(WalkerErrors.WalkerDoesNotExist);
 
-        var dogOwner = await _dogOwnerRepository.GetAsync(request.DogOwnerId, cancellationToken);
-
-        if (dogOwner is null)
-            return Failure(DogOwnerErrors.DogOwnerDoesNotExist);
-
-        if (dogOwner.UserId == _currentUserService.GetUserId())
-            return Failure(WalkerErrors.WalkerCanNotApplyJobForHisOwnJobRequest);
-
         var jobRequest = await _jobRequestRepository.GetAsync(request.JobRequestId, cancellationToken);
 
         if (jobRequest is null)
             return Failure(JobRequestErrors.JobRequestDoesNotExist);
 
-        var dogOwnerJobRequests = await _jobRequestRepository.GetDogOwnerJobRequests(dogOwner.Id, cancellationToken);
-
-        if (!dogOwnerJobRequests.Any(x => x.Id == jobRequest.Id))
-            return Failure(JobRequestErrors.CurrentDogOwnerIsNotOwnerOfThisJobRequest);
-
         if (jobRequest.HasAcceptedJob)
             return Failure(JobRequestErrors.JobRequestAlreadyHasAcceptedJob);
+
+        var dogOwnerJobRequests = await _jobRequestRepository.GetDogOwnerJobRequests(jobRequest.DogOwnerId, cancellationToken);
+
+        if (dogOwnerJobRequests.All(x => x.Id != jobRequest.Id))
+            return Failure(JobRequestErrors.CurrentDogOwnerIsNotOwnerOfThisJobRequest);
+
+        var dogOwner = await _dogOwnerRepository.GetAsync(jobRequest.DogOwnerId, cancellationToken);
+
+
+        if (dogOwner.UserId == _currentUserService.GetUserId())
+            return Failure(WalkerErrors.WalkerCanNotApplyJobForHisOwnJobRequest);
+
 
         if (request.Payment > jobRequest.PaymentTo)
             return Failure(JobRequestErrors.JobRequestPaymentIsLessThanRequired);
@@ -65,14 +64,16 @@ public class CreateAndApplyJobCommandHandler : IRequestHandler<CreateAndApplyJob
             new Job
             {
                 Payment = request.Payment,
-                DogId = request.DogId,
+                DogId = jobRequest.DogId,
                 WalkerId = walker.Id,
-                DogOwnerId = request.DogOwnerId,
+                DogOwnerId = jobRequest.DogOwnerId,
                 JobRequestId = request.JobRequestId,
                 CreatedDate = DateTime.UtcNow,
                 Comment = request.Comment,
                 Status = JobStatus.Applied,
             });
+
+        await _jobRepository.SaveChangesAsync();
 
         return Success();
     }

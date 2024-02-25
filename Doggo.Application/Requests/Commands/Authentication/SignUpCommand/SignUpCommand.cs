@@ -6,5 +6,9 @@ using MediatR;
 public record SignUpCommand
 (
     string Email,
-    string Password
+    string Password,
+    string FirstName,
+    string LastName,
+    int Age,
+    string PhoneNumber
 ) : IRequest<CommonResult<Guid>>;

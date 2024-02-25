@@ -17,6 +17,5 @@ public class Walker : Entity
 
     public string Skills { get; set; }
     public ICollection<PossibleSchedule> PossibleSchedules { get; set; }
-
     public ICollection<Job> Jobs { get; set; }
 }

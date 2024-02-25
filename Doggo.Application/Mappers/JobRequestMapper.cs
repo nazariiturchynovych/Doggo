@@ -28,7 +28,7 @@ public static class JobRequestMapper
             jobRequest.IsPersonalIdentifierRequired,
             jobRequest.Description,
             jobRequest.RequiredAge,
-            jobRequest.RequiredSchedule.MapRequiredScheduleToRequiredScheduleResponse());
+            jobRequest.RequiredSchedule?.MapRequiredScheduleToRequiredScheduleResponse());
     }
 
 

@@ -9,4 +9,6 @@ public record UserResponse(
     string LastName,
     int Age,
     string Email,
+    Guid? DogOwnerId,
+    Guid? WalkerId,
     PersonalIdentifierResponse? PersonalIdentifier);

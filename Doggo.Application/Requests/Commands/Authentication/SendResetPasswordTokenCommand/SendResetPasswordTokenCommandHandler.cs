@@ -23,16 +23,18 @@ public class SendResetPasswordTokenCommandHandler : IRequestHandler<SendResetPas
 
     public async Task<CommonResult> Handle(SendResetPasswordTokenCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.UserEmail);
+        var user = await _userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
             return Failure(CommonErrors.EntityDoesNotExist);
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-        var link = string.Format(RoutesConstants.ConfirmResetPasswordCommand, user.Id, token);
+        string encodedString = Uri.EscapeDataString(token);
 
-        var body = string.Format(EmailMessageConstants.MyClass.ResetPassword, link);
+        var link = string.Format(RoutesConstants.ConfirmResetPasswordCommand, user.Email, encodedString);
+
+        var body = MyClassSome.FormatHtmlBody(link);
 
         await _emailService.SendAsync(user.Email!, EmailMessageConstants.Subject.ResetPassword, body);
 

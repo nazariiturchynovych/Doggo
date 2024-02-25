@@ -38,9 +38,51 @@ public class JwtTokenGeneratorService : IJwtTokenGeneratorService
         var securityToken = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
+            expires: DateTime.UtcNow.AddSeconds(_jwtSettings.ExpiryMinutes),
             claims: claims,
             signingCredentials: signingCredentials);
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
+    }
+
+    public ClaimsPrincipal? GetClaimsPrincipalFromToken(string token)
+    {
+        var configurationSettingsOptions
+            = _jwtSettings;
+        var tokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = false,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = configurationSettingsOptions.Issuer,
+            ValidAudience = configurationSettingsOptions.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configurationSettingsOptions.Secret)),
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        try
+        {
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var validatedToken);
+
+            if (!IsJwtWithValidSecurityAlgorithm(validatedToken))
+            {
+                return null;
+            }
+
+            return principal;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public bool IsJwtWithValidSecurityAlgorithm(SecurityToken token)
+    {
+        return (token is JwtSecurityToken jwtSecurityToken)
+            && jwtSecurityToken.Header.Alg.Equals(
+                   SecurityAlgorithms.HmacSha256,
+                   StringComparison.InvariantCultureIgnoreCase);
     }
 }

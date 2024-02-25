@@ -6,8 +6,6 @@ public class SendResetPasswordTokenCommandValidator : AbstractValidator<SendRese
 {
     public SendResetPasswordTokenCommandValidator()
     {
-        RuleFor(x => x.UserEmail).EmailAddress();
-        RuleFor(x => x.ConfirmPassword)
-            .Equal(x => x.NewPassword);
+        RuleFor(x => x.Email).EmailAddress();
     }
 }

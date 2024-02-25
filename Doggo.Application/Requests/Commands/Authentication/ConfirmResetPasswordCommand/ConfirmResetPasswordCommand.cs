@@ -3,4 +3,4 @@ namespace Doggo.Application.Requests.Commands.Authentication.ConfirmResetPasswor
 using Domain.Results;
 using MediatR;
 
-public record ConfirmResetPasswordCommand(string Token, Guid UserId, string NewPassword) : IRequest<CommonResult>;
+public record ConfirmResetPasswordCommand(string Token, string Email, string NewPassword) : IRequest<CommonResult>;

@@ -7,7 +7,7 @@ public class GetPageOfJobRequestsQueryValidator : AbstractValidator<GetPageOfJob
 {
     public GetPageOfJobRequestsQueryValidator()
     {
-        RuleFor(x => x.Page).InclusiveBetween(9, 51);
+        RuleFor(x => x.Page).NotEmpty();
 
         RuleFor(x => x.PageCount).NotEmpty();
 

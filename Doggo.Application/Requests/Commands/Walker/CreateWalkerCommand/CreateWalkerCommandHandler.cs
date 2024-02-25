@@ -54,6 +54,8 @@ public class CreateWalkerCommandHandler : IRequestHandler<CreateWalkerCommand, C
             (await _userManager.FindByIdAsync(_currentUserService.GetUserId().ToString()))!,
             RoleConstants.Walker);
 
+        await _walkerRepository.SaveChangesAsync();
+
         return Success();
     }
 }

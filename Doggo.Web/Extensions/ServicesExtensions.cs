@@ -39,9 +39,9 @@ public static class ServicesExtensions
                     name: "MyAllowSpecificOrigins",
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:63342")
+                       policy.WithOrigins("http://localhost:63342", "http://localhost:5173") // Add your React application's origin
+                            .AllowAnyMethod()
                             .AllowAnyHeader()
-                            .WithMethods("GET", "POST")
                             .AllowCredentials();
                     });
             });

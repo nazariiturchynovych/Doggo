@@ -1,6 +1,7 @@
 namespace Doggo.Infrastructure.Repositories.Base;
 
 using Application.Abstractions.Repositories.Base;
+using Domain.Entities.Dog;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -20,7 +21,8 @@ public class AbstractRepository<TEntity> : IAbstractRepository<TEntity>
     }
 
 
-    public async Task AddAsync(TEntity entity) => await _entities.AddAsync(entity ?? throw new ArgumentNullException(nameof(entity)));
+    public async Task AddAsync(TEntity entity)
+        => await _entities.AddAsync(entity ?? throw new ArgumentNullException(nameof(entity)));
 
     public async Task AddRangeAsync(IEnumerable<TEntity> entities) => await _entities.AddRangeAsync(entities);
 
@@ -31,5 +33,6 @@ public class AbstractRepository<TEntity> : IAbstractRepository<TEntity>
     public void RemoveRange(ICollection<TEntity> collection)
         => _entities.RemoveRange(collection ?? throw new ArgumentNullException(nameof(collection)));
 
-    public async Task SaveChanges() => await _context.SaveChangesAsync();
+
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 }

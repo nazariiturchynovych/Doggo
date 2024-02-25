@@ -14,16 +14,20 @@ public class SignInQueryHandler : IRequestHandler<SignInQuery, CommonResult<Sign
     private readonly UserManager<User> _userManager;
     private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
     private readonly IUserRepository _userRepository;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
 
 
     public SignInQueryHandler(
         UserManager<User> userManager,
         IJwtTokenGeneratorService jwtTokenGeneratorService,
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        IRefreshTokenRepository refreshTokenRepository
+    )
     {
         _userManager = userManager;
         _jwtTokenGeneratorService = jwtTokenGeneratorService;
         _userRepository = userRepository;
+        _refreshTokenRepository = refreshTokenRepository;
     }
 
     public async Task<CommonResult<SignInResponse>> Handle(SignInQuery request, CancellationToken cancellationToken)
@@ -36,11 +40,26 @@ public class SignInQueryHandler : IRequestHandler<SignInQuery, CommonResult<Sign
         var logInResult = await _userManager.CheckPasswordAsync(user, request.Password);
 
         if (!logInResult)
-            return Failure<SignInResponse>(UserErrors.UserDoesNotExist);
+            return Failure<SignInResponse>(UserErrors.PasswordDoesNotMatch);
 
-        if (!user.IsApproved)
-            return Failure<SignInResponse>(UserErrors.UserIsNotApproved);
+        var refreshToken = new RefreshToken()
+        {
+            Token = Guid.NewGuid(),
+            Expired = DateTime.Now.AddDays(10).ToUniversalTime(),
+            UserId = user.Id
+        };
 
-        return Success(new SignInResponse(_jwtTokenGeneratorService.GenerateToken(user)));
+        var existedToken = await _refreshTokenRepository.GetByUserIdAsync(user.Id, cancellationToken);
+
+        if (existedToken is not null)
+        {
+            _refreshTokenRepository.Remove(existedToken);
+        }
+
+        await _refreshTokenRepository.AddAsync(refreshToken);
+
+        await _refreshTokenRepository.SaveChangesAsync();
+
+        return Success(new SignInResponse(_jwtTokenGeneratorService.GenerateToken(user), refreshToken.Token));
     }
 }

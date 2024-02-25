@@ -22,6 +22,8 @@ public class User : IdentityUser<Guid>, IEntity
 
     public Walker Walker { get; set; }
 
+    public RefreshToken RefreshToken { get; set; }
+
     public bool IsApproved { get; set; }
     public bool GoogleAuth { get; set; }
     public bool FacebookAuth { get; set; }
